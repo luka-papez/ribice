@@ -1,0 +1,14 @@
+[
+  {
+    "name": "catfish",
+    "color": "gray",
+    "pattern": "none",
+    "moustache": true
+  },
+  {
+    "name": "trout",
+    "colour": "gray",
+    "pattern": "checkered",
+    "stripes": true
+  }
+]
