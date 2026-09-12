@@ -892,6 +892,13 @@
       "name": "European barracuda",
       "_note": "Sphyraena sphyraena (škaram) - silver, faintly barred, jutting jaw; hangs motionless in the blue.",
       "_prior": 1,
+      "_link": "https://en.wikipedia.org/wiki/Sphyraena_sphyraena",
+      "_image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Sphyraena_sphyraena_%28Barracudas%29_%2822471310912%29.jpg",
+        "source": "https://commons.wikimedia.org/wiki/File:Sphyraena_sphyraena_(Barracudas)_(22471310912).jpg",
+        "credit": "Lars Behnke",
+        "license": "CC BY 2.0"
+      },
       "shape": "elongated", "size": "large", "colour": "silver",
       "pattern": "vertical_bars", "snout": "underslung", "visible_teeth": true,
       "schooling": true, "where": ["open_water"], "behaviour": "hovers_in_open_water"
