@@ -2,20 +2,26 @@
 # Builds the browser version of the quiz.
 #
 #   ./build.sh                 build into web/
-#   ./build.sh serve           build, then serve web/ on http://localhost:8080
+#   ./build.sh serve [KB]      build, then serve the demo on localhost:8080
+#                              against KB (default data/adriatic-fish.json)
 #   ./build.sh publish [DIR]   build, then copy the embeddable assets to DIR
 #                              (default dist/) with a README for whoever
 #                              embeds them
-#   ./build.sh gif             rebuild docs/quiz.gif, the README demo
+#   ./build.sh gif [KB]        rebuild docs/quiz.gif, the README demo
 #
 # Only index.html, ribice.js and ribice.css are written by hand; everything else
 # is produced here and is not in version control.
 set -e
 cd "$(dirname "$0")"
 
-# The files an embedding application needs. index.html is the demo page and is
-# deliberately not among them.
-ASSETS="ribice.js ribice.css ribice.wasm wasm_exec.js adriatic-fish.json"
+# The files an embedding application needs. No knowledge base is among them:
+# the widget knows nothing about any subject, and the data comes from whoever
+# embeds it. index.html is the demo page and is deliberately not shipped either.
+ASSETS="ribice.js ribice.css ribice.wasm wasm_exec.js"
+
+# The demo page needs some knowledge base to demonstrate. It is copied in as
+# web/demo-kb.json, which is not in version control -- web/ holds no dataset.
+DEMO_KB="${DEMO_KB:-data/adriatic-fish.json}"
 
 size() { # human size, and what it costs over the wire
   printf '%8s  %7s gzipped  %s\n' \
@@ -34,7 +40,14 @@ build() {
   # when the code actually does.
   GOOS=js GOARCH=wasm go build -trimpath -buildvcs=false -ldflags="-s -w" -o web/ribice.wasm ./cmd/wasm
   cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" web/  # version-locked to your Go
-  cp data/adriatic-fish.json web/                   # fetched at page load
+}
+
+# demo_kb puts a knowledge base where the demo page can fetch it. Only the demo
+# uses this; nothing in ASSETS depends on it.
+demo_kb() {
+  [ -f "$DEMO_KB" ] || { echo "no such knowledge base: $DEMO_KB" >&2; exit 1; }
+  go run ./cmd/ribice -kb "$DEMO_KB" -lint
+  cp "$DEMO_KB" web/demo-kb.json
 }
 
 # gif drives a scripted game in headless Chrome, one screenshot per step, and
@@ -51,6 +64,7 @@ make_gif() {
   fi
 
   build
+  demo_kb
   frames=$(mktemp -d)
   trap 'rm -rf "$frames" web/_frames.html' EXIT
 
@@ -61,7 +75,8 @@ s = open("web/index.html").read()
 s = re.sub(r"  <header>.*?</header>\n|  <footer>.*?</footer>\n", "", s, flags=re.S)
 driver = """<script type="module">
   import { createQuiz } from "./ribice.js";
-  const quiz = await createQuiz({ mount: "#fish", settings: { maxQuestions: 20 } });
+  const quiz = await createQuiz({ mount: "#quiz", kbUrl: "demo-kb.json",
+                                 settings: { maxQuestions: 20 } });
   const pick = i => () => quiz.root.querySelector(`.rb-opt[data-rb-index="${i}"]`)?.click();
   const next = () => () => quiz.root.querySelector(".rb-next")?.click();
   const script = [pick(0), next(), pick(0), next(), pick(0), next(),
@@ -124,17 +139,17 @@ PYEOF
 
 case "$1" in
 serve)
+  [ -n "$2" ] && DEMO_KB="$2"
   build
+  demo_kb
   size web/ribice.wasm
+  echo "demo knowledge base: $DEMO_KB"
   echo "serving http://localhost:8080 -- ctrl-c to stop"
   cd web && exec python3 -m http.server 8080
   ;;
 
 publish)
   out="${2:-dist}"
-  # The knowledge base ships as an asset, so a broken one would ship too.
-  echo "checking the knowledge base..."
-  go run ./cmd/ribice -lint
   build
 
   mkdir -p "$out"
@@ -145,20 +160,26 @@ publish)
   # reason wasm_exec.js does: the two must not drift apart.
   cp LICENSE "$out/LICENSE"
   cp "$(go env GOROOT)/LICENSE" "$out/GO-LICENSE"
-  sed "s|@KB@|$(basename data/adriatic-fish.json)|g" > "$out/README.md" <<'MD'
+  cat > "$out/README.md" <<'MD'
 # ribice -- embeddable identification quiz
 
-Static assets. Serve all five from one directory and mount the widget:
+An engine and a widget. They know nothing about any particular subject: the
+questions and the candidates come from a knowledge base **you** supply.
+
+Serve all four files from one directory and mount the widget, pointing it at
+your own data:
 
 ```html
-<div id="fish"></div>
+<div id="quiz"></div>
 <script type="module">
   import { createQuiz } from "/assets/ribice/ribice.js";
-  const quiz = await createQuiz({ mount: "#fish", base: "/assets/ribice/" });
+  const quiz = await createQuiz({
+    mount: "#quiz",
+    base: "/assets/ribice/",      // where these four files are served from
+    kbUrl: "/data/my-guide.json", // your knowledge base -- there is no default
+  });
 </script>
 ```
-
-`base` is the directory these files are served from, with a trailing slash.
 
 | File | |
 | --- | --- |
@@ -166,7 +187,34 @@ Static assets. Serve all five from one directory and mount the widget:
 | `ribice.css` | default theme. Optional -- delete it and style `.rb-*` yourself |
 | `ribice.wasm` | the engine |
 | `wasm_exec.js` | Go's runtime shim. Do not edit or substitute: it is version-locked to `ribice.wasm` |
-| `@KB@` | the knowledge base. Edit and re-upload freely; no rebuild needed |
+
+## The knowledge base
+
+One JSON file describing the things to be identified. At its simplest:
+
+```json
+[
+  { "name": "catfish", "colour": "gray", "moustache": true },
+  { "name": "trout",  "colour": "gray", "pattern": "checkered" }
+]
+```
+
+Wrap it in an object to add phrasing, priors and noise per attribute. The full
+format, and the `-lint` and `-simulate` commands that check one, are documented
+at <https://github.com/lpapez/ribice>.
+
+Pass it as `kbUrl` to be fetched, or as `kb` if your application already has it:
+
+```js
+await createQuiz({ mount: "#quiz", base: "/assets/ribice/", kb: myData });
+```
+
+Either way the engine owns it from then on. Several quizzes may be mounted on
+one page, over the same knowledge base or different ones; the WebAssembly
+module and each fetched knowledge base are loaded once and shared.
+
+Because the data is fetched rather than compiled in, correcting an entry means
+re-uploading the JSON -- there is nothing to rebuild.
 
 ## Serving
 
@@ -175,8 +223,8 @@ works -- it falls back to a buffered compile -- just slower to start. Check with
 
     curl -sI https://yoursite/assets/ribice/ribice.wasm | grep -i content-type
 
-All five files are immutable between builds, so cache them hard; the knowledge
-base is the one you are likeliest to change, so give that a shorter max-age.
+All four files are immutable between builds, so cache them hard. Your knowledge
+base is the thing you will change, and it is served from wherever you put it.
 
 ## Styling
 
@@ -190,7 +238,7 @@ cannot affect the rest of your page. Retheme it without editing it by setting
 its custom properties on the mount element:
 
 ```css
-#fish { --rb-accent: #7b2d8e; --rb-radius: 3px; --rb-font: Georgia, serif; }
+#quiz { --rb-accent: #7b2d8e; --rb-radius: 3px; --rb-font: Georgia, serif; }
 ```
 
 Also `--rb-bg`, `--rb-card`, `--rb-ink`, `--rb-muted`, `--rb-line`,
@@ -202,8 +250,10 @@ Also `--rb-bg`, `--rb-card`, `--rb-ink`, `--rb-muted`, `--rb-line`,
 
 ```js
 createQuiz({
-  mount: "#fish",        // element or selector (required)
+  mount: "#quiz",        // element or selector (required)
   base: "/assets/ribice/",
+  kbUrl: "/data/my-guide.json",    // the knowledge base to fetch (required...
+  kb: null,              // ...unless you pass the JSON or an object directly)
   settings: { maxQuestions: 20 },  // engine Config overrides
   keyboard: true,        // digits select, Enter confirms, s skips, u goes back
   standing: true,        // show running leaders and answers so far
@@ -239,15 +289,18 @@ MD
   echo "published to $out/"
   for f in $ASSETS; do size "$out/$f"; done
   echo
-  echo "Upload all five to one directory your app serves, then:"
+  echo "Upload all four to one directory your app serves, then point the"
+  echo "widget at a knowledge base of your own:"
   echo
   echo "  import { createQuiz } from \"<that directory>/ribice.js\";"
-  echo "  createQuiz({ mount: \"#fish\", base: \"<that directory>/\" });"
+  echo "  createQuiz({ mount: \"#quiz\", base: \"<that directory>/\","
+  echo "               kbUrl: \"<your knowledge base>.json\" });"
   echo
   echo "See $out/README.md."
   ;;
 
 gif)
+  [ -n "$2" ] && DEMO_KB="$2"
   make_gif
   ;;
 

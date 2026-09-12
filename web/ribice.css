@@ -9,7 +9,7 @@
  * the mount element -- they are declared on .rb-quiz, so anything the host
  * sets on that element or above it wins:
  *
- *   #fish { --rb-accent: #b4472a; --rb-radius: 4px; --rb-font: Georgia, serif; }
+ *   #quiz { --rb-accent: #b4472a; --rb-radius: 4px; --rb-font: Georgia, serif; }
  */
 
 .rb-quiz {

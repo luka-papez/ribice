@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What fish was that?</title>
-<meta name="description" content="Describe a fish you saw in the Adriatic and this will work out what it was.">
+<title>ribice &mdash; identification quiz</title>
+<meta name="description" content="Answer a few questions and this works out what you saw. The subject comes from whichever knowledge base you point it at.">
 
 <!-- The widget's default theme. Optional: drop it and style .rb-* yourself. -->
 <link rel="stylesheet" href="ribice.css">
@@ -34,11 +34,11 @@
 <body>
 <main>
   <header>
-    <h1>What fish was that?</h1>
-    <p class="sub">Describe a fish you saw snorkelling in the Adriatic and this will work out what it was.</p>
+    <h1 id="title">Identification quiz</h1>
+    <p class="sub">Answer a few questions and this works out what you saw.</p>
   </header>
 
-  <div id="fish"></div>
+  <div id="quiz"></div>
 
   <footer>
     Runs entirely in your browser &mdash;
@@ -47,11 +47,18 @@
 </main>
 
 <script type="module">
+  // A demo page, not part of the widget. The widget has no dataset of its own,
+  // so this picks one: ?kb=<url> to point it anywhere, otherwise the one
+  // ./build.sh copied in as demo-kb.json.
   import { createQuiz } from "./ribice.js";
-  createQuiz({
-    mount: "#fish",
+  const kbUrl = new URLSearchParams(location.search).get("kb") || "demo-kb.json";
+  const quiz = await createQuiz({
+    mount: "#quiz",
+    kbUrl,
     settings: { maxQuestions: 20 },
   });
+  // the knowledge base names itself; a host application would know its own title
+  if (quiz.name) document.title = document.getElementById("title").textContent = quiz.name;
 </script>
 </body>
 </html>

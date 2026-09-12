@@ -77,8 +77,8 @@ things are bought with it.
 
 1. **It costs nothing to run.** The engine compiles to WebAssembly and identifies
    the fish in the browser, so there is no API key, no per-identification cost, no
-   rate limit and nothing to keep running — the whole thing is six static files
-   on a web server. The self-test plays all 61 quizzes end to end in 0.4 seconds.
+   rate limit and nothing to keep running — the whole thing is five static files
+   on a web server, plus your own JSON. The self-test plays all 61 quizzes end to end in 0.4 seconds.
    Anyone embedding the widget needs an account with nobody.
 
 2. **It is deterministic.** The same answers produce the same questions, the same
@@ -394,7 +394,7 @@ pixels.
 ./build.sh publish [DIR]    # copies the embeddable assets to DIR (default dist/)
 ```
 
-`web/` is then six static files. Three are written by hand, three are generated
+`web/` is then five static files. Three are written by hand, two are generated
 and not in version control:
 
 ```
@@ -403,8 +403,21 @@ ribice.js             the widget, an ES module
 ribice.css            its default theme, entirely optional
 ribice.wasm           3.2 MB, 0.9 MB over the wire gzipped     (generated)
 wasm_exec.js          Go's runtime shim                        (generated)
-adriatic-fish.json    the knowledge base, fetched at page load (generated)
 ```
+
+**No knowledge base is among them.** The widget knows nothing about fish, or
+dogs, or anything else: the data comes from whoever embeds it, as a URL to
+fetch or as an object it already has. `./build.sh serve [KB]` copies one in as
+`web/demo-kb.json` for the demo page to use, which is why that file is
+generated and ignored rather than committed:
+
+```
+./build.sh serve                      # demo against data/adriatic-fish.json
+./build.sh serve data/dogs.json       # or any other knowledge base
+```
+
+The demo page also takes `?kb=<url>`, and titles itself from the knowledge
+base's own `name`.
 
 Two things the host must get right: `.wasm` served as `application/wasm` (the
 page falls back to a buffered compile if not, just more slowly), and no
@@ -416,9 +429,10 @@ re-uploading the JSON, not rebuilding the WebAssembly.
 
 ### Embedding it
 
-`./build.sh publish` writes the five files an application needs into `dist/`,
-without the demo page, alongside a README covering what the embedder has to know
-— serving, styling, options and the attribution the image licences require.
+`./build.sh publish` writes the four files an application needs into `dist/`,
+without the demo page and without any dataset, alongside a README covering what
+the embedder has to know — supplying a knowledge base, serving, styling,
+options and the attribution any image licences require.
 Pass a directory to publish straight into another project:
 
 ```
@@ -442,15 +456,21 @@ publish` and commit it whenever either changes.
 Upload the assets somewhere and mount the widget on any element:
 
 ```html
-<div id="fish"></div>
+<div id="quiz"></div>
 <script type="module">
   import { createQuiz } from "/assets/ribice/ribice.js";
-  const quiz = await createQuiz({ mount: "#fish", base: "/assets/ribice/" });
+  const quiz = await createQuiz({
+    mount: "#quiz",
+    base: "/assets/ribice/",       // where the other three files live
+    kbUrl: "/data/my-guide.json",  // your knowledge base -- there is no default
+  });
 </script>
 ```
 
-`base` is where the other three files live; `wasmUrl`, `execUrl` and `kbUrl`
-override individually if they are scattered. Everything else is optional:
+`kbUrl` is required, because the widget ships without data. If your application
+already has the knowledge base, pass it as `kb` instead — JSON text or a plain
+object — and nothing is fetched. `wasmUrl` and `execUrl` override `base`
+individually if the assets are scattered. Everything else is optional:
 
 | Option                              | Meaning                                                                     |
 | ----------------------------------- | --------------------------------------------------------------------------- |
@@ -461,7 +481,8 @@ override individually if they are scattered. Everything else is optional:
 | `strings`                           | any rendered string, to retitle or translate.                               |
 | `onQuestion`, `onResult`, `onError` | callbacks, for analytics or for reacting in the host app.                   |
 
-It returns `{root, view, restart(), destroy()}`. Call `destroy()` when tearing
+It returns `{root, name, view, restart(), destroy()}`, where `name` is the
+knowledge base's own name. Call `destroy()` when tearing
 down a route in a single-page app: it releases the session and unbinds the key
 handler.
 
@@ -483,7 +504,7 @@ widget. To restyle without editing it, set its custom properties on the mount
 element:
 
 ```css
-#fish {
+#quiz {
   --rb-accent: #7b2d8e;
   --rb-card: #fff;
   --rb-radius: 3px;
@@ -561,6 +582,9 @@ data/       knowledge bases
 tools/      how data/dogs.json was built -- see tools/README.md
 docs/       images for this README
 ```
+
+Neither `web/` nor `dist/` contains a knowledge base. They are the engine and
+the widget; the data belongs to whoever embeds them.
 
 `data/adriatic-fish.json` covers the Sparidae you cannot avoid, the wrasses,
 blennies, gobies and triplefins of the rocks, the sand-dwellers and the things

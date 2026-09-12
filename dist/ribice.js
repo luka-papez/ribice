@@ -10,17 +10,24 @@
 // its own sheet; ribice.css is one such sheet, and is optional.
 //
 //   import { createQuiz } from "./ribice.js";
-//   const quiz = await createQuiz({ mount: "#fish", base: "/ribice/" });
+//   const quiz = await createQuiz({ mount: "#quiz", base: "/ribice/",
+//                                   kbUrl: "/data/dogs.json" });
 //
-// Several quizzes may be mounted on one page. The WebAssembly module and each
-// knowledge base are fetched once and shared between them.
+// It knows nothing about any particular subject. The knowledge base comes from
+// the host application, as a URL to fetch or as data you already have; there is
+// no default and no bundled dataset.
+//
+// Several quizzes may be mounted on one page, over the same knowledge base or
+// different ones. The WebAssembly module and each knowledge base are fetched
+// once and shared between them.
 
 const DEFAULTS = {
   mount: null,        // element or selector to render into (required)
   base: "",           // where the assets live, e.g. "/ribice/"
   wasmUrl: null,      // defaults to base + "ribice.wasm"
   execUrl: null,      // defaults to base + "wasm_exec.js"
-  kbUrl: null,        // defaults to base + "adriatic-fish.json"
+  kbUrl: null,        // URL of the knowledge base to fetch (required unless kb)
+  kb: null,           // or the knowledge base itself: JSON text, or an object
   settings: {},       // engine Config overrides: threshold, maxQuestions, ...
   keyboard: true,     // number keys select, Enter confirms, s skips, u goes back
   standing: true,     // show the running leaders and the answers so far
@@ -113,12 +120,17 @@ function knowledgeBase(api, url) {
     kbPromises.set(url, (async () => {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`could not load the knowledge base (${res.status})`);
-      const loaded = api.load(await res.text());
-      if (loaded.error) throw new Error(loaded.error);
-      return loaded;
+      return parse(api, await res.text());
     })().catch(err => { kbPromises.delete(url); throw err; }));
   }
   return kbPromises.get(url);
+}
+
+// parse hands the JSON to the engine, which owns it from then on.
+function parse(api, source) {
+  const loaded = api.load(typeof source === "string" ? source : JSON.stringify(source));
+  if (loaded.error) throw new Error(loaded.error);
+  return loaded;
 }
 
 // --- the widget ------------------------------------------------------------
@@ -128,9 +140,13 @@ export async function createQuiz(options = {}) {
   const text = { ...TEXT, ...opt.strings };
   const root = typeof opt.mount === "string" ? document.querySelector(opt.mount) : opt.mount;
   if (!root) throw new Error("createQuiz: no element to mount into");
+  if (!opt.kb && !opt.kbUrl) {
+    throw new Error("createQuiz: no knowledge base. Pass kbUrl with the URL of " +
+                    "one to fetch, or kb with the JSON itself.");
+  }
 
   const url = (given, name) => given || `${opt.base}${name}`;
-  let api = null, kbId = null, sessionId = null, view = null, destroyed = false;
+  let api = null, kbId = null, kbName = "", sessionId = null, view = null, destroyed = false;
   let picks = new Set();
 
   root.classList.add("rb-quiz");
@@ -139,8 +155,11 @@ export async function createQuiz(options = {}) {
 
   try {
     api = await runtime(url(opt.execUrl, "wasm_exec.js"), url(opt.wasmUrl, "ribice.wasm"));
-    const loaded = await knowledgeBase(api, url(opt.kbUrl, "adriatic-fish.json"));
+    // The widget ships with no dataset of its own: one has to be given.
+    const loaded = opt.kb ? parse(api, opt.kb)
+                          : await knowledgeBase(api, opt.kbUrl);
     kbId = loaded.kb;
+    kbName = loaded.name || "";
   } catch (err) {
     showError(err);
     throw err;
@@ -398,6 +417,8 @@ export async function createQuiz(options = {}) {
     return {
       root,
       restart,
+      // the knowledge base's own name, for a host that wants to title the page
+      get name() { return kbName; },
       get view() { return view; },
       destroy() {
         destroyed = true;

@@ -1,16 +1,22 @@
 # ribice -- embeddable identification quiz
 
-Static assets. Serve all five from one directory and mount the widget:
+An engine and a widget. They know nothing about any particular subject: the
+questions and the candidates come from a knowledge base **you** supply.
+
+Serve all four files from one directory and mount the widget, pointing it at
+your own data:
 
 ```html
-<div id="fish"></div>
+<div id="quiz"></div>
 <script type="module">
   import { createQuiz } from "/assets/ribice/ribice.js";
-  const quiz = await createQuiz({ mount: "#fish", base: "/assets/ribice/" });
+  const quiz = await createQuiz({
+    mount: "#quiz",
+    base: "/assets/ribice/",      // where these four files are served from
+    kbUrl: "/data/my-guide.json", // your knowledge base -- there is no default
+  });
 </script>
 ```
-
-`base` is the directory these files are served from, with a trailing slash.
 
 | File | |
 | --- | --- |
@@ -18,7 +24,34 @@ Static assets. Serve all five from one directory and mount the widget:
 | `ribice.css` | default theme. Optional -- delete it and style `.rb-*` yourself |
 | `ribice.wasm` | the engine |
 | `wasm_exec.js` | Go's runtime shim. Do not edit or substitute: it is version-locked to `ribice.wasm` |
-| `adriatic-fish.json` | the knowledge base. Edit and re-upload freely; no rebuild needed |
+
+## The knowledge base
+
+One JSON file describing the things to be identified. At its simplest:
+
+```json
+[
+  { "name": "catfish", "colour": "gray", "moustache": true },
+  { "name": "trout",  "colour": "gray", "pattern": "checkered" }
+]
+```
+
+Wrap it in an object to add phrasing, priors and noise per attribute. The full
+format, and the `-lint` and `-simulate` commands that check one, are documented
+at <https://github.com/lpapez/ribice>.
+
+Pass it as `kbUrl` to be fetched, or as `kb` if your application already has it:
+
+```js
+await createQuiz({ mount: "#quiz", base: "/assets/ribice/", kb: myData });
+```
+
+Either way the engine owns it from then on. Several quizzes may be mounted on
+one page, over the same knowledge base or different ones; the WebAssembly
+module and each fetched knowledge base are loaded once and shared.
+
+Because the data is fetched rather than compiled in, correcting an entry means
+re-uploading the JSON -- there is nothing to rebuild.
 
 ## Serving
 
@@ -27,8 +60,8 @@ works -- it falls back to a buffered compile -- just slower to start. Check with
 
     curl -sI https://yoursite/assets/ribice/ribice.wasm | grep -i content-type
 
-All five files are immutable between builds, so cache them hard; the knowledge
-base is the one you are likeliest to change, so give that a shorter max-age.
+All four files are immutable between builds, so cache them hard. Your knowledge
+base is the thing you will change, and it is served from wherever you put it.
 
 ## Styling
 
@@ -42,7 +75,7 @@ cannot affect the rest of your page. Retheme it without editing it by setting
 its custom properties on the mount element:
 
 ```css
-#fish { --rb-accent: #7b2d8e; --rb-radius: 3px; --rb-font: Georgia, serif; }
+#quiz { --rb-accent: #7b2d8e; --rb-radius: 3px; --rb-font: Georgia, serif; }
 ```
 
 Also `--rb-bg`, `--rb-card`, `--rb-ink`, `--rb-muted`, `--rb-line`,
@@ -54,8 +87,10 @@ Also `--rb-bg`, `--rb-card`, `--rb-ink`, `--rb-muted`, `--rb-line`,
 
 ```js
 createQuiz({
-  mount: "#fish",        // element or selector (required)
+  mount: "#quiz",        // element or selector (required)
   base: "/assets/ribice/",
+  kbUrl: "/data/my-guide.json",    // the knowledge base to fetch (required...
+  kb: null,              // ...unless you pass the JSON or an object directly)
   settings: { maxQuestions: 20 },  // engine Config overrides
   keyboard: true,        // digits select, Enter confirms, s skips, u goes back
   standing: true,        // show running leaders and answers so far
