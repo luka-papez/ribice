@@ -2,19 +2,23 @@
 
 An expert system that identifies something by asking the fewest questions it can.
 It ships with a knowledge base of 61 fish you might meet snorkelling the shallows
-of the Croatian Adriatic, but the engine knows nothing about fish -- point it at
+of the Croatian Adriatic, but the engine knows nothing about fish — point it at
 any JSON file describing any set of things.
 
-A live demo runs at **[codecrane.hr/ribice](https://codecrane.hr/ribice/)** --
+- nb. _Ribice_ is Croatian for "little fish" — the diminutive plural of _riba_, and
+  what you would actually call the ones flickering around your ankles in the
+  shallows rather than the ones on a menu.
+
+A live demo runs at **[codecrane.hr/ribice](https://codecrane.hr/ribice/)** —
 the browser build below, mounted in a page.
 
 <p align="center">
   <img src="docs/quiz.gif" width="600"
-       alt="Five questions -- what it was doing, its markings, its shape, its colour, tentacles above the eyes -- and the quiz names the black scorpionfish at 96%.">
+       alt="Five questions — what it was doing, its markings, its shape, its colour, tentacles above the eyes — and the quiz names the black scorpionfish at 96%.">
 </p>
 
 That is the browser build: one static page, no backend, [embeddable in another
-application](#embedding-it). The photograph in it is Dmitriy Konstantinov's, CC BY-SA 3.0 -- see
+application](#embedding-it). The photograph in it is Dmitriy Konstantinov's, CC BY-SA 3.0 — see
 [Pictures](#pictures) for why every result carries its credit. The same engine
 runs on the command line:
 
@@ -33,6 +37,72 @@ Q1. What was it doing?
 > 1
    -> Black scorpionfish 7% · Painted comber 7% · Striped red mullet 7%
 ```
+
+## FAQ
+
+### Why this exists
+
+Three reasons, in the order they turned up.
+
+1. **I wanted to identify the fish I saw myself.** You meet the same few dozen species over
+   and over in the shallows here and can name almost none of them, and a field
+   guide is indexed by family — it answers the question you would ask if you
+   already knew the answer. What you actually have is a memory of something brown
+   that sat still on a rock and did not run away.
+
+2. **I enjoyed learning about expert systems back in college.** They went out of fashion for reasons
+   that were mostly fair, but the appealing part of them is still true: a handful
+   of understandable rules over a knowledge base someone can read, a system that
+   shows its work in the domain's own vocabulary, and a wrong answer that an
+   expert can walk to and correct.
+
+3. **And I wanted to see what I could build with Claude without ever looking at the code.**
+   Not a line of the Go in this repository has been read by the person whose
+   name is on it. That constraint is most of why the rest of it is shaped the way
+   it is: everything has to be checkable from the outside. `-simulate` plays a
+   game as every species and says what fraction came out right, `-lint` reads the
+   knowledge base for the mistakes that quietly ruin one, and the figures in this
+   README are those commands' output rather than claims about them. Not reading
+   the code means the only honest way to trust it is to make it prove itself on
+   every run — which is not a bad way to work either way.
+
+So it was written with a language model and runs without one, which is the next
+question.
+
+### Why not just ask an LLM to identify a fish for you
+
+A language model knows what a scorpionfish is without being told, and every one
+of the 61 species here had to be typed in by hand. That is the trade, and three
+things are bought with it.
+
+1. **It costs nothing to run.** The engine compiles to WebAssembly and identifies
+   the fish in the browser, so there is no API key, no per-identification cost, no
+   rate limit and nothing to keep running — the whole thing is six static files
+   on a web server. The self-test plays all 61 quizzes end to end in 0.4 seconds.
+   Anyone embedding the widget needs an account with nobody.
+
+2. **It is deterministic.** The same answers produce the same questions, the same
+   percentages and the same order, on every machine, forever; ties are broken by
+   name so even the ranking is stable. That is what makes `-simulate` a regression
+   test rather than a demo: edit the knowledge base, re-run it, and a species that
+   stopped separating from its neighbour shows up as a changed number. The
+   accuracy tables further down came out of that command, and re-running it
+   reproduces them exactly.
+
+3. **It can be checked by people who know fish.** The knowledge base is one JSON
+   file of plain properties, so a biologist who does not write Go can still read
+   every claim the system makes and disagree with one. `w` mid-quiz prints the
+   current uncertainty in bits, the leading candidates and what each remaining
+   question is worth; `-explain` prints it for every question asked; `-lint` finds
+   the attribute spelled two ways and the pair of species nothing can tell apart.
+   When it names the wrong fish there is a line of JSON responsible, and
+   correcting that line changes that fish and no other.
+
+What it does not do is anything outside the 17 properties someone chose to
+write down. It cannot look at a photograph, cannot take "small stripey thing by
+the rocks", and covers 61 species because 61 were entered. About anything else
+the most it can honestly say is that this guide does not have it, which is
+what [_When it is none of them_](#when-it-is-none-of-them) below is for.
 
 ## How it picks questions
 
@@ -57,15 +127,15 @@ survivors:
   probability the user misremembers it. A contradicted candidate loses most of
   its probability but is never eliminated, so later answers can bring it back.
   With a fifth of all answers wrong, the fish KB still identifies four species
-  in five -- it just takes a few more questions.
-- **Mistakes are not uniform** -- see the next section.
+  in five — it just takes a few more questions.
+- **Mistakes are not uniform** — see the next section.
 - **"Not sure" is free.** Skipping applies no update at all, and the question
   comes back later if it turns out to decide things. Skipping means "I cannot
   say right now", not "never ask me this".
-- **The answer may be nothing at all** -- see below.
+- **The answer may be nothing at all** — see below.
 
 Because a property an entity does not declare is taken to be _absent_, every
-categorical attribute must be one where "none" is a real answer -- no pattern,
+categorical attribute must be one where "none" is a real answer — no pattern,
 an ordinary snout, no head marking. "Tail shape" would not qualify, since every
 fish has one, so that is the boolean `forked_tail` instead.
 
@@ -77,31 +147,31 @@ heard of and it will name the closest one it has, at whatever confidence falls
 out. For a field guide that is the worst failure there is.
 
 So the distribution carries one extra candidate: the species the knowledge base
-does not have. `UnknownPrior` is how likely that is before any question -- 0.15
+does not have. `UnknownPrior` is how likely that is before any question — 0.15
 by default, meaning roughly one sighting in seven is something not covered here.
 
 What it predicts matters more than its prior. It is not a thing with no
 properties; it is a species from the same fauna that happens to be missing, so
 it predicts each answer at the rate that answer occurs across the knowledge
 base, half-mixed with a flat distribution. That makes it a detector for
-*unattested combinations*: every answer stays individually plausible under it,
+_unattested combinations_: every answer stays individually plausible under it,
 so it loses almost no ground while a real candidate matches, and pulls ahead as
 soon as the answers stop fitting any one species.
 
 Both halves of that are load-bearing. A purely flat distribution pays a heavy
 penalty on every high-cardinality match and can never catch up. A pure
-population rate makes rare values -- `big_eyes` is held by three species -- less
+population rate makes rare values — `big_eyes` is held by three species — less
 likely under "unknown" than under a known species that simply has it wrong, so a
-contradiction would become evidence *for* the known species.
+contradiction would become evidence _for_ the known species.
 
 It is not free. Measured against species that are in the knowledge base, so the
 benefit is invisible and only the cost shows:
 
-| answers wrong | unknown off | unknown at 0.15 |
-| --- | --- | --- |
-| 15% | 90% right, 10% named wrongly | 93% right, 6% named wrongly, 1% unsure |
-| 25% | 80% right, 20% named wrongly | 75% right, 20% named wrongly, 5% unsure |
-| 35% | 69% right, 31% named wrongly | 61% right, 27% named wrongly, 11% unsure |
+| answers wrong | unknown off                  | unknown at 0.15                          |
+| ------------- | ---------------------------- | ---------------------------------------- |
+| 15%           | 90% right, 10% named wrongly | 93% right, 6% named wrongly, 1% unsure   |
+| 25%           | 80% right, 20% named wrongly | 75% right, 20% named wrongly, 5% unsure  |
+| 35%           | 69% right, 31% named wrongly | 61% right, 27% named wrongly, 11% unsure |
 
 At realistic error rates it costs nothing. Once a third of answers are wrong it
 turns more right answers into "unsure" than it saves from being wrong, which is
@@ -109,7 +179,7 @@ the honest shape of the trade. `-unknown 0` switches it off.
 
 Its real limit is that it can only notice what the attributes can express. A
 missing species that is describable as a known one plus two cheap mistakes will
-be named as that known one, and no prior will fix it -- only a new attribute
+be named as that known one, and no prior will fix it — only a new attribute
 that tells them apart.
 
 ## Answers that look alike
@@ -142,12 +212,12 @@ scores it lower and asks more questions. Measured on the fish KB, against the
 same simulated mistakes, modelling the structure rather than assuming uniform
 error:
 
-| answers wrong | uniform error model | look-alikes declared |
-| --- | --- | --- |
-| 0% | 100% in 4.9 questions | 100% in 5.3 |
-| 15% | 50% in 6.4 | **91%** in 6.7 |
-| 25% | 34% in 7.0 | **80%** in 7.4 |
-| 35% | 16% in 7.4 | **69%** in 7.8 |
+| answers wrong | uniform error model   | look-alikes declared |
+| ------------- | --------------------- | -------------------- |
+| 0%            | 100% in 4.9 questions | 100% in 5.3          |
+| 15%           | 50% in 6.4            | **91%** in 6.7       |
+| 25%           | 34% in 7.0            | **80%** in 7.4       |
+| 35%           | 16% in 7.4            | **69%** in 7.8       |
 
 Roughly half a question more, for two to four times the accuracy once the user
 starts making the mistakes real users make.
@@ -156,13 +226,13 @@ An attribute that declares no groups keeps the old uniform behaviour exactly.
 
 ## Picking more than one answer
 
-Any question takes several answers -- `1,3` rather than `1`. What that means
+Any question takes several answers — `1,3` rather than `1`. What that means
 depends on the attribute, because two different things get said that way.
 
 For an ordinary attribute the entity has exactly one value, so several picks
 mean **"one of these, I could not tell which"**. The probabilities add. It is
 weaker evidence than a single answer and does not discriminate between the
-options you named, but it still rules out everything you did not name -- much
+options you named, but it still rules out everything you did not name — much
 better than skipping.
 
 An attribute an entity can genuinely hold several of at once is marked
@@ -176,12 +246,12 @@ in seagrass               -> Salema 13% · Annular seabream 10% · Peacock wrass
 over rocks + in seagrass  -> Salema 18% · Annular seabream 14% · Peacock wrasse 14%
 ```
 
-"Over rocks" barely narrows anything -- twenty species live there. Naming both
+"Over rocks" barely narrows anything — twenty species live there. Naming both
 habitats picks out the species that occupy both, without eliminating the
 rocks-only fish: they drop back rather than dying.
 
 Ranking still scores a question as though one answer were coming, so for a
-`multi` attribute the reported gain is a lower bound -- fine for ordering
+`multi` attribute the reported gain is a lower bound — fine for ordering
 questions, and it never oversells one.
 
 Questions are ranked by `gain / cost`, so an attribute the user can barely judge
@@ -207,7 +277,7 @@ arbitrary; a property an entity does not mention is assumed **not present**.
 - **`"none"`, `null` and omitting the property** are the same thing.
 
 To add phrasing, priors and noise, wrap the list in an object. All of it is
-optional -- a bare array works fine.
+optional — a bare array works fine.
 
 ```json
 {
@@ -269,7 +339,7 @@ notes one with no `source` page, since without it the terms cannot be checked.
 The 60 pictures in `data/adriatic-fish.json` come from Wikimedia Commons, via
 the lead image of each species' Wikipedia article. Licences are CC BY, CC BY-SA
 or public domain, every one with a named author. The European barracuda has
-none: the only Commons photographs found were of other *Sphyraena* species, and
+none: the only Commons photographs found were of other _Sphyraena_ species, and
 the wrong fish is worse than no fish in an identification guide.
 
 ## Commands
@@ -307,12 +377,12 @@ Every entity was identified.
 ```
 
 With 15% of answers wrong it still lands 95%. With a quarter wrong it lands
-70%, and the misses are mostly a declared look-alike rather than nonsense --
+70%, and the misses are mostly a declared look-alike rather than nonsense —
 one seabream for another, the stargazer for the scorpionfish.
 
 ## In the browser
 
-The same engine compiles to WebAssembly and runs as a static page -- no backend,
+The same engine compiles to WebAssembly and runs as a static page — no backend,
 no API, nothing to keep running. `cmd/wasm` is the browser's equivalent of
 `cmd/ribice`: it exposes the session to JavaScript and lets the page worry about
 pixels.
@@ -337,7 +407,7 @@ adriatic-fish.json    the knowledge base, fetched at page load (generated)
 
 Two things the host must get right: `.wasm` served as `application/wasm` (the
 page falls back to a buffered compile if not, just more slowly), and no
-rewriting of `wasm_exec.js`, which is version-locked to the toolchain --
+rewriting of `wasm_exec.js`, which is version-locked to the toolchain —
 `./build.sh` re-copies it from your `GOROOT` every time so the two cannot drift.
 
 The knowledge base is fetched rather than embedded, so correcting a fish means
@@ -347,7 +417,7 @@ re-uploading the JSON, not rebuilding the WebAssembly.
 
 `./build.sh publish` writes the five files an application needs into `dist/`,
 without the demo page, alongside a README covering what the embedder has to know
--- serving, styling, options and the attribution the image licences require.
+— serving, styling, options and the attribution the image licences require.
 Pass a directory to publish straight into another project:
 
 ```
@@ -381,14 +451,14 @@ Upload the assets somewhere and mount the widget on any element:
 `base` is where the other three files live; `wasmUrl`, `execUrl` and `kbUrl`
 override individually if they are scattered. Everything else is optional:
 
-| Option | Meaning |
-| --- | --- |
-| `settings` | engine `Config` overrides: `threshold`, `maxQuestions`, `unknownPrior`, ... |
-| `keyboard` | number keys select, Enter confirms, `s` skips, `u` goes back. Default on. |
-| `standing` | show the running leaders and the answers so far. Default on. |
-| `top` | how many candidates the result lists. Default 5. |
-| `strings` | any rendered string, to retitle or translate. |
-| `onQuestion`, `onResult`, `onError` | callbacks, for analytics or for reacting in the host app. |
+| Option                              | Meaning                                                                     |
+| ----------------------------------- | --------------------------------------------------------------------------- |
+| `settings`                          | engine `Config` overrides: `threshold`, `maxQuestions`, `unknownPrior`, ... |
+| `keyboard`                          | number keys select, Enter confirms, `s` skips, `u` goes back. Default on.   |
+| `standing`                          | show the running leaders and the answers so far. Default on.                |
+| `top`                               | how many candidates the result lists. Default 5.                            |
+| `strings`                           | any rendered string, to retitle or translate.                               |
+| `onQuestion`, `onResult`, `onError` | callbacks, for analytics or for reacting in the host app.                   |
 
 It returns `{root, view, restart(), destroy()}`. Call `destroy()` when tearing
 down a route in a single-page app: it releases the session and unbinds the key
@@ -401,7 +471,7 @@ and shared; sessions are independent.
 ### Styling it
 
 The widget writes no styles. It renders semantic markup, gives every element an
-`rb-` class, and puts state in attributes the host can select on --
+`rb-` class, and puts state in attributes the host can select on —
 `[aria-pressed="true"]` for a chosen option, `[data-rb-state]` on the root for
 `loading`/`question`/`result`/`error`. With no stylesheet at all it is plain but
 fully usable, and inherits the host's own typography and button styling.
@@ -431,19 +501,19 @@ element pins it.
 `ribice.js` wraps a lower-level API that the WebAssembly module installs as the
 global `ribice`. Use it directly to build a different front end entirely.
 
-Go owns all the state. Every call returns the whole view -- the question to ask,
-the standing candidates, what has been answered -- so the page re-renders from
+Go owns all the state. Every call returns the whole view — the question to ask,
+the standing candidates, what has been answered — so the page re-renders from
 what it gets back and keeps nothing of its own but the session id.
 
 ```js
-ribice.load(jsonText)            // -> {kb, name, entities, attributes} | {error}
-ribice.start({kb, maxQuestions}) // -> view, with .id
-ribice.answer(id, [0, 2])        // options chosen; [] means "not sure"
-ribice.skip(id)                  // same as answering with nothing
-ribice.undo(id)                  // take back the last answer
-ribice.state(id)                 // the current view, unchanged
-ribice.rank(id)                  // what it is considering: [{attr, text, gain}]
-ribice.release(id)               // drop a finished session
+ribice.load(jsonText); // -> {kb, name, entities, attributes} | {error}
+ribice.start({ kb, maxQuestions }); // -> view, with .id
+ribice.answer(id, [0, 2]); // options chosen; [] means "not sure"
+ribice.skip(id); // same as answering with nothing
+ribice.undo(id); // take back the last answer
+ribice.state(id); // the current view, unchanged
+ribice.rank(id); // what it is considering: [{attr, text, gain}]
+ribice.release(id); // drop a finished session
 ```
 
 Every `Config` field can be overridden in the object passed to `start`
@@ -466,12 +536,12 @@ loaded. A view looks like this:
 
 `done` is the engine's own stopping rule, and `reason` is why it stopped in
 words fit to show the user ("confident enough", "nothing in this guide
-matches"). Picking several options works exactly as it does in the CLI -- pass
+matches"). Picking several options works exactly as it does in the CLI — pass
 several indices.
 
 Every question is select-then-confirm, and several options may be chosen on any
-of them. What that means still depends on the attribute (see *Picking more than
-one answer*), which is why the instruction is the neutral "select any or all
+of them. What that means still depends on the attribute (see _Picking more than
+one answer_), which is why the instruction is the neutral "select any or all
 that apply".
 
 The result screen shows each image with its credit and licence, as those
@@ -497,5 +567,5 @@ and (where it has one) Croatian name. It is hand-built and worth correcting:
 run `-simulate` after any edit to check the species still separate.
 
 `kb` and `engine` have no dependency on the CLI, on any domain, or on an
-operating system -- which is what lets the CLI and the browser build sit on the
+operating system — which is what lets the CLI and the browser build sit on the
 same two packages unchanged. Standard library only.
