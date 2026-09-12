@@ -306,8 +306,9 @@ uncertainty     5.77 bits to resolve (5.93 if priors were flat)
 Every entity was identified.
 ```
 
-With 15% of answers wrong it still lands 93%; with a quarter, 75% plus 5% that
-say outright that nothing matched.
+With 15% of answers wrong it still lands 95%. With a quarter wrong it lands
+70%, and the misses are mostly a declared look-alike rather than nonsense --
+one seabream for another, the stargazer for the scorpionfish.
 
 ## In the browser
 
@@ -446,8 +447,9 @@ ribice.release(id)               // drop a finished session
 ```
 
 Every `Config` field can be overridden in the object passed to `start`
-(`threshold`, `minGain`, `unknownPrior`, `maxOptions`, `maxQuestions`,
-`skipCooldown`, `confirm`); anything left out keeps `DefaultConfig`'s value.
+(`threshold`, `minGain`, `minSupport`, `unknownPrior`, `maxOptions`,
+`maxQuestions`, `skipCooldown`, `confirm`); anything left out keeps
+`DefaultConfig`'s value.
 `kb` selects which loaded knowledge base to play, defaulting to the last one
 loaded. A view looks like this:
 
@@ -483,7 +485,9 @@ engine/     belief state, Bayesian update, question selection, self-test
 cmd/ribice/ the CLI
 cmd/wasm/   the same engine, exposed to JavaScript
 web/        the embeddable widget, its theme, a demo page, and build output
+dist/       the published assets, committed so embedding needs no Go toolchain
 data/       knowledge bases
+docs/       images for this README
 ```
 
 `data/adriatic-fish.json` covers the Sparidae you cannot avoid, the wrasses,
