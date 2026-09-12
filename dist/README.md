@@ -77,3 +77,11 @@ fetched once and shared, and sessions stay independent.
 The photographs are Wikimedia Commons images under CC BY, CC BY-SA or public
 domain. **The widget renders each one's author and licence, and that credit must
 stay visible.** If you restyle the result, do not hide `.rb-credit`.
+
+## Licence
+
+The widget is MIT-licensed (`LICENSE`): use it for anything, commercially or
+not, keeping the notice with your copy. `wasm_exec.js` and the Go runtime
+compiled into `ribice.wasm` are not covered by it -- they are BSD-3-Clause,
+(c) The Go Authors, and `GO-LICENSE` is their terms. Neither file is served;
+both just need to travel with the five that are.

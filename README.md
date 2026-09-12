@@ -336,11 +336,12 @@ convenience: `-lint` warns about a picture with no `credit` or no `license`, and
 notes one with no `source` page, since without it the terms cannot be checked.
 **Anything displaying these images must show the credit and licence.**
 
-The 60 pictures in `data/adriatic-fish.json` come from Wikimedia Commons, via
+The 61 pictures in `data/adriatic-fish.json` come from Wikimedia Commons, via
 the lead image of each species' Wikipedia article. Licences are CC BY, CC BY-SA
-or public domain, every one with a named author. The European barracuda has
-none: the only Commons photographs found were of other _Sphyraena_ species, and
-the wrong fish is worse than no fish in an identification guide.
+or public domain, every one with a named author. The European barracuda took
+some finding: searching Commons for _Sphyraena sphyraena_ mostly returns other
+_Sphyraena_, and the wrong fish is worse than no fish in an identification
+guide, so its photograph comes from the species category instead.
 
 ## Commands
 
@@ -569,3 +570,26 @@ run `-simulate` after any edit to check the species still separate.
 `kb` and `engine` have no dependency on the CLI, on any domain, or on an
 operating system — which is what lets the CLI and the browser build sit on the
 same two packages unchanged. Standard library only.
+
+## Licence
+
+MIT — see [LICENSE](LICENSE). Use it for anything, commercially or not; the one
+condition is that the copyright notice travels with a copy, which is why
+`./build.sh publish` writes one into `dist/`. The knowledge base is covered too
+— the species, the properties, the notes. Take it and build a better field
+guide.
+
+Three things here are not mine to give away:
+
+- `docs/quiz.gif` contains Dmitriy Konstantinov's photograph of a black
+  scorpionfish under CC BY-SA 3.0, so that file carries the same licence and
+  the credit goes wherever it goes.
+- `dist/wasm_exec.js`, and the Go runtime linked into `dist/ribice.wasm`, are
+  BSD-3-Clause, © The Go Authors. `./build.sh publish` copies Go's own licence
+  text next to them as `dist/GO-LICENSE`, from the same toolchain the shim came
+  from.
+- The photographs the knowledge base points at belong to their photographers,
+  each under the licence its entry names. They are not in this repository —
+  only their URLs and credits are — and anything showing them has to show the
+  credit. See [Pictures](#pictures).
+
