@@ -1,1 +1,8 @@
 /ribice
+
+# Build output for local development. dist/ is deliberately NOT ignored: it is
+# committed so the site can be deployed, and the widget embedded, without a Go
+# toolchain. Rebuild it with ./build.sh publish.
+web/ribice.wasm
+web/wasm_exec.js
+web/adriatic-fish.json

@@ -296,12 +296,176 @@ Every entity was identified.
 With 15% of answers wrong it still lands 93%; with a quarter, 75% plus 5% that
 say outright that nothing matched.
 
+## In the browser
+
+The same engine compiles to WebAssembly and runs as a static page -- no backend,
+no API, nothing to keep running. `cmd/wasm` is the browser's equivalent of
+`cmd/ribice`: it exposes the session to JavaScript and lets the page worry about
+pixels.
+
+```
+./build.sh                  # builds web/
+./build.sh serve            # and serves it on http://localhost:8080
+./build.sh publish [DIR]    # copies the embeddable assets to DIR (default dist/)
+```
+
+`web/` is then six static files. Three are written by hand, three are generated
+and not in version control:
+
+```
+index.html            a demo page -- not needed to embed
+ribice.js             the widget, an ES module
+ribice.css            its default theme, entirely optional
+ribice.wasm           3.2 MB, 0.9 MB over the wire gzipped     (generated)
+wasm_exec.js          Go's runtime shim                        (generated)
+adriatic-fish.json    the knowledge base, fetched at page load (generated)
+```
+
+Two things the host must get right: `.wasm` served as `application/wasm` (the
+page falls back to a buffered compile if not, just more slowly), and no
+rewriting of `wasm_exec.js`, which is version-locked to the toolchain --
+`./build.sh` re-copies it from your `GOROOT` every time so the two cannot drift.
+
+The knowledge base is fetched rather than embedded, so correcting a fish means
+re-uploading the JSON, not rebuilding the WebAssembly.
+
+### Embedding it
+
+`./build.sh publish` writes the five files an application needs into `dist/`,
+without the demo page, alongside a README covering what the embedder has to know
+-- serving, styling, options and the attribution the image licences require.
+Pass a directory to publish straight into another project:
+
+```
+./build.sh publish ~/mysite/public/vendor/ribice
+```
+
+It lints the knowledge base first, since that ships as an asset too, and prints
+what each file costs over the wire.
+
+`dist/` is committed rather than ignored, so the site can be deployed and the
+widget embedded without a Go toolchain anywhere in the loop. The build is built
+with `-trimpath` and is byte-identical between rebuilds, so re-publishing
+without changing anything produces no diff -- `dist/` only moves when the engine
+or the knowledge base actually does. Re-run `./build.sh publish` and commit it
+whenever either changes.
+
+Upload the assets somewhere and mount the widget on any element:
+
+```html
+<div id="fish"></div>
+<script type="module">
+  import { createQuiz } from "/assets/ribice/ribice.js";
+  const quiz = await createQuiz({ mount: "#fish", base: "/assets/ribice/" });
+</script>
+```
+
+`base` is where the other three files live; `wasmUrl`, `execUrl` and `kbUrl`
+override individually if they are scattered. Everything else is optional:
+
+| Option | Meaning |
+| --- | --- |
+| `settings` | engine `Config` overrides: `threshold`, `maxQuestions`, `unknownPrior`, ... |
+| `keyboard` | number keys select, Enter confirms, `s` skips, `u` goes back. Default on. |
+| `standing` | show the running leaders and the answers so far. Default on. |
+| `top` | how many candidates the result lists. Default 5. |
+| `strings` | any rendered string, to retitle or translate. |
+| `onQuestion`, `onResult`, `onError` | callbacks, for analytics or for reacting in the host app. |
+
+It returns `{root, view, restart(), destroy()}`. Call `destroy()` when tearing
+down a route in a single-page app: it releases the session and unbinds the key
+handler.
+
+Several quizzes may be mounted on one page, over the same knowledge base or
+different ones. The WebAssembly module and each knowledge base are fetched once
+and shared; sessions are independent.
+
+### Styling it
+
+The widget writes no styles. It renders semantic markup, gives every element an
+`rb-` class, and puts state in attributes the host can select on --
+`[aria-pressed="true"]` for a chosen option, `[data-rb-state]` on the root for
+`loading`/`question`/`result`/`error`. With no stylesheet at all it is plain but
+fully usable, and inherits the host's own typography and button styling.
+
+`ribice.css` is one theme, not a requirement. It is scoped entirely under
+`.rb-quiz` and selects no bare elements, so it changes nothing outside the
+widget. To restyle without editing it, set its custom properties on the mount
+element:
+
+```css
+#fish {
+  --rb-accent: #7b2d8e;
+  --rb-card: #fff;
+  --rb-radius: 3px;
+  --rb-font: Georgia, serif;
+}
+```
+
+`--rb-bg`, `--rb-card`, `--rb-ink`, `--rb-muted`, `--rb-line`, `--rb-accent`,
+`--rb-accent-soft`, `--rb-accent-ink`, `--rb-warn`, `--rb-radius`,
+`--rb-radius-sm`, `--rb-gap`, `--rb-pad`, `--rb-font` and `--rb-size`. Dark mode
+follows `prefers-color-scheme`; `data-rb-theme="light"` or `"dark"` on the mount
+element pins it.
+
+### The JavaScript API underneath
+
+`ribice.js` wraps a lower-level API that the WebAssembly module installs as the
+global `ribice`. Use it directly to build a different front end entirely.
+
+Go owns all the state. Every call returns the whole view -- the question to ask,
+the standing candidates, what has been answered -- so the page re-renders from
+what it gets back and keeps nothing of its own but the session id.
+
+```js
+ribice.load(jsonText)            // -> {kb, name, entities, attributes} | {error}
+ribice.start({kb, maxQuestions}) // -> view, with .id
+ribice.answer(id, [0, 2])        // options chosen; [] means "not sure"
+ribice.skip(id)                  // same as answering with nothing
+ribice.undo(id)                  // take back the last answer
+ribice.state(id)                 // the current view, unchanged
+ribice.rank(id)                  // what it is considering: [{attr, text, gain}]
+ribice.release(id)               // drop a finished session
+```
+
+Every `Config` field can be overridden in the object passed to `start`
+(`threshold`, `minGain`, `unknownPrior`, `maxOptions`, `maxQuestions`,
+`skipCooldown`, `confirm`); anything left out keeps `DefaultConfig`'s value.
+`kb` selects which loaded knowledge base to play, defaulting to the last one
+loaded. A view looks like this:
+
+```js
+{
+  id: 1, done: false, reason: "", asked: 3, entropy: 2.14, canUndo: true,
+  question: { attr: "shape", text: "What was its overall shape?",
+              multi: false, boolean: false, reoffered: false, gain: 0.92,
+              options: [{label: "...", other: false, prob: 0.27}, ...] },
+  top: [{name, prob, note, link, unknown, image: {url, source, credit, license}}],
+  history: [{attr, text, label, skipped}]
+}
+```
+
+`done` is the engine's own stopping rule, and `reason` is why it stopped in
+words fit to show the user ("confident enough", "nothing in this guide
+matches"). Picking several options works exactly as it does in the CLI -- pass
+several indices.
+
+Every question is select-then-confirm, and several options may be chosen on any
+of them. What that means still depends on the attribute (see *Picking more than
+one answer*), which is why the instruction is the neutral "select any or all
+that apply".
+
+The result screen shows each image with its credit and licence, as those
+licences require.
+
 ## Layout
 
 ```
 kb/         loading, normalising and linting a knowledge base
 engine/     belief state, Bayesian update, question selection, self-test
 cmd/ribice/ the CLI
+cmd/wasm/   the same engine, exposed to JavaScript
+web/        the embeddable widget, its theme, a demo page, and build output
 data/       knowledge bases
 ```
 
@@ -311,5 +475,6 @@ buried in it, plus what turns up out in the blue. Each entry carries its Latin
 and (where it has one) Croatian name. It is hand-built and worth correcting:
 run `-simulate` after any edit to check the species still separate.
 
-`kb` and `engine` have no dependency on the CLI or on any domain, so a web
-front end can sit on the same two packages. Standard library only.
+`kb` and `engine` have no dependency on the CLI, on any domain, or on an
+operating system -- which is what lets the CLI and the browser build sit on the
+same two packages unchanged. Standard library only.

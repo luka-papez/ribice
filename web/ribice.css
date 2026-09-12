@@ -1,0 +1,225 @@
+/* Default theme for the identification quiz. Entirely optional: the widget
+ * writes no styles of its own, so a host application can ignore this file and
+ * write its own sheet against the rb- classes instead.
+ *
+ * Everything is scoped under .rb-quiz and nothing here selects a bare element,
+ * so dropping it into an existing page changes nothing outside the widget.
+ *
+ * To restyle without touching this file, set the custom properties below on
+ * the mount element -- they are declared on .rb-quiz, so anything the host
+ * sets on that element or above it wins:
+ *
+ *   #fish { --rb-accent: #b4472a; --rb-radius: 4px; --rb-font: Georgia, serif; }
+ */
+
+.rb-quiz {
+  --rb-bg: transparent;
+  --rb-card: #fffdf8;
+  --rb-ink: #1e2a32;
+  --rb-muted: #5f7382;
+  --rb-line: #ddd6c9;
+  --rb-accent: #1c6e8c;
+  --rb-accent-soft: #e3eef3;
+  --rb-accent-ink: #fff;
+  --rb-warn: #c25e2a;
+  --rb-radius: 14px;
+  --rb-radius-sm: 10px;
+  --rb-gap: 8px;
+  --rb-pad: 20px;
+  --rb-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --rb-size: 1rem;
+
+  background: var(--rb-bg);
+  color: var(--rb-ink);
+  font-family: var(--rb-font);
+  font-size: var(--rb-size);
+  line-height: 1.55;
+}
+
+@media (prefers-color-scheme: dark) {
+  .rb-quiz:not([data-rb-theme="light"]) {
+    --rb-card: #1a2228;
+    --rb-ink: #e8eef2;
+    --rb-muted: #93a6b3;
+    --rb-line: #2c3941;
+    --rb-accent: #6fc0dd;
+    --rb-accent-soft: #1d2e37;
+    --rb-accent-ink: #12181c;
+    --rb-warn: #e89263;
+  }
+}
+.rb-quiz[data-rb-theme="dark"] {
+  --rb-card: #1a2228;
+  --rb-ink: #e8eef2;
+  --rb-muted: #93a6b3;
+  --rb-line: #2c3941;
+  --rb-accent: #6fc0dd;
+  --rb-accent-soft: #1d2e37;
+  --rb-accent-ink: #12181c;
+  --rb-warn: #e89263;
+}
+
+.rb-quiz *,
+.rb-quiz *::before,
+.rb-quiz *::after { box-sizing: border-box; }
+
+.rb-card {
+  background: var(--rb-card);
+  border: 1px solid var(--rb-line);
+  border-radius: var(--rb-radius);
+  padding: var(--rb-pad);
+  margin-bottom: 16px;
+}
+
+/* --- the question --- */
+
+.rb-qnum {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rb-muted);
+}
+.rb-qtext { font-size: 1.2rem; font-weight: 600; margin: 6px 0 6px; }
+.rb-hint { color: var(--rb-muted); font-size: 0.88rem; margin: 0 0 14px; }
+.rb-flag { color: var(--rb-warn); font-size: 0.85rem; margin: 0 0 12px; }
+
+.rb-options { display: flex; flex-direction: column; gap: var(--rb-gap); }
+
+.rb-opt {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid var(--rb-line);
+  border-radius: var(--rb-radius-sm);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.rb-opt:hover { border-color: var(--rb-accent); background: var(--rb-accent-soft); }
+.rb-opt:focus-visible { outline: 2px solid var(--rb-accent); outline-offset: 2px; }
+.rb-opt[aria-pressed="true"] {
+  border-color: var(--rb-accent);
+  background: var(--rb-accent-soft);
+  box-shadow: inset 0 0 0 1px var(--rb-accent);
+}
+.rb-opt-key {
+  flex: none;
+  width: 1.35em;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--rb-muted);
+  border: 1px solid var(--rb-line);
+  border-radius: 5px;
+}
+.rb-opt-label { flex: 1; }
+
+/* --- buttons --- */
+
+.rb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+.rb-spacer { flex: 1; }
+
+.rb-btn {
+  background: var(--rb-accent);
+  color: var(--rb-accent-ink);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.rb-btn[disabled] { opacity: 0.45; cursor: default; }
+
+.rb-link {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  color: var(--rb-muted);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rb-link:hover { color: var(--rb-accent); }
+
+/* The widget toggles `hidden` on this; the right-aligned links do not move,
+ * because .rb-spacer absorbs the change. */
+.rb-enter-hint { color: var(--rb-muted); font-size: 0.88rem; }
+
+/* --- running commentary --- */
+
+.rb-leaders { font-size: 0.88rem; color: var(--rb-muted); margin: 0; }
+.rb-leader-name { color: var(--rb-ink); font-weight: 600; }
+.rb-history { margin-top: 14px; font-size: 0.88rem; color: var(--rb-muted); }
+.rb-history-summary { cursor: pointer; }
+.rb-history-list { padding-left: 18px; margin: 8px 0 0; }
+
+/* --- the result --- */
+
+.rb-winner { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.rb-photo {
+  width: 190px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--rb-radius-sm);
+  background: var(--rb-accent-soft);
+  flex: none;
+  max-width: 100%;
+}
+.rb-who { flex: 1; min-width: 200px; }
+.rb-reason {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rb-muted);
+}
+.rb-name { margin: 4px 0; font-size: 1.3rem; }
+.rb-confidence { color: var(--rb-accent); font-weight: 600; margin: 0 0 8px; }
+.rb-note { margin: 0 0 10px; }
+.rb-link-out { color: var(--rb-accent); }
+.rb-credit { font-size: 0.74rem; color: var(--rb-muted); margin: 6px 0 0; }
+.rb-credit-link { color: inherit; }
+
+.rb-runners { margin-top: 20px; border-top: 1px solid var(--rb-line); padding-top: 14px; }
+.rb-runner { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; padding: 4px 0; }
+.rb-runner-name { flex: 1; }
+.rb-runner-bar {
+  flex: none;
+  width: 90px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--rb-accent-soft);
+  overflow: hidden;
+}
+.rb-runner-fill { display: block; height: 100%; background: var(--rb-accent); }
+.rb-runner-pct {
+  flex: none;
+  width: 44px;
+  text-align: right;
+  color: var(--rb-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- loading and failure --- */
+
+.rb-status { text-align: center; color: var(--rb-muted); padding: 40px 0; }
+.rb-error { color: var(--rb-warn); }
+
+@media (max-width: 420px) {
+  .rb-quiz { --rb-pad: 16px; }
+  .rb-photo { width: 100%; height: 180px; }
+}
