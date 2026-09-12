@@ -58,17 +58,59 @@ TAIL = {
 }
 
 
+# Standards call a stand-off guard coat "harsh", which is a judge's word for
+# how it holds its shape, not how it reads to anyone looking at the dog. A
+# Samoyed is not bristly. These are the breeds whose coat reads as thick and
+# dense, standing out from the body -- the spitz and northern look, the
+# mountain guardians, and the heavily coated herders.
+THICK = [
+ "Samoyed", "Siberian Husky", "Alaskan Malamute", "Akita", "Shiba Inu",
+ "Japanese Spitz", "Korean Jindo Dog", "Norwegian Elkhound", "Chow Chow",
+ "German Spitz (Wolfspitz (Keeshond))", "German Spitz (Giant)",
+ "German Spitz (Medium)", "German Spitz (Pomeranian)",
+ "Czechoslovakian Wolfdog", "Pyrenean Mountain Dog", "Caucasian Shepherd Dog",
+ "Central Asian Shepherd Dog", "Tibetan Mastiff", "Abruzzo-Maremma Sheepdog",
+ "Leonberger", "Newfoundland Dog", "St. Bernard (Long-haired)", "Tornjak",
+ "Bernese Mountain Dog", "Rough Collie", "Shetland Sheepdog",
+ "Australian Shepherd", "Miniature American Shepherd",
+ "German Shepherd (Long coat)", "Belgian Shepherd (Groenendael)",
+ "Belgian Shepherd (Tervueren)",
+]
+
 COAT_TEXTURE = {
  "Great Dane": ["smooth"],   # "very short and dense, sleek-looking, glossy"
- "Tornjak":    ["harsh"],    # "long, thick... the hair is harsh"
  "Dogue de Bordeaux":  ["smooth"],   # "fine, short and soft to the touch"
  "Neapolitan Mastiff": ["smooth"],   # "short, rough, hard, dense, of the same length"
+}
+COAT_TEXTURE.update({n: ["thick"] for n in THICK})
+
+# A thick coat makes a dog read as broader and more solid than its frame is.
+# Judging build from the outline of a Samoyed gets you "sturdy", not "athletic".
+BUILD = {
+ "Samoyed": ["sturdy"], "Siberian Husky": ["sturdy"],
+ "Alaskan Malamute": ["sturdy"], "Akita": ["sturdy"], "Shiba Inu": ["sturdy"],
+ "Japanese Spitz": ["sturdy"], "Norwegian Elkhound": ["sturdy"],
+ "German Spitz (Wolfspitz (Keeshond))": ["sturdy"],
+ "German Spitz (Giant)": ["sturdy"], "German Spitz (Medium)": ["sturdy"],
+ "German Spitz (Pomeranian)": ["sturdy"],
+ "Pyrenean Mountain Dog": ["massive"], "Caucasian Shepherd Dog": ["massive"],
+ "Central Asian Shepherd Dog": ["massive"], "Tibetan Mastiff": ["massive"],
+ "Abruzzo-Maremma Sheepdog": ["massive"], "Tornjak": ["massive"],
+}
+
+# Ideal 57 cm for males and 53 cm for females, either side of the line between
+# the two bands: both answers are right depending on the dog.
+SIZE = {
+ "Samoyed": ["medium", "large"],        # ideal 57 cm males, 53 cm females
+ "Siberian Husky": ["medium", "large"], # 50.5-60 cm, either side of the line
 }
 
 COAT_LENGTH = {
  "Istrian Coarse-haired Hound": ["medium"],  # "about 5-8 cms long"
  "Istrian Shorthaired Hound":   ["short"],   # "length is around 1-2 cm"
  "Tornjak":                     ["long"],    # "long, thick, abundant"
+ "Siberian Husky":              ["medium"],  # "medium length, giving a well furred appearance"
+ "Alaskan Malamute":            ["medium"],  # "thick, coarse guard coat, never long and soft"
 }
 
 MARKINGS = {
@@ -141,6 +183,7 @@ EARS = {
  # "tipped ears and drooping ears are faulty" is not a description of the breed
  "German Shepherd (Normal coat)": ["erect"],
  "German Shepherd (Long coat)":   ["erect"],
+ "Alaskan Malamute":              ["erect"],  # folded back only when working
 
  # folded forward over the ear opening -- the terrier button ear.  Standards
  # describe it by where the fold sits rather than by naming it.
@@ -184,4 +227,5 @@ EARS = {
 }
 
 TABLES = {"tail": TAIL, "coat_length": COAT_LENGTH, "markings": MARKINGS,
-          "colour": COLOUR, "ears": EARS, "coat_texture": COAT_TEXTURE}
+          "colour": COLOUR, "ears": EARS, "coat_texture": COAT_TEXTURE,
+          "build": BUILD, "size": SIZE}
