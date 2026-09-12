@@ -101,12 +101,22 @@
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s;
 }
-.rb-opt:hover { border-color: var(--rb-accent); background: var(--rb-accent-soft); }
+/* Gated on (hover: hover). A touch screen has no hover to leave, so :hover
+ * sticks to the last element tapped -- and since the styling below is what a
+ * chosen option looks like, an option you just deselected would go on reading
+ * as chosen. Phones get no hover styling at all. */
+@media (hover: hover) {
+  .rb-opt:hover { border-color: var(--rb-accent); background: var(--rb-accent-soft); }
+}
 .rb-opt:focus-visible { outline: 2px solid var(--rb-accent); outline-offset: 2px; }
+
+/* Chosen has to differ from hover by more than a hairline, or the two states
+ * are indistinguishable wherever hover does apply: the key inverts, which is
+ * legible at arm's length and survives any host's palette. */
 .rb-opt[aria-pressed="true"] {
   border-color: var(--rb-accent);
   background: var(--rb-accent-soft);
-  box-shadow: inset 0 0 0 1px var(--rb-accent);
+  box-shadow: inset 0 0 0 2px var(--rb-accent);
 }
 .rb-opt-key {
   flex: none;
@@ -116,6 +126,11 @@
   color: var(--rb-muted);
   border: 1px solid var(--rb-line);
   border-radius: 5px;
+}
+.rb-opt[aria-pressed="true"] .rb-opt-key {
+  background: var(--rb-accent);
+  border-color: var(--rb-accent);
+  color: var(--rb-accent-ink);
 }
 .rb-opt-label { flex: 1; }
 
@@ -153,7 +168,9 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.rb-link:hover { color: var(--rb-accent); }
+@media (hover: hover) {
+  .rb-link:hover { color: var(--rb-accent); }
+}
 
 /* The widget toggles `hidden` on this; the right-aligned links do not move,
  * because .rb-spacer absorbs the change. */
