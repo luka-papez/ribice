@@ -23,4 +23,6 @@ tools/spine.json
 tools/coded.json
 tools/credits.json
 tools/pageviews.json
+tools/cloud-images.json
+tools/cloud-credits.json
 tools/__pycache__/

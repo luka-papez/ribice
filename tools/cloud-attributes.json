@@ -1,0 +1,268 @@
+{
+  "name": "Clouds of the WMO classification",
+  "attributes": {
+    "shape": {
+      "question": "What shape was it?",
+      "noise": 0.1,
+      "confusion": 0.35,
+      "confusable": [
+        [
+          "wispy",
+          "sheet"
+        ],
+        [
+          "sheet",
+          "rolls"
+        ],
+        [
+          "rolls",
+          "tufts"
+        ],
+        [
+          "tufts",
+          "heaped"
+        ],
+        [
+          "heaped",
+          "towering"
+        ],
+        [
+          "lens",
+          "rolls"
+        ],
+        [
+          "lens",
+          "roll_cloud"
+        ],
+        [
+          "ragged",
+          "tufts"
+        ],
+        [
+          "flat_patches",
+          "sheet"
+        ]
+      ],
+      "labels": {
+        "wispy": "wispy - fibres, streaks or filaments, like brushed hair",
+        "sheet": "a continuous sheet or veil with no separate parts",
+        "rolls": "rows, rolls or a patchwork of separate lumps",
+        "tufts": "small rounded tufts, each on its own",
+        "lens": "a smooth almond or lens, sharp-edged",
+        "roll_cloud": "one long tube lying horizontally, rolling",
+        "heaped": "heaped like cauliflower, wider than it is tall",
+        "towering": "towering - distinctly taller than it is wide",
+        "flat_patches": "dense flat patches",
+        "ragged": "torn, ragged shreds with no definite shape"
+      }
+    },
+    "element_size": {
+      "question": "If it was made of separate lumps, how big was one? Hold your arm out straight and compare.",
+      "noise": 0.12,
+      "confusion": 0.4,
+      "cost": 1.2,
+      "confusable": [
+        [
+          "tiny",
+          "small"
+        ],
+        [
+          "small",
+          "large"
+        ],
+        [
+          "none",
+          "tiny"
+        ]
+      ],
+      "labels": {
+        "none": "it had no separate lumps - one continuous cloud or sheet",
+        "tiny": "smaller than your little finger's width",
+        "small": "between one and three finger widths",
+        "large": "bigger than your fist"
+      }
+    },
+    "shading": {
+      "question": "Did the individual lumps have grey shaded undersides?",
+      "noise": 0.12
+    },
+    "opacity": {
+      "question": "What could you see of the sun through it?",
+      "noise": 0.1,
+      "confusion": 0.35,
+      "confusable": [
+        [
+          "transparent",
+          "translucent"
+        ],
+        [
+          "translucent",
+          "opaque"
+        ]
+      ],
+      "labels": {
+        "transparent": "the sun shone through clearly and cast sharp shadows",
+        "translucent": "the sun showed as a bright patch, as if through frosted glass",
+        "opaque": "the sun was hidden completely"
+      }
+    },
+    "colour": {
+      "question": "What colour was it?",
+      "noise": 0.12,
+      "confusion": 0.4,
+      "confusable": [
+        [
+          "white",
+          "grey"
+        ],
+        [
+          "grey",
+          "dark_grey"
+        ]
+      ],
+      "labels": {
+        "white": "white or very pale",
+        "grey": "grey",
+        "dark_grey": "dark grey, almost threatening"
+      }
+    },
+    "sky_cover": {
+      "question": "How much of the sky did it take up?",
+      "noise": 0.12,
+      "confusion": 0.4,
+      "confusable": [
+        [
+          "isolated",
+          "patches"
+        ],
+        [
+          "patches",
+          "most_of_sky"
+        ],
+        [
+          "most_of_sky",
+          "whole_sky"
+        ]
+      ],
+      "labels": {
+        "isolated": "one cloud on its own",
+        "patches": "scattered patches with plenty of blue",
+        "most_of_sky": "most of the sky, with gaps",
+        "whole_sky": "the whole sky, edge to edge"
+      }
+    },
+    "base": {
+      "question": "What was its underside like?",
+      "noise": 0.12,
+      "confusion": 0.35,
+      "confusable": [
+        [
+          "flat",
+          "undefined"
+        ],
+        [
+          "undefined",
+          "not_visible"
+        ],
+        [
+          "ragged",
+          "undefined"
+        ]
+      ],
+      "labels": {
+        "flat": "a definite flat bottom, all at one level",
+        "ragged": "ragged and torn",
+        "undefined": "no clear underside - it just faded out",
+        "not_visible": "too high or too uniform to make out a base at all"
+      }
+    },
+    "precipitation": {
+      "question": "Was anything falling out of it?",
+      "noise": 0.08,
+      "confusion": 0.3,
+      "confusable": [
+        [
+          "none",
+          "virga"
+        ],
+        [
+          "steady",
+          "showers"
+        ],
+        [
+          "showers",
+          "thunder"
+        ]
+      ],
+      "labels": {
+        "none": "nothing",
+        "virga": "streaks falling from it that never reached the ground",
+        "steady": "steady rain or snow, going on and on",
+        "showers": "showers - heavy, then stopping",
+        "thunder": "thunder, lightning or hail"
+      }
+    },
+    "halo": {
+      "question": "Was there a ring of light around the sun or moon?",
+      "noise": 0.06
+    },
+    "anvil": {
+      "question": "Did the top flatten out and spread sideways, like an anvil?",
+      "noise": 0.07
+    },
+    "turrets": {
+      "question": "Did small towers rise from a shared base, like battlements?",
+      "noise": 0.1
+    },
+    "hooks": {
+      "question": "Were the filaments hooked or comma-shaped at one end?",
+      "noise": 0.1
+    },
+    "mamma": {
+      "question": "Did it have rounded pouches hanging underneath?",
+      "noise": 0.08
+    },
+    "depth": {
+      "question": "How tall was it compared to how wide?",
+      "noise": 0.12,
+      "confusion": 0.25,
+      "confusable": [
+        [
+          "flat",
+          "square"
+        ],
+        [
+          "square",
+          "tall"
+        ]
+      ],
+      "labels": {
+        "none": "it was not a heaped cloud - flat or layered",
+        "flat": "much wider than it was tall",
+        "square": "about as tall as it was wide",
+        "tall": "distinctly taller than it was wide"
+      }
+    },
+    "top": {
+      "question": "What was the top of it like?",
+      "noise": 0.1,
+      "confusion": 0.3,
+      "confusable": [
+        [
+          "cauliflower",
+          "smooth"
+        ],
+        [
+          "smooth",
+          "fibrous"
+        ]
+      ],
+      "labels": {
+        "none": "it had no distinct top - flat, layered or wispy",
+        "cauliflower": "hard and sharp-edged, like a cauliflower",
+        "smooth": "the sharp edges had gone soft and fuzzy",
+        "fibrous": "gone streaky and fibrous, often spreading sideways"
+      }
+    }
+  }
+}

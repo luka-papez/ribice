@@ -50,6 +50,31 @@ go run ./cmd/ribice -kb data/dogs.json -lint
 go run ./cmd/ribice -kb data/dogs.json -simulate
 ```
 
+## The cloud knowledge base
+
+`clouds.py` writes `../data/clouds.json` and is a different kind of thing: it is
+authored, not extracted. The classification is an international standard that
+has been in every textbook since Luke Howard named it in 1802, and the WMO's own
+Cloud Atlas reserves all rights over its presentation -- personal, non-commercial
+use, no derivative works -- so there is nothing to scrape and no need to. The
+taxonomy is not anyone's to own. Descriptions were checked against the Wikipedia
+list of cloud types (CC BY-SA); no wording is copied.
+
+Two decisions shape it. **Varieties are attributes, not entities**: translucidus,
+opacus, undulatus and the rest describe a particular cloud on a particular day,
+so they are things to ask about rather than things to identify. And **height is
+not an attribute**, because nobody can judge how high a cloud is -- what an
+observer can do is hold an arm out and measure the lumps against their fingers,
+which is the WMO's own field test and does the work height would only pretend to.
+
+`cloud_images.py` gathers Commons candidates from both the category and a text
+search, and `cloud_pick.py` scores across the union: a filename that names the
+type in full wins, one naming several clouds or supplementary features loses,
+and renders are rejected outright. That last rule matters -- two cumulonimbus
+categories lead with computer renders rather than photographs. A hand-picked
+override that matches no candidate is reported rather than used, which caught a
+filename typed from memory.
+
 ## Where the values come from
 
 Three kinds, in descending order of how much you should trust them.
