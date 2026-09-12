@@ -6,6 +6,7 @@
 #   ./build.sh publish [DIR]   build, then copy the embeddable assets to DIR
 #                              (default dist/) with a README for whoever
 #                              embeds them
+#   ./build.sh gif             rebuild docs/quiz.gif, the README demo
 #
 # Only index.html, ribice.js and ribice.css are written by hand; everything else
 # is produced here and is not in version control.
@@ -24,12 +25,101 @@ size() { # human size, and what it costs over the wire
 }
 
 build() {
-  # -trimpath keeps the developer's home directory out of a published asset,
-  # and leaves the binary byte-identical between rebuilds, so a committed dist/
-  # only changes when the code actually does.
-  GOOS=js GOARCH=wasm go build -trimpath -ldflags="-s -w" -o web/ribice.wasm ./cmd/wasm
+  # -trimpath keeps the developer's home directory out of a published asset.
+  # -buildvcs=false drops the git revision and dirty flag Go stamps in by
+  # default; without it the binary changes whenever the working tree moves at
+  # all -- including edits that never reach the engine -- and every consumer
+  # vendoring dist/ takes 3.2MB of churn for nothing. Together they leave the
+  # binary byte-identical between rebuilds, so a committed dist/ only changes
+  # when the code actually does.
+  GOOS=js GOARCH=wasm go build -trimpath -buildvcs=false -ldflags="-s -w" -o web/ribice.wasm ./cmd/wasm
   cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" web/  # version-locked to your Go
   cp data/adriatic-fish.json web/                   # fetched at page load
+}
+
+# gif drives a scripted game in headless Chrome, one screenshot per step, and
+# stitches the frames together. Needs Chrome and Python; it builds itself a
+# virtualenv for Pillow if the system Python has not got it.
+make_gif() {
+  chrome=$(command -v google-chrome || command -v chromium || command -v chromium-browser) || {
+    echo "gif: need google-chrome or chromium on PATH" >&2; exit 1; }
+  py=python3
+  if ! python3 -c "import PIL" 2>/dev/null; then
+    [ -d .gif-venv ] || python3 -m venv .gif-venv
+    .gif-venv/bin/pip install --quiet pillow
+    py=.gif-venv/bin/python
+  fi
+
+  build
+  frames=$(mktemp -d)
+  trap 'rm -rf "$frames" web/_frames.html' EXIT
+
+  # The demo page, stripped of the page chrome the README already provides.
+  python3 - <<'PYEOF'
+import re
+s = open("web/index.html").read()
+s = re.sub(r"  <header>.*?</header>\n|  <footer>.*?</footer>\n", "", s, flags=re.S)
+driver = """<script type="module">
+  import { createQuiz } from "./ribice.js";
+  const quiz = await createQuiz({ mount: "#fish", settings: { maxQuestions: 20 } });
+  const pick = i => () => quiz.root.querySelector(`.rb-opt[data-rb-index="${i}"]`)?.click();
+  const next = () => () => quiz.root.querySelector(".rb-next")?.click();
+  const script = [pick(0), next(), pick(0), next(), pick(0), next(),
+                  pick(0), next(), pick(0), next()];
+  const n = Number(new URLSearchParams(location.search).get("n") || 0);
+  for (let i = 0; i < n && i < script.length; i++) script[i]();
+  document.title = quiz.view.done ? "done" : "q" + (quiz.view.asked + 1);
+</script>
+</body>"""
+open("web/_frames.html", "w").write(s.replace("</body>", driver))
+PYEOF
+
+  (cd web && python3 -m http.server 8799 >/dev/null 2>&1) &
+  server=$!
+  # `|| true`: without it set -e aborts the handler when the server is already
+  # dead, and the temporary files survive.
+  trap 'kill $server 2>/dev/null || true; rm -rf "$frames" web/_frames.html' EXIT
+  sleep 2
+  n=0
+  while [ "$n" -le 10 ]; do
+    "$chrome" --headless --disable-gpu --no-sandbox --hide-scrollbars       --virtual-time-budget=12000 --window-size=700,760       --screenshot="$frames/$(printf '%02d' "$n").png"       "http://127.0.0.1:8799/_frames.html?n=$n" 2>/dev/null
+    n=$((n + 1))
+  done
+  kill $server 2>/dev/null || true
+
+  mkdir -p docs
+  FRAMES="$frames" "$py" - <<'PYEOF'
+from PIL import Image, ImageChops
+import os, glob
+
+src = sorted(glob.glob(os.environ["FRAMES"] + "/*.png"))
+# A beat to read the question, a shorter one for the click, a long final hold.
+holds = [1000, 700, 900, 700, 900, 700, 900, 700, 900, 700, 3500][:len(src)]
+ims = [Image.open(p).convert("RGB") for p in src]
+bg = ims[0].getpixel((2, 2))
+
+# Crop to the union of what is drawn, so no frame pads out to a height only the
+# longest question needs.
+box = None
+for im in ims:
+    b = ImageChops.difference(im, Image.new("RGB", im.size, bg)).getbbox()
+    if b:
+        box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]),
+                                     max(box[2], b[2]), max(box[3], b[3]))
+pad = 14
+box = (max(0, box[0] - pad), max(0, box[1] - pad),
+       min(ims[0].width, box[2] + pad), min(ims[0].height, box[3] + pad))
+
+W = 600
+fs = []
+for im in ims:
+    c = im.crop(box)
+    fs.append(c.resize((W, round(c.height * W / c.width)), Image.LANCZOS))
+fs[0].save("docs/quiz.gif", save_all=True, append_images=fs[1:],
+           duration=holds, loop=0, optimize=True, disposal=2)
+print("docs/quiz.gif: %.0f KB, %d frames, %dx%d"
+      % (os.path.getsize("docs/quiz.gif") / 1024, len(fs), *fs[0].size))
+PYEOF
 }
 
 case "$1" in
@@ -143,13 +233,17 @@ MD
   echo "See $out/README.md."
   ;;
 
+gif)
+  make_gif
+  ;;
+
 "")
   build
   size web/ribice.wasm
   ;;
 
 *)
-  echo "usage: $0 [serve | publish [DIR]]" >&2
+  echo "usage: $0 [serve | publish [DIR] | gif]" >&2
   exit 2
   ;;
 esac

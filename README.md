@@ -5,6 +5,16 @@ It ships with a knowledge base of 61 fish you might meet snorkelling the shallow
 of the Croatian Adriatic, but the engine knows nothing about fish -- point it at
 any JSON file describing any set of things.
 
+<p align="center">
+  <img src="docs/quiz.gif" width="600"
+       alt="Five questions -- what it was doing, its markings, its shape, its colour, tentacles above the eyes -- and the quiz names the black scorpionfish at 96%.">
+</p>
+
+That is the browser build: one static page, no backend, [embeddable in another
+application](#embedding-it). The photograph in it is Dmitriy Konstantinov's, CC BY-SA 3.0 -- see
+[Pictures](#pictures) for why every result carries its credit. The same engine
+runs on the command line:
+
 ```
 $ go run ./cmd/ribice
 
@@ -344,11 +354,15 @@ It lints the knowledge base first, since that ships as an asset too, and prints
 what each file costs over the wire.
 
 `dist/` is committed rather than ignored, so the site can be deployed and the
-widget embedded without a Go toolchain anywhere in the loop. The build is built
-with `-trimpath` and is byte-identical between rebuilds, so re-publishing
-without changing anything produces no diff -- `dist/` only moves when the engine
-or the knowledge base actually does. Re-run `./build.sh publish` and commit it
-whenever either changes.
+widget embedded without a Go toolchain anywhere in the loop. The WebAssembly is
+built with `-trimpath -buildvcs=false`, which keeps both the developer's home
+directory and the repository's commit hash and dirty flag out of a published
+asset. That second flag is load-bearing here: `dist/` being tracked means
+publishing dirties the repo, a stamped binary would change on the next build
+because of it, and the two would chase each other forever. Without the stamp the
+build is byte-identical, so re-publishing unchanged produces no diff and `dist/`
+only moves when the engine or the knowledge base does. Re-run `./build.sh
+publish` and commit it whenever either changes.
 
 Upload the assets somewhere and mount the widget on any element:
 
