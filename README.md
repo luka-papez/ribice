@@ -558,6 +558,7 @@ cmd/wasm/   the same engine, exposed to JavaScript
 web/        the embeddable widget, its theme, a demo page, and build output
 dist/       the published assets, committed so embedding needs no Go toolchain
 data/       knowledge bases
+tools/      how data/dogs.json was built -- see tools/README.md
 docs/       images for this README
 ```
 

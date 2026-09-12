@@ -7,3 +7,20 @@ web/ribice.wasm
 web/wasm_exec.js
 web/adriatic-fish.json
 .gif-venv/
+
+# Knowledge-base build (see tools/README.md). The FCI standards are FCI's
+# documents, not ours to redistribute: neither the cached PDFs nor the files
+# holding their extracted text belong in the repository. Facts read out of
+# them do -- those are in data/dogs.json. All of this regenerates.
+tools/pdf/
+tools/*.html
+tools/*.csv
+tools/fci-index.json
+tools/fci-sections.json
+tools/fci-extract.json
+tools/fci-varieties.json
+tools/spine.json
+tools/coded.json
+tools/credits.json
+tools/pageviews.json
+tools/__pycache__/

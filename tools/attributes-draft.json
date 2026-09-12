@@ -1,0 +1,165 @@
+{
+  "name": "Dogs of the FCI breed standards",
+  "attributes": {
+
+    "size": {
+      "question": "Roughly how big was it?",
+      "noise": 0.1, "confusion": 0.35,
+      "confusable": [["toy", "small"], ["small", "medium"], ["medium", "large"], ["large", "giant"]],
+      "labels": {
+        "toy": "toy - you could carry it in one arm (under about 28 cm at the shoulder)",
+        "small": "small - about knee-high on a child (28-40 cm)",
+        "medium": "medium - its back reaches your knee (40-55 cm)",
+        "large": "large - its back reaches mid-thigh (55-70 cm)",
+        "giant": "giant - its back is near your hip (over 70 cm)"
+      }
+    },
+
+    "coat_length": {
+      "question": "How long was its coat?",
+      "noise": 0.08, "confusion": 0.35,
+      "confusable": [["short", "medium"], ["medium", "long"]],
+      "labels": {
+        "short": "short - the outline of the body is the outline of the dog",
+        "medium": "medium - dense but not flowing, no fringes to speak of",
+        "long": "long - flowing, or with obvious fringes and a ruff"
+      }
+    },
+
+    "coat_texture": {
+      "question": "What did the coat look like?",
+      "noise": 0.12, "confusion": 0.3,
+      "confusable": [["smooth", "silky"], ["wavy", "curly"], ["wavy", "silky"], ["harsh", "curly"]],
+      "labels": {
+        "smooth": "smooth and flat against the body",
+        "harsh": "harsh and bristly, like a scrubbing brush",
+        "wavy": "wavy",
+        "curly": "curly or woolly",
+        "silky": "fine and silky, with a sheen",
+        "corded": "hanging in cords or dreadlocks",
+        "hairless": "bare skin, with hair only on the head, feet or tail"
+      }
+    },
+
+    "ears": {
+      "question": "How did it carry its ears?",
+      "noise": 0.07, "confusion": 0.3,
+      "confusable": [["erect", "semi_erect"], ["semi_erect", "button"],
+                     ["semi_erect", "rose"], ["button", "dropped"],
+                     ["dropped", "long_hanging"]],
+      "labels": {
+        "erect": "standing straight up, pointed or rounded",
+        "semi_erect": "up at the base with the tip folded over",
+        "rose": "small, folded back and to the side",
+        "button": "folded forward, the flap covering the ear opening",
+        "dropped": "hanging flat against the side of the head",
+        "long_hanging": "hanging well below the jaw - long, heavy hound ears"
+      }
+    },
+
+    "tail": {
+      "question": "How did it carry its tail?",
+      "noise": 0.1, "confusion": 0.35,
+      "confusable": [["over_back", "high"], ["high", "level"],
+                     ["level", "low"], ["low", "short"]],
+      "labels": {
+        "over_back": "curled or curved right over the back",
+        "high": "up above the line of the back, but not over it",
+        "level": "straight out, level with the back",
+        "low": "hanging down, or carried below the back",
+        "short": "barely there - a natural stump or no tail at all"
+      }
+    },
+
+    "colour": {
+      "question": "What colour was most of it?",
+      "noise": 0.15, "confusion": 0.35,
+      "confusable": [["black", "brown"], ["grey", "blue"],
+                     ["grey", "silver"], ["silver", "white"], ["white", "cream"],
+                     ["cream", "gold"], ["gold", "red"], ["red", "fawn"],
+                     ["fawn", "brown"], ["fawn", "cream"]],
+      "labels": {
+        "gold": "golden or yellow",
+        "fawn": "fawn - pale sandy brown",
+        "liver": "liver - deep reddish brown",
+        "blue": "blue - a dark slate grey",
+        "red": "red or rust"
+      }
+    },
+
+    "markings": {
+      "question": "What markings did it have?",
+      "multi": true,
+      "noise": 0.1, "confusion": 0.3,
+      "confusable": [["solid", "white_markings"], ["solid", "saddle"],
+                     ["tan_points", "tricolour"], ["brindle", "solid"],
+                     ["ticked", "solid"]],
+      "labels": {
+        "solid": "none - one colour all over",
+        "white_markings": "white patches, chest, feet or face",
+        "tan_points": "tan eyebrows, cheeks, chest and legs on a darker dog",
+        "tricolour": "three colours in distinct areas",
+        "brindle": "brindle - fine dark striping",
+        "merle": "merle - mottled dark patches on a diluted ground",
+        "ticked": "speckled or spotted all over",
+        "saddle": "a dark 'saddle' or blanket over the back",
+        "mask": "a dark mask over the muzzle"
+      }
+    },
+
+    "muzzle": {
+      "question": "What was its face like from the side?",
+      "noise": 0.1, "confusion": 0.3,
+      "confusable": [["flat", "short"], ["short", "medium"], ["medium", "long"]],
+      "labels": {
+        "flat": "pushed in and almost flat, the nose level with the eyes",
+        "short": "distinctly short and blunt, but with a muzzle",
+        "medium": "an ordinary muzzle, about as long as the skull",
+        "long": "long and tapering"
+      }
+    },
+
+    "build": {
+      "question": "How was it built?",
+      "noise": 0.15, "confusion": 0.4, "cost": 1.3,
+      "confusable": [["racy", "athletic"], ["athletic", "sturdy"], ["sturdy", "massive"]],
+      "labels": {
+        "racy": "lean and leggy, deep chest and a tucked-up waist",
+        "athletic": "fit and balanced, no exaggeration either way",
+        "sturdy": "thickset and solid, wide for its height",
+        "massive": "heavy and powerful, with loose skin or a heavy head"
+      }
+    },
+
+    "short_legs": {
+      "question": "Were its legs very short for its body?",
+      "noise": 0.06,
+      "labels": {"true": "yes - long-bodied and close to the ground"}
+    },
+
+    "wrinkled": {
+      "question": "Did it have a wrinkled face or loose, hanging skin?",
+      "noise": 0.08
+    },
+
+    "beard": {
+      "question": "Did it have a beard or heavy eyebrows?",
+      "noise": 0.08
+    },
+
+    "feathering": {
+      "question": "Did it have long fringes on its legs, tail or ears?",
+      "noise": 0.1
+    },
+
+    "blue_tongue": {
+      "question": "Was its tongue blue-black rather than pink?",
+      "noise": 0.05, "cost": 2.0
+    },
+
+    "double_dewclaws": {
+      "question": "Did it have double dewclaws on the hind legs?",
+      "noise": 0.05, "cost": 3.0
+    }
+  }
+}

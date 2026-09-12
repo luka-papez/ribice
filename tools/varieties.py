@@ -1,0 +1,66 @@
+"""Split the FCI breeds that cover several visibly different dogs.
+
+FCI recognises 43 breeds with varieties.  Colour varieties stay as one entity --
+colour is already an attribute.  Size and coat varieties become separate
+entities, because a Toy Poodle and a Standard Poodle are different answers and
+one entity spanning both is unanswerable.  Heights are those the standard gives
+for the variety.
+"""
+
+# fci -> list of (suffix, overrides).  An override of None keeps the parent's value.
+SPLITS = {
+ 172: [("Standard",  {"size": ["medium"]}),
+       ("Medium",    {"size": ["small"]}),
+       ("Miniature", {"size": ["toy"]})],
+ 148: [("Standard",  {"size": ["small"]}),
+       ("Miniature", {"size": ["toy"]})],
+  97: [("Wolfspitz (Keeshond)", {"size": ["medium"], "colour": ["grey"],
+                                 "markings": ["solid"]}),
+       ("Giant",     {"size": ["medium"], "colour": ["white", "black", "brown"],
+                     "markings": ["solid"]}),
+       ("Medium",    {"size": ["small"]}),
+       ("Pomeranian",{"size": ["toy"]})],
+  94: [("Large",     {"size": ["large"]}),
+       ("Medium",    {"size": ["medium"]}),
+       ("Small",     {"size": ["toy"]})],
+ 310: [("Large",     {"size": ["medium"]}),
+       ("Medium",    {"size": ["small"]}),
+       ("Miniature", {"size": ["toy"]})],
+ 234: [("Standard",  {"size": ["medium"]}),
+       ("Intermediate", {"size": ["small"]}),
+       ("Miniature", {"size": ["toy"]})],
+  21: [("Great",     {"size": ["large"]}),
+       ("Small",     {"size": ["medium"]})],
+  15: [("Groenendael", {"coat_length": ["long"], "colour": ["black"]}),
+       ("Tervueren",   {"coat_length": ["long"], "colour": ["fawn", "grey"]}),
+       ("Malinois",    {"coat_length": ["short"], "colour": ["fawn"]}),
+       ("Laekenois",   {"coat_length": ["medium"], "coat_texture": ["harsh"],
+                        "colour": ["fawn"]})],
+ 288: [("Hairless",    {"coat_texture": ["hairless"], "coat_length": ["short"]}),
+       ("Powder Puff", {"coat_texture": ["silky"], "coat_length": ["long"]})],
+  77: [("Papillon", {"ears": ["erect"]}),
+       ("Phalene",  {"ears": ["dropped"]})],
+ 218: [("Smooth-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Long-haired",   {"coat_length": ["long"], "coat_texture": ["silky"]})],
+ 223: [("Short-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Long-haired",  {"coat_length": ["long"], "coat_texture": ["smooth"]}),
+       ("Rough-haired", {"coat_length": ["medium"], "coat_texture": ["harsh"]})],
+  61: [("Short-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Long-haired",  {"coat_length": ["long"], "coat_texture": ["smooth"]})],
+  99: [("Short-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Long-haired",  {"coat_length": ["long"], "coat_texture": ["silky"]})],
+ 173: [("Short-haired", {"coat_length": ["short"]}),
+       ("Long-haired",  {"coat_length": ["long"]})],
+ 321: [("Short-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Long-haired",  {"coat_length": ["long"], "coat_texture": ["smooth"]})],
+  89: [("Smooth-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Rough-haired",  {"coat_length": ["medium"], "coat_texture": ["harsh"]})],
+ 352: [("Smooth-haired", {"coat_length": ["short"], "coat_texture": ["smooth"]}),
+       ("Long-haired",   {"coat_length": ["long"], "coat_texture": ["silky"]})],
+  37: [("Long and wavy", {"coat_length": ["long"], "coat_texture": ["wavy"]}),
+       ("Short and curly", {"coat_length": ["medium"], "coat_texture": ["curly"]})],
+ 269: [("Fringed", {"coat_texture": ["silky"], "feathering": True}),
+       ("Smooth",  {"coat_texture": ["smooth"], "feathering": False})],
+ 166: [("Normal coat", {"coat_length": ["medium"]}),
+       ("Long coat",   {"coat_length": ["long"], "feathering": True})],
+}
