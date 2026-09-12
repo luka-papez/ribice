@@ -5,6 +5,9 @@ It ships with a knowledge base of 61 fish you might meet snorkelling the shallow
 of the Croatian Adriatic, but the engine knows nothing about fish -- point it at
 any JSON file describing any set of things.
 
+A live demo runs at **[codecrane.hr/ribice](https://codecrane.hr/ribice/)** --
+the browser build below, mounted in a page.
+
 <p align="center">
   <img src="docs/quiz.gif" width="600"
        alt="Five questions -- what it was doing, its markings, its shape, its colour, tentacles above the eyes -- and the quiz names the black scorpionfish at 96%.">
