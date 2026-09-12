@@ -1,0 +1,5757 @@
+{
+ "name": "Dogs of the FCI breed standards",
+ "attributes": {
+  "size": {
+   "question": "Roughly how big was it?",
+   "noise": 0.1,
+   "confusion": 0.35,
+   "confusable": [
+    [
+     "toy",
+     "small"
+    ],
+    [
+     "small",
+     "medium"
+    ],
+    [
+     "medium",
+     "large"
+    ],
+    [
+     "large",
+     "giant"
+    ]
+   ],
+   "labels": {
+    "toy": "toy - you could carry it in one arm (under about 28 cm at the shoulder)",
+    "small": "small - about knee-high on a child (28-40 cm)",
+    "medium": "medium - its back reaches your knee (40-55 cm)",
+    "large": "large - its back reaches mid-thigh (55-70 cm)",
+    "giant": "giant - its back is near your hip (over 70 cm)"
+   }
+  },
+  "coat_length": {
+   "question": "How long was its coat?",
+   "noise": 0.08,
+   "confusion": 0.35,
+   "confusable": [
+    [
+     "short",
+     "medium"
+    ],
+    [
+     "medium",
+     "long"
+    ]
+   ],
+   "labels": {
+    "short": "short - the outline of the body is the outline of the dog",
+    "medium": "medium - dense but not flowing, no fringes to speak of",
+    "long": "long - flowing, or with obvious fringes and a ruff"
+   }
+  },
+  "coat_texture": {
+   "question": "What did the coat look like?",
+   "noise": 0.12,
+   "confusion": 0.3,
+   "confusable": [
+    [
+     "smooth",
+     "silky"
+    ],
+    [
+     "wavy",
+     "curly"
+    ],
+    [
+     "wavy",
+     "silky"
+    ],
+    [
+     "harsh",
+     "curly"
+    ]
+   ],
+   "labels": {
+    "smooth": "smooth and flat against the body",
+    "harsh": "harsh and bristly, like a scrubbing brush",
+    "wavy": "wavy",
+    "curly": "curly or woolly",
+    "silky": "fine and silky, with a sheen",
+    "corded": "hanging in cords or dreadlocks",
+    "hairless": "bare skin, with hair only on the head, feet or tail"
+   }
+  },
+  "ears": {
+   "question": "How did it carry its ears?",
+   "noise": 0.07,
+   "confusion": 0.3,
+   "confusable": [
+    [
+     "erect",
+     "semi_erect"
+    ],
+    [
+     "semi_erect",
+     "button"
+    ],
+    [
+     "semi_erect",
+     "rose"
+    ],
+    [
+     "button",
+     "dropped"
+    ],
+    [
+     "dropped",
+     "long_hanging"
+    ]
+   ],
+   "labels": {
+    "erect": "standing straight up, pointed or rounded",
+    "semi_erect": "up at the base with the tip folded over",
+    "rose": "small, folded back and to the side",
+    "button": "folded forward, the flap covering the ear opening",
+    "dropped": "hanging flat against the side of the head",
+    "long_hanging": "hanging well below the jaw - long, heavy hound ears"
+   }
+  },
+  "tail": {
+   "question": "How did it carry its tail?",
+   "noise": 0.1,
+   "confusion": 0.35,
+   "confusable": [
+    [
+     "over_back",
+     "high"
+    ],
+    [
+     "high",
+     "level"
+    ],
+    [
+     "level",
+     "low"
+    ],
+    [
+     "low",
+     "short"
+    ]
+   ],
+   "labels": {
+    "over_back": "curled or curved right over the back",
+    "high": "up above the line of the back, but not over it",
+    "level": "straight out, level with the back",
+    "low": "hanging down, or carried below the back",
+    "short": "barely there - a natural stump or no tail at all"
+   }
+  },
+  "colour": {
+   "question": "What colour was most of it?",
+   "noise": 0.15,
+   "confusion": 0.35,
+   "confusable": [
+    [
+     "black",
+     "brown"
+    ],
+    [
+     "grey",
+     "blue"
+    ],
+    [
+     "grey",
+     "silver"
+    ],
+    [
+     "silver",
+     "white"
+    ],
+    [
+     "white",
+     "cream"
+    ],
+    [
+     "cream",
+     "gold"
+    ],
+    [
+     "gold",
+     "red"
+    ],
+    [
+     "red",
+     "fawn"
+    ],
+    [
+     "fawn",
+     "brown"
+    ],
+    [
+     "fawn",
+     "cream"
+    ]
+   ],
+   "labels": {
+    "gold": "golden or yellow",
+    "fawn": "fawn - pale sandy brown",
+    "liver": "liver - deep reddish brown",
+    "blue": "blue - a dark slate grey",
+    "red": "red or rust"
+   }
+  },
+  "markings": {
+   "question": "What markings did it have?",
+   "multi": true,
+   "noise": 0.1,
+   "confusion": 0.3,
+   "confusable": [
+    [
+     "solid",
+     "white_markings"
+    ],
+    [
+     "solid",
+     "saddle"
+    ],
+    [
+     "tan_points",
+     "tricolour"
+    ],
+    [
+     "brindle",
+     "solid"
+    ],
+    [
+     "ticked",
+     "solid"
+    ]
+   ],
+   "labels": {
+    "solid": "none - one colour all over",
+    "white_markings": "white patches, chest, feet or face",
+    "tan_points": "tan eyebrows, cheeks, chest and legs on a darker dog",
+    "tricolour": "three colours in distinct areas",
+    "brindle": "brindle - fine dark striping",
+    "merle": "merle - mottled dark patches on a diluted ground",
+    "ticked": "speckled or spotted all over",
+    "saddle": "a dark 'saddle' or blanket over the back",
+    "mask": "a dark mask over the muzzle"
+   }
+  },
+  "muzzle": {
+   "question": "What was its face like from the side?",
+   "noise": 0.1,
+   "confusion": 0.3,
+   "confusable": [
+    [
+     "flat",
+     "short"
+    ],
+    [
+     "short",
+     "medium"
+    ],
+    [
+     "medium",
+     "long"
+    ]
+   ],
+   "labels": {
+    "flat": "pushed in and almost flat, the nose level with the eyes",
+    "short": "distinctly short and blunt, but with a muzzle",
+    "medium": "an ordinary muzzle, about as long as the skull",
+    "long": "long and tapering"
+   }
+  },
+  "build": {
+   "question": "How was it built?",
+   "noise": 0.15,
+   "confusion": 0.4,
+   "cost": 1.3,
+   "confusable": [
+    [
+     "racy",
+     "athletic"
+    ],
+    [
+     "athletic",
+     "sturdy"
+    ],
+    [
+     "sturdy",
+     "massive"
+    ]
+   ],
+   "labels": {
+    "racy": "lean and leggy, deep chest and a tucked-up waist",
+    "athletic": "fit and balanced, no exaggeration either way",
+    "sturdy": "thickset and solid, wide for its height",
+    "massive": "heavy and powerful, with loose skin or a heavy head"
+   }
+  },
+  "short_legs": {
+   "question": "Were its legs very short for its body?",
+   "noise": 0.06,
+   "labels": {
+    "true": "yes - long-bodied and close to the ground"
+   }
+  },
+  "wrinkled": {
+   "question": "Did it have a wrinkled face or loose, hanging skin?",
+   "noise": 0.08
+  },
+  "beard": {
+   "question": "Did it have a beard or heavy eyebrows?",
+   "noise": 0.08
+  },
+  "feathering": {
+   "question": "Did it have long fringes on its legs, tail or ears?",
+   "noise": 0.1
+  },
+  "blue_tongue": {
+   "question": "Was its tongue blue-black rather than pink?",
+   "noise": 0.05,
+   "cost": 2.0
+  },
+  "double_dewclaws": {
+   "question": "Did it have double dewclaws on the hind legs?",
+   "noise": 0.05,
+   "cost": 3.0
+  }
+ },
+ "entities": [
+  {
+   "name": "English Pointer",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "tricolour"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/English%20pointer.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AEnglish_pointer.jpg",
+    "credit": "Fir0002 (Wikimedia Commons)",
+    "license": "GFDL 1.2"
+   }
+  },
+  {
+   "name": "Cairn Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "colour": [
+    "black",
+    "cream",
+    "gold",
+    "red",
+    "grey"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Cairn-Terrier-Garten1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACairn-Terrier-Garten1.jpg",
+    "credit": "Ronald Müller-Hagen ( Ketterechts )",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "English Cocker Spaniel",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky",
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "gold",
+    "brown",
+    "white",
+    "cream"
+   ],
+   "markings": [
+    "ticked",
+    "tricolour",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/%22Bill%22%20-%20Cocker%20spaniel%20anglais%201.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A%22Bill%22_-_Cocker_spaniel_anglais_1.jpg",
+    "credit": "Jean-Pol GRANDMONT",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Airedale Terrier",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "button"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white"
+   ],
+   "markings": [
+    "saddle"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Airedale%20Terrier.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAiredale_Terrier.jpg",
+    "credit": "by Jane@rangeairevision.com",
+    "license": "Copyrighted free use"
+   }
+  },
+  {
+   "name": "Bedlington Terrier",
+   "size": [
+    "medium"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "fawn",
+    "brown",
+    "blue"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bedlington%20terrier.jpeg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABedlington_terrier.jpeg",
+    "credit": "David Owsiany",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Border Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "gold",
+    "red",
+    "blue"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Border%20Terri%C3%ABr.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABorder_Terri%C3%ABr.JPG",
+    "credit": "Floris16",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Bull Terrier",
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "brown",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "tricolour"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bullterier%20089%20LM.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABullterier_089_LM.jpg",
+    "credit": "Lilly M",
+    "license": "CC BY-SA 2.5"
+   }
+  },
+  {
+   "name": "Belgian Shepherd (Groenendael)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Chien De Berger Belge - Belgium - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/04%20-%20Belgian%20shepherd%20dog%20varieties%20-%20Groenendael%2CTervuren%2C%20Malinois%2C%20Laekenois.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A04_-_Belgian_shepherd_dog_varieties_-_Groenendael%2CTervuren%2C_Malinois%2C_Laekenois.jpg",
+    "credit": "Various, see description. Compiled by User:Adventurous36",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Belgian Shepherd (Tervueren)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "fawn",
+    "grey"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Chien De Berger Belge - Belgium - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/04%20-%20Belgian%20shepherd%20dog%20varieties%20-%20Groenendael%2CTervuren%2C%20Malinois%2C%20Laekenois.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A04_-_Belgian_shepherd_dog_varieties_-_Groenendael%2CTervuren%2C_Malinois%2C_Laekenois.jpg",
+    "credit": "Various, see description. Compiled by User:Adventurous36",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Belgian Shepherd (Malinois)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "fawn"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Chien De Berger Belge - Belgium - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/04%20-%20Belgian%20shepherd%20dog%20varieties%20-%20Groenendael%2CTervuren%2C%20Malinois%2C%20Laekenois.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A04_-_Belgian_shepherd_dog_varieties_-_Groenendael%2CTervuren%2C_Malinois%2C_Laekenois.jpg",
+    "credit": "Various, see description. Compiled by User:Adventurous36",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Belgian Shepherd (Laekenois)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "fawn"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Chien De Berger Belge - Belgium - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/04%20-%20Belgian%20shepherd%20dog%20varieties%20-%20Groenendael%2CTervuren%2C%20Malinois%2C%20Laekenois.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A04_-_Belgian_shepherd_dog_varieties_-_Groenendael%2CTervuren%2C_Malinois%2C_Laekenois.jpg",
+    "credit": "Various, see description. Compiled by User:Adventurous36",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Old English Sheepdog",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "short"
+   ],
+   "colour": [
+    "white",
+    "brown",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bobtail.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABobtail.JPG",
+    "credit": "Mona (uploaded by Caronna 08:14, 15 Apr 2005 (UTC))",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Portuguese Water Dog (Long and wavy)",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "wavy"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "brown"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Cão De Água Português - Portugal - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/C%C3%A3o%20de%20agua%20Portugu%C3%AAs%202.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AC%C3%A3o_de_agua_Portugu%C3%AAs_2.jpg",
+    "credit": "Silke Hollje-Schumacher",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Portuguese Water Dog (Short and curly)",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "brown"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Cão De Água Português - Portugal - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/C%C3%A3o%20de%20agua%20Portugu%C3%AAs%202.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AC%C3%A3o_de_agua_Portugu%C3%AAs_2.jpg",
+    "credit": "Silke Hollje-Schumacher",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Pembroke Welsh Corgi",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "short"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "sturdy",
+   "short_legs": true,
+   "_note": "Welsh Corgi - Great Britain - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Welsh%20Pembroke%20Corgi.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWelsh_Pembroke_Corgi.jpg",
+    "credit": "Dog breed facts",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Soft-coated Wheaten Terrier",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "button"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "gold"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Irish Soft Coated Wheaten Terrier - Ireland - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Soft%20Coated%20Wheaten%20Terrier%20600.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASoft_Coated_Wheaten_Terrier_600.jpg",
+    "credit": "sannse",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Basenji",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "brindle",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "racy",
+   "_note": "Central Africa - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/%D0%91%D0%B0%D1%81%D0%B5%D0%BD%D0%B4%D0%B6%D0%B8%20%28Basenji%29%2002.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A%D0%91%D0%B0%D1%81%D0%B5%D0%BD%D0%B4%D0%B6%D0%B8_%28Basenji%29_02.jpg",
+    "credit": "Novoklimov",
+    "license": "CC0"
+   }
+  },
+  {
+   "name": "Beauceron",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect",
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "merle",
+    "ticked",
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "double_dewclaws": true,
+   "_note": "Berger De Beauce - France - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/BeauceronStand.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABeauceronStand.jpg",
+    "credit": "Stefan Schmitz",
+    "license": "CC BY-SA 3.0 de"
+   }
+  },
+  {
+   "name": "Bernese Mountain Dog",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "wavy"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white"
+   ],
+   "markings": [
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "massive",
+   "_note": "Berner Sennenhund - Switzerland - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bouviers%20Bernois%20Ganjo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABouviers_Bernois_Ganjo.jpg",
+    "credit": "Ganjo http://fr.wikipedia.org/wiki/Utilisateur:Ganjo",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Newfoundland Dog",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "brown"
+   ],
+   "markings": [
+    "saddle",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "feathering": true,
+   "_note": "Newfoundland - Canada - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/201210071658d.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A201210071658d.jpg",
+    "credit": "Hartmann Linge",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Komondor",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "corded"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "cream"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Hungary - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Komondor%20Westminster%20Dog%20Show%20crop.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AKomondor_Westminster_Dog_Show_crop.jpg",
+    "credit": "Photo taken by Flickr user whartonds . Edit (cropped) by Pharaoh Hound .",
+    "license": "CC BY-SA 2.5"
+   }
+  },
+  {
+   "name": "Puli",
+   "size": [
+    "medium"
+   ],
+   "coat_texture": [
+    "curly",
+    "wavy"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "grey"
+   ],
+   "markings": [
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Hungary - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Puli%20600.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3APuli_600.jpg",
+    "credit": "Sannse",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Vizsla",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "gold",
+    "red",
+    "fawn"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Rövidszörü Magyar Vizsla) - Hungary - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Wy%C5%BCe%C5%82%20w%C4%99gierski%20g%C5%82adkow%C5%82osy%20500.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWy%C5%BCe%C5%82_w%C4%99gierski_g%C5%82adkow%C5%82osy_500.jpg",
+    "credit": "Pleple2000",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "St. Bernard (Short-haired)",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "brindle",
+    "saddle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "feathering": true,
+   "wrinkled": true,
+   "_note": "St.Bernhardshund - Bernhardiner - Switzerland - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Rey%20nieve.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARey_nieve.jpg",
+    "credit": "Rafael Dominguez Rodriguez",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "St. Bernard (Long-haired)",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "brindle",
+    "saddle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "feathering": true,
+   "wrinkled": true,
+   "_note": "St.Bernhardshund - Bernhardiner - Switzerland - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Rey%20nieve.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARey_nieve.jpg",
+    "credit": "Rafael Dominguez Rodriguez",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Maltese",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "white",
+    "cream",
+    "red"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "_note": "Central Mediterranean Basin - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Maltezer%20Vereniging%20Belgie.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMaltezer_Vereniging_Belgie.jpg",
+    "credit": "Maltezervereniging",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Scottish Terrier",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "gold"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "medium",
+   "build": "sturdy",
+   "beard": true,
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Scotish%20terrier%20burleska%202005.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AScotish_terrier_burleska_2005.jpg",
+    "credit": "Mider",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Staffordshire Bull Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "rose",
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "brown",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "tan_points"
+   ],
+   "muzzle": "short",
+   "build": "sturdy",
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Staffie.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStaffie.jpg",
+    "credit": "No machine-readable author provided. Aixeneta assumed (based on copyright claims).",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Griffon Bruxellois",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "short",
+    "high"
+   ],
+   "colour": [
+    "red"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Belgium - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Monkey%20Bizniz%20Drama%20Queen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMonkey_Bizniz_Drama_Queen.jpg",
+    "credit": "Arne Fagerholt",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Griffon Belge",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "short",
+    "high"
+   ],
+   "colour": [
+    "black"
+   ],
+   "markings": [
+    "solid",
+    "tan_points"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Belgium - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Monkey%20Bizniz%20Drama%20Queen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMonkey_Bizniz_Drama_Queen.jpg",
+    "credit": "Arne Fagerholt",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Petit Brabancon",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "short",
+    "high"
+   ],
+   "colour": [
+    "red",
+    "black",
+    "fawn"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "_note": "Petit Brabançon - Belgium - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Monkey%20Bizniz%20Drama%20Queen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMonkey_Bizniz_Drama_Queen.jpg",
+    "credit": "Arne Fagerholt",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Schipperke",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "short",
+    "over_back"
+   ],
+   "colour": [
+    "black"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Belgium - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Schipperke1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASchipperke1.jpg",
+    "credit": "Mijobe",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Bloodhound",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "long_hanging"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "brown",
+    "grey"
+   ],
+   "markings": [
+    "tan_points",
+    "saddle"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "wrinkled": true,
+   "_note": "Chien De Saint Hubert - Belgium - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Perro%20de%20San%20Huberto.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3APerro_de_San_Huberto.jpg",
+    "credit": "Mary Bloom, American Kennel Club",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "West Highland White Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "white"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/West%20Highland%20White%20Terrier%20Krakow.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWest_Highland_White_Terrier_Krakow.jpg",
+    "credit": "Christopher Walker from Krakow, Poland",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Yorkshire Terrier",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long",
+    "medium"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "blue",
+    "gold"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Imageyorkie.png",
+    "source": "https://commons.wikimedia.org/wiki/File%3AImageyorkie.png",
+    "credit": "Gandalfelrojo2",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Shetland Sheepdog",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "semi_erect"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "gold",
+    "red",
+    "black",
+    "white",
+    "blue",
+    "grey"
+   ],
+   "markings": [
+    "merle",
+    "tricolour",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/ShetlandShpdogBlue2%20wb.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AShetlandShpdogBlue2_wb.jpg",
+    "credit": "ToB (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Brittany",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "white",
+    "gold",
+    "red",
+    "black",
+    "brown"
+   ],
+   "markings": [
+    "ticked",
+    "tricolour",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Epagneul Breton - France - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/American%20Brittany%20standing.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAmerican_Brittany_standing.jpg",
+    "credit": "Pharaoh Hound",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "German Spitz (Wolfspitz (Keeshond))",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long",
+    "short"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "grey"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Deutscher Spitz - Germany - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Un%20chien%20Spitz%20allemand.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AUn_chien_Spitz_allemand.jpg",
+    "credit": "The original uploader was Teuteul at French Wikipedia . Later versions were uploaded by Tornad at fr.wikipedia .",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "German Spitz (Giant)",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long",
+    "short"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "white",
+    "black",
+    "brown"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Deutscher Spitz - Germany - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Un%20chien%20Spitz%20allemand.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AUn_chien_Spitz_allemand.jpg",
+    "credit": "The original uploader was Teuteul at French Wikipedia . Later versions were uploaded by Tornad at fr.wikipedia .",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "German Spitz (Medium)",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long",
+    "short"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Deutscher Spitz - Germany - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Un%20chien%20Spitz%20allemand.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AUn_chien_Spitz_allemand.jpg",
+    "credit": "The original uploader was Teuteul at French Wikipedia . Later versions were uploaded by Tornad at fr.wikipedia .",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "German Spitz (Pomeranian)",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long",
+    "short"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Deutscher Spitz - Germany - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Un%20chien%20Spitz%20allemand.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AUn_chien_Spitz_allemand.jpg",
+    "credit": "The original uploader was Teuteul at French Wikipedia . Later versions were uploaded by Tornad at fr.wikipedia .",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "German Wirehaired Pointer",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh",
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "brown"
+   ],
+   "markings": [
+    "ticked"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Deutsch Drahthaar - Germany - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/GermanWirehrPtr1%20wb.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGermanWirehrPtr1_wb.jpg",
+    "credit": "Mosesofmason (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Weimaraner (Short-haired)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Germany - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Weimaraner%20Amigo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWeimaraner_Amigo.jpg",
+    "credit": "Alexander Gratz",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Weimaraner (Long-haired)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Germany - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Weimaraner%20Amigo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWeimaraner_Amigo.jpg",
+    "credit": "Alexander Gratz",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "French Bulldog",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "short",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "fawn"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "sturdy",
+   "_note": "Bouledogue Français - France - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/%D0%A4%D1%80%D0%B0%D0%BD%D1%86%D1%83%D0%B7%D1%81%D0%BA%D0%B8%D0%B5%20%D0%B1%D1%83%D0%BB%D1%8C%D0%B4%D0%BE%D0%B3%D0%B8%202013-09-02%2011-36.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3A%D0%A4%D1%80%D0%B0%D0%BD%D1%86%D1%83%D0%B7%D1%81%D0%BA%D0%B8%D0%B5_%D0%B1%D1%83%D0%BB%D1%8C%D0%B4%D0%BE%D0%B3%D0%B8_2013-09-02_11-36.JPG",
+    "credit": "User:Frosya a",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Clumber Spaniel",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "gold",
+    "red"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "sturdy",
+   "feathering": true,
+   "short_legs": true,
+   "_note": "Great Britain - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Clumber%20spaniel%20glowa%20rybnik-kamien%20ppl.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClumber_spaniel_glowa_rybnik-kamien_ppl.jpg",
+    "credit": "Pleple2000",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Golden Retriever",
+   "size": [
+    "large"
+   ],
+   "coat_texture": [
+    "wavy",
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "white",
+    "cream",
+    "gold"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Golden%20Retriever%20Dukedestiny01%20drvd.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGolden_Retriever_Dukedestiny01_drvd.jpg",
+    "credit": "Dukedestiny01.jpg : \"Janneke Vreugdenhil\" derivative work: Anka Friedrich ([[User talk:Ankaaswe Trix Friedrich| talk ]])",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Dogue de Bordeaux",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "fawn",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "wrinkled": true,
+   "_note": "Dogue De Bordeaux - France - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/DJT%200086.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADJT_0086.jpg",
+    "credit": "DJT at Dutch Wikipedia ( Original text: DJT )",
+    "license": "CC BY-SA 2.5"
+   }
+  },
+  {
+   "name": "German Shorthaired Pointer",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "brown"
+   ],
+   "markings": [
+    "ticked",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Deutsch Kurzhaar - Germany - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Duitse%20staande%20korthaar%2010-10-2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADuitse_staande_korthaar_10-10-2.jpg",
+    "credit": "Bonnie van den Born, http://www.bonfoto.nl",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Irish Setter",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "white",
+    "red"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Irish Red Setter - Ireland - FCI group 7",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Can%20Setter%20dog%20GFDL.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACan_Setter_dog_GFDL.jpg",
+    "credit": "Luis Miguel Bugallo Sánchez ( Lmbuga Commons )( Lmbuga Galipedia ) Publicada por/ Publish by : Luis Miguel Bugallo Sánchez",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Flat-Coated Retriever",
+   "size": [
+    "large"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "brown"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Flat Coated Retriever - Great Britain - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Flat%20Coated%20Retriever%20-%20black.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFlat_Coated_Retriever_-_black.jpg",
+    "credit": "Gunnandreassen",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Labrador Retriever",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Yellow%20Labrador%20Retriever%202.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AYellow_Labrador_Retriever_2.jpg",
+    "credit": "SixtyWeb",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "English Springer Spaniel",
+   "size": [
+    "medium"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "brown"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Englishspringerspaniel%20Winston.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AEnglishspringerspaniel_Winston.jpg",
+    "credit": "SuviLindholm",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "King Charles Spaniel",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "short"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "tricolour",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/King%20Charles%20Spaniel%20Mike%203.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AKing_Charles_Spaniel_Mike_3.jpg",
+    "credit": "Karelj",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Cavalier King Charles Spaniel",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "tricolour",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Great Britain - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/CavalierKgChas2%20wb.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACavalierKgChas2_wb.jpg",
+    "credit": "en:user:Elf , Ellen Levy Finch",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Pyrenean Mountain Dog",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "white",
+    "gold",
+    "red",
+    "grey"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "massive",
+   "double_dewclaws": true,
+   "_note": "Chien De Montagne Des Pyrenees - France - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Pyrenean%20Mountain%20Dog%20600.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3APyrenean_Mountain_Dog_600.jpg",
+    "credit": "Brunobarreto~commonswiki (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Boston Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "short"
+   ],
+   "colour": [
+    "black",
+    "white"
+   ],
+   "markings": [
+    "brindle",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "sturdy",
+   "_note": "United States Of America - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/BOSTON%20TERRIER%2C%20Ving%C3%A5rdens%20Essi%20von%20Richards%20%2823995273800%29.2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABOSTON_TERRIER%2C_Ving%C3%A5rdens_Essi_von_Richards_%2823995273800%29.2.jpg",
+    "credit": "Svenska Mässan from Sweden",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Dobermann",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "_note": "Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Dobermann%20Father-and-son.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADobermann_Father-and-son.jpg",
+    "credit": "Fran Hogan",
+    "license": "CC BY 2.5"
+   }
+  },
+  {
+   "name": "Boxer",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "_note": "Deutscher Boxer - Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Boxer%20female%20brown.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABoxer_female_brown.jpg",
+    "credit": "Flickr user boxercab",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Leonberger",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown"
+   ],
+   "markings": [
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "feathering": true,
+   "_note": "Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Leonberger%20male.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ALeonberger_male.jpg",
+    "credit": "Kurre92",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Rhodesian Ridgeback",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "silky",
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "South Africa - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Grupp%206%20RHODESIAN%20RIDGEBACK%2C%20NO%20JV-15%20SE%20VCH%20Kadamo%20I%E2%80%99m%20In%20It%20For%20The%20Gold%20%2823920356649%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrupp_6_RHODESIAN_RIDGEBACK%2C_NO_JV-15_SE_VCH_Kadamo_I%E2%80%99m_In_It_For_The_Gold_%2823920356649%29.jpg",
+    "credit": "Svenska Mässan from Sweden",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Rottweiler",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "_note": "Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Rottweiler%20Moletai%20May%202014.2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARottweiler_Moletai_May_2014.2.jpg",
+    "credit": "Томасина",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Dachshund (Standard)",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "brown",
+    "grey"
+   ],
+   "markings": [
+    "brindle",
+    "merle",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "short_legs": true,
+   "_note": "Germany - FCI group 4",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/MiniDachshund1%20wb.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiniDachshund1_wb.jpg",
+    "credit": "Ellen Levy Finch ( Elf )",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Dachshund (Miniature)",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "brown",
+    "grey"
+   ],
+   "markings": [
+    "brindle",
+    "merle",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "short_legs": true,
+   "_note": "Germany - FCI group 4",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/MiniDachshund1%20wb.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiniDachshund1_wb.jpg",
+    "credit": "Ellen Levy Finch ( Elf )",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Bulldog",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "rose"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "feathering": true,
+   "wrinkled": true,
+   "_note": "Great Britain - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Racib%C3%B3rz%202007%20082.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARacib%C3%B3rz_2007_082.jpg",
+    "credit": "Pleple2000",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Istrian Shorthaired Hound",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "red"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Istarski Kratkodlaki Gonic - Croatia - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Istrische%20Bracke.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AIstrische_Bracke.jpg",
+    "credit": "No machine-readable author provided. Cazadero assumed (based on copyright claims).",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Istrian Coarse-haired Hound",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh",
+    "wavy"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "white",
+    "red"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Istarski Ostrodlaki Gonic - Croatia - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Istrian%20hound2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AIstrian_hound2.jpg",
+    "credit": "Raul654 (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Dalmatian",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "brown"
+   ],
+   "markings": [
+    "ticked"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Dalmatinski Pas - Croatia - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Dalmatien.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADalmatien.jpg",
+    "credit": "Desaix83 , d'après le travail de Le dalmatien",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Posavac Hound",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "white",
+    "gold"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Posavski Gonic - Croatia - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Posavac.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3APosavac.jpg",
+    "credit": "Mirta12",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Rough Collie",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "semi_erect"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "blue"
+   ],
+   "markings": [
+    "merle",
+    "tricolour",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Collie Rough - Great Britain - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Rough%20Collie%20head.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARough_Collie_head.jpg",
+    "credit": "WisewynD",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Bullmastiff",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "rose",
+    "button"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn"
+   ],
+   "markings": [
+    "brindle",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "wrinkled": true,
+   "_note": "Great Britain - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Dog%20Bullmastiff%20600.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADog_Bullmastiff_600.jpg",
+    "credit": "Obarskyr (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Greyhound",
+   "size": [
+    "giant"
+   ],
+   "ears": [
+    "rose"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "blue"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "_note": "Great Britain - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/GraceTheGreyhound.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGraceTheGreyhound.jpg",
+    "credit": "Neurodoc",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Irish Wolfhound",
+   "size": [
+    "giant"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "rose"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "grey"
+   ],
+   "markings": [
+    "brindle",
+    "white_markings"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "beard": true,
+   "_note": "Ireland - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Irish%20wolfhound%20giaccomo.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3AIrish_wolfhound_giaccomo.JPG",
+    "credit": "Camillo 60",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Beagle",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "ears": [
+    "long_hanging"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "ticked",
+    "tricolour",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/MiloSmet.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiloSmet.JPG",
+    "credit": "Jonatan De Geest",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Whippet",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "ears": [
+    "rose"
+   ],
+   "tail": [
+    "low",
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "_note": "Great Britain - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Whippet%20stacked.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AWhippet_stacked.jpg",
+    "credit": "Sagaciousphil",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Basset Hound",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "long_hanging"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold"
+   ],
+   "markings": [
+    "tricolour"
+   ],
+   "muzzle": "medium",
+   "build": "sturdy",
+   "feathering": true,
+   "short_legs": true,
+   "wrinkled": true,
+   "_note": "Great Britain - FCI group 6",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Basset%20Hound%20600.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABasset_Hound_600.jpg",
+    "credit": "ToB (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Scottish Deerhound",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "erect",
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "white_markings"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "feathering": true,
+   "beard": true,
+   "_note": "Deerhound - Great Britain - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Grupp%2010%2C%20SKOTSK%20HJORTHUND%2C%20SEJV-12%20SE%20UCH%20Necesse%E2%80%99s%20Ars%20Amandi%20%2823664806293%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrupp_10%2C_SKOTSK_HJORTHUND%2C_SEJV-12_SE_UCH_Necesse%E2%80%99s_Ars_Amandi_%2823664806293%29.jpg",
+    "credit": "Svenska Mässan from Sweden",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "German Shepherd (Normal coat)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low",
+    "level"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "gold",
+    "grey",
+    "brown"
+   ],
+   "markings": [
+    "saddle",
+    "mask",
+    "tan_points",
+    "solid"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "_note": "Deutscher Schäferhund - Germany - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Pastor%20aleman%20a.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3APastor_aleman_a.jpg",
+    "credit": "Erick Drumss Hernández",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "German Shepherd (Long coat)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low",
+    "level"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "gold",
+    "grey",
+    "brown"
+   ],
+   "markings": [
+    "saddle",
+    "mask",
+    "tan_points",
+    "solid"
+   ],
+   "muzzle": "long",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Deutscher Schäferhund - Germany - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Pastor%20aleman%20a.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3APastor_aleman_a.jpg",
+    "credit": "Erick Drumss Hernández",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Poodle (Standard)",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "tricolour",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Caniche - France - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Miniature%20poodle.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiniature_poodle.jpg",
+    "credit": "Boxerista96",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Poodle (Medium)",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "tricolour",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Caniche - France - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Miniature%20poodle.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiniature_poodle.jpg",
+    "credit": "Boxerista96",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Poodle (Miniature)",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "tricolour",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Caniche - France - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Miniature%20poodle.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiniature_poodle.jpg",
+    "credit": "Boxerista96",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Giant Schnauzer",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Riesenschnauzer - Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Stablemaster%27s%20NORTHERN%20HOPE%28Poznan2006%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStablemaster%27s_NORTHERN_HOPE%28Poznan2006%29.jpg",
+    "credit": "No machine-readable author provided. Kkrzysiu o2 assumed (based on copyright claims).",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Miniature Schnauzer",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Zwergschnauzer - Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/%D0%9F%D0%B8%D1%82%D0%BE%D0%BC%D0%BD%D0%B8%D0%BA%20%22%D0%90%D1%81%D1%81%D0%BE%D0%BD%20%D0%90%D1%80%D0%B8%22%20%D0%A6%D0%B2%D0%B5%D1%80%D0%B3%D1%88%D0%BD%D0%B0%D1%83%D1%86%D0%B5%D1%80%D1%8B%20%D0%B1%D0%B5%D0%BB%D1%8B%D0%B5%20%D0%B8%20%D1%87%D0%B5%D1%80%D0%BD%D1%8B%D0%B5%20%D1%81%20%D1%81%D0%B5%D1%80%D0%B5%D0%B1%D1%80%D0%BE%D0%BC%2012.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A%D0%9F%D0%B8%D1%82%D0%BE%D0%BC%D0%BD%D0%B8%D0%BA_%22%D0%90%D1%81%D1%81%D0%BE%D0%BD_%D0%90%D1%80%D0%B8%22_%D0%A6%D0%B2%D0%B5%D1%80%D0%B3%D1%88%D0%BD%D0%B0%D1%83%D1%86%D0%B5%D1%80%D1%8B_%D0%B1%D0%B5%D0%BB%D1%8B%D0%B5_%D0%B8_%D1%87%D0%B5%D1%80%D0%BD%D1%8B%D0%B5_%D1%81_%D1%81%D0%B5%D1%80%D0%B5%D0%B1%D1%80%D0%BE%D0%BC_12.jpg",
+    "credit": "Zorik07",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "German Pinscher",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Deutscher Pinscher - Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/German%20Pinscher.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGerman_Pinscher.JPG",
+    "credit": "Stesi (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Miniature Pinscher",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect",
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "racy",
+   "_note": "Zwergpinscher - Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Zwergpinscher%20adult%20Ch.%20Mirzan%20del%20Piervez.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AZwergpinscher_adult_Ch._Mirzan_del_Piervez.jpg",
+    "credit": "Sanacorekennel",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Affenpinscher",
+   "size": [
+    "toy"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect",
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Affenpinscher%20breed.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAffenpinscher_breed.jpg",
+    "credit": "Futurebreak",
+    "license": "CC0"
+   }
+  },
+  {
+   "name": "Bouvier des Flandres",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect",
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "grey"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Bouvier Des Flandres-Vlaamse Koehond - Belgium, France - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bouvier.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABouvier.JPG",
+    "credit": "Basco at Dutch Wikipedia ( Original text: annekedirven@tiscali.nl )",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Borzoi",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "brindle",
+    "white_markings"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "feathering": true,
+   "_note": "Russkaya Psovaya Borzaya - Russian Federation - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Borzoi%20female.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABorzoi_female.jpg",
+    "credit": "Taru T Torpström",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Neapolitan Mastiff",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level",
+    "low"
+   ],
+   "colour": [
+    "grey",
+    "blue",
+    "black",
+    "brown",
+    "fawn"
+   ],
+   "markings": [
+    "solid",
+    "brindle"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "wrinkled": true,
+   "_note": "Mastino Napoletano - Italy - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Neapolitan%20Mastiff%20Male%20Head.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ANeapolitan_Mastiff_Male_Head.JPG",
+    "credit": "Philip Thompson",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Italian Greyhound",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "rose"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "fawn",
+    "grey"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "_note": "Piccolo Levriero Italiano - Italy - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Charciki%20W%C5%82oskie%2C%20doros%C5%82y%20i%20szczeniak.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACharciki_W%C5%82oskie%2C_doros%C5%82y_i_szczeniak.jpg",
+    "credit": "Tesori di Carli",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Abruzzo-Maremma Sheepdog",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "level"
+   ],
+   "colour": [
+    "white",
+    "cream",
+    "gold",
+    "red"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Cane Da Pastore Abruzzese Maremmano - Italy - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Cane%20Pastore%20Abruzzese%20Abruzzo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACane_Pastore_Abruzzese_Abruzzo.jpg",
+    "credit": "The original uploader was MGerety at English Wikipedia .",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Chow Chow",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh",
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "red",
+    "fawn",
+    "blue"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "sturdy",
+   "feathering": true,
+   "blue_tongue": true,
+   "_note": "China - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/01%20Chow%20Chow.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A01_Chow_Chow.jpg",
+    "credit": "Prayitno/more than 2.5 millions views: thank you!",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Pekingese",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long",
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "athletic",
+   "feathering": true,
+   "short_legs": true,
+   "wrinkled": true,
+   "_note": "China - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/1AKC%20Pekingese%20Dog%20Show%202011.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A1AKC_Pekingese_Dog_Show_2011.jpg",
+    "credit": "SheltieBoy",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Shih Tzu",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "sturdy",
+   "beard": true,
+   "_note": "Tibet (China) - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Shih%20Tzu%20portrait%20show%20dog.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AShih_Tzu_portrait_show_dog.jpg",
+    "credit": "danny O.",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Tibetan Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "tricolour",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "feathering": true,
+   "beard": true,
+   "_note": "Tibet (China) - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Tibetan%20Terrier%20Image%20001.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ATibetan_Terrier_Image_001.jpg",
+    "credit": "Flickr user skaty222",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Samoyed",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "white",
+    "cream"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Samoiedskaïa Sabaka - Northern Russia, Siberia - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Samojed00.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASamojed00.jpg",
+    "credit": "No machine-readable author provided. Pleple2000 assumed (based on copyright claims).",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Bichon Frisé",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "white",
+    "fawn"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "beard": true,
+   "_note": "Bichon A Poil Frise - Belgium, France - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bichon%20Fris%C3%A9%20sitting.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABichon_Fris%C3%A9_sitting.jpg",
+    "credit": "Julia",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Chihuahua (Smooth-haired)",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Chihuahueño - Mexico - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Chihuahuas-%20Holly%2C%20Nina%2C%20Doralice.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AChihuahuas-_Holly%2C_Nina%2C_Doralice.jpg",
+    "credit": "Caterinarufo",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Chihuahua (Long-haired)",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Chihuahueño - Mexico - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Chihuahuas-%20Holly%2C%20Nina%2C%20Doralice.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AChihuahuas-_Holly%2C_Nina%2C_Doralice.jpg",
+    "credit": "Caterinarufo",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Dutch Shepherd (Short-haired)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "silver"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Hollandse Herdershond - The Netherlands - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Hollandse%20herder%20korthaar.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHollandse_herder_korthaar.jpg",
+    "credit": "Teunie at Dutch Wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Dutch Shepherd (Long-haired)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "silver"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Hollandse Herdershond - The Netherlands - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Hollandse%20herder%20korthaar.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHollandse_herder_korthaar.jpg",
+    "credit": "Teunie at Dutch Wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Dutch Shepherd (Rough-haired)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "red",
+    "fawn",
+    "silver"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Hollandse Herdershond - The Netherlands - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Hollandse%20herder%20korthaar.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AHollandse_herder_korthaar.jpg",
+    "credit": "Teunie at Dutch Wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Lhasa Apso",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "fawn",
+    "blue"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "sturdy",
+   "feathering": true,
+   "beard": true,
+   "_note": "Tibet (China) - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Grupp%209%2C%20LHASA%20APSO%2C%20DK%20JV-13%20DK%20V-14%20DK%20V-15%20NO%20UCH%20NO%20V-15%20SE%20UCH%20Chic%20Choix%20Some%20Like%20It%20Chic%20%2824014621720%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrupp_9%2C_LHASA_APSO%2C_DK_JV-13_DK_V-14_DK_V-15_NO_UCH_NO_V-15_SE_UCH_Chic_Choix_Some_Like_It_Chic_%2824014621720%29.jpg",
+    "credit": "Svenska Mässan from Sweden",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Afghan Hound",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "feathering": true,
+   "_note": "Afghanistan - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/AKC%20Helena%20Fall%20Dog%20Show%202011.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAKC_Helena_Fall_Dog_Show_2011.jpg",
+    "credit": "SheltieBoy",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Tibetan Mastiff",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "blue",
+    "gold",
+    "red",
+    "fawn"
+   ],
+   "markings": [
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "feathering": true,
+   "_note": "Do-Khyi - Tibet (China) - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/2013%20Westminster%20Kennel%20Club%20Dog%20Show-%20Tibetan%20Mastiff%20GCH%20Sierras%27Sasha-Yakone%20Nanuk%20%288469240739%29%20%28cropped%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2013_Westminster_Kennel_Club_Dog_Show-_Tibetan_Mastiff_GCH_Sierras%27Sasha-Yakone_Nanuk_%288469240739%29_%28cropped%29.jpg",
+    "credit": "Pets Adviser from Brooklyn, USA",
+    "license": "CC BY 2.0"
+   }
+  },
+  {
+   "name": "Xoloitzcuintle (Standard)",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "hairless"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "grey",
+    "red",
+    "brown",
+    "gold"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "racy",
+   "_note": "Mexico - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/XoloLarge1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AXoloLarge1.jpg",
+    "credit": "Canarian",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Xoloitzcuintle (Intermediate)",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "hairless"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "grey",
+    "red",
+    "brown",
+    "gold"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "racy",
+   "_note": "Mexico - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/XoloLarge1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AXoloLarge1.jpg",
+    "credit": "Canarian",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Xoloitzcuintle (Miniature)",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "hairless"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "grey",
+    "red",
+    "brown",
+    "gold"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "racy",
+   "_note": "Mexico - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/XoloLarge1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AXoloLarge1.jpg",
+    "credit": "Canarian",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Great Dane",
+   "size": [
+    "giant"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold",
+    "fawn",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "merle",
+    "ticked",
+    "saddle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "massive",
+   "_note": "Deutsche Dogge - Germany - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/8675eds%20win.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A8675eds_win.jpg",
+    "credit": "Original uploader was Markovade.pero at sr.wikipedia",
+    "license": "CC BY-SA 3.0 rs"
+   }
+  },
+  {
+   "name": "Norwegian Elkhound",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "grey"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Norsk Elghund Grå - Norway - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Norwegian%20Elkhound.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ANorwegian_Elkhound.jpg",
+    "credit": "Sannse",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Alaskan Malamute",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect",
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "grey"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "United States Of America - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Alaskan%20Malamute.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAlaskan_Malamute.jpg",
+    "credit": "SCMW",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Havanese",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "fawn",
+    "brown"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "feathering": true,
+   "beard": true,
+   "_note": "Bichon Havanais - Cuba - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/A%20havanese%20dog.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AA_havanese_dog.jpg",
+    "credit": "QHuge",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Pug",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "rose",
+    "button"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "gold",
+    "fawn",
+    "silver"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "flat",
+   "build": "sturdy",
+   "wrinkled": true,
+   "_note": "China - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/2.5-year-old%20fawn%20male%20pug.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2.5-year-old_fawn_male_pug.jpg",
+    "credit": "Abuk SABUK",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Akita",
+   "size": [
+    "large"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Japan - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Akita%20inu%20criado%20por%20Tsutsui%20Kennel.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAkita_inu_criado_por_Tsutsui_Kennel.jpg",
+    "credit": "TsutsuiKennel",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Shiba Inu",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Shiba - Japan - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Shiba%20inu%20taiki.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AShiba_inu_taiki.jpg",
+    "credit": "Roberto Vasarri",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Japanese Spitz",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "white"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Nihon Supittsu - Japan - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/JapaneseSpitzPhoto1%20-%20hiro.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AJapaneseSpitzPhoto1_-_hiro.jpg",
+    "credit": "Hakumichi",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "English Mastiff",
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "white",
+    "gold",
+    "fawn"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "wrinkled": true,
+   "_note": "Mastiff - Great Britain - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Mastif%20angielski%20pregowany%20nn.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMastif_angielski_pregowany_nn.jpg",
+    "credit": "Pleple2000",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Saluki (Fringed)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "feathering": true,
+   "_note": "Middle East - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Red%20Smooth%20Saluki.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARed_Smooth_Saluki.jpg",
+    "credit": "r.",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Saluki (Smooth)",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "brindle"
+   ],
+   "muzzle": "long",
+   "build": "racy",
+   "_note": "Middle East - FCI group 10",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Red%20Smooth%20Saluki.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ARed_Smooth_Saluki.jpg",
+    "credit": "r.",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Siberian Husky",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "grey"
+   ],
+   "markings": [
+    "brindle",
+    "merle",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "United States Of America - FCI group 5",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Siberian%20Husky%20-%20Mika.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASiberian_Husky_-_Mika.jpg",
+    "credit": "ShonMichaeli",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Croatian Sheepdog",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "brown"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Hrvatski Ovcar - Croatia - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/GeraHojda09112055ZG.jpeg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGeraHojda09112055ZG.jpeg",
+    "credit": "Michala Mračková",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Coton de Tulear",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "grey"
+   ],
+   "markings": [
+    "ticked"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Coton De Tulear - Madagascar - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Coton%20de%20Tular%202.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACoton_de_Tular_2.jpg",
+    "credit": "Uschi Goess (eingestellt von Caronna )",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "American Staffordshire Terrier",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "rose",
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "athletic",
+   "_note": "United States Of America - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/AMERICAN%20STAFFORDSHIRE%20TERRIER%2C%20Zican%E2%80%99s%20Bz%20Ez%20Dragon%20%2824208348891%29.2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAMERICAN_STAFFORDSHIRE_TERRIER%2C_Zican%E2%80%99s_Bz_Ez_Dragon_%2824208348891%29.2.jpg",
+    "credit": "Svenska Mässan from Sweden",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Australian Cattle Dog",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "blue"
+   ],
+   "markings": [
+    "ticked",
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Australia - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/ACD-blue-spud.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AACD-blue-spud.jpg",
+    "credit": "Zingpix",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Chinese Crested Dog (Hairless)",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "hairless"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "China - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/IndyStands.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AIndyStands.jpg",
+    "credit": "Tommy Gildseth",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Chinese Crested Dog (Powder Puff)",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "silky"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "China - FCI group 9",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/IndyStands.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AIndyStands.jpg",
+    "credit": "Tommy Gildseth",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Dogo Argentino",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Argentina - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Dogo%20Argentino%20-Argentijnse%20dog%2014-04-2010%2017-00-50.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADogo_Argentino_-Argentijnse_dog_14-04-2010_17-00-50.jpg",
+    "credit": "Paul Hermans",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Australian Kelpie",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "red",
+    "fawn",
+    "brown",
+    "blue"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Australia - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bashyr.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABashyr.jpg",
+    "credit": "D.N. Geerlings (eigenaar)",
+    "license": "CC BY-SA 2.5 nl"
+   }
+  },
+  {
+   "name": "Border Collie",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long",
+    "medium"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "semi_erect",
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "brown",
+    "blue"
+   ],
+   "markings": [
+    "white_markings",
+    "merle",
+    "tricolour"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Argentine%20border%20collie.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AArgentine_border_collie.jpg",
+    "credit": "Horacio Cambeiro",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Lagotto Romagnolo",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "over_back"
+   ],
+   "colour": [
+    "white",
+    "red",
+    "brown"
+   ],
+   "markings": [
+    "ticked",
+    "tan_points",
+    "mask"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Italy - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Lagotto%20Romagnolo.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ALagotto_Romagnolo.jpg",
+    "credit": "Caronna (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Shar Pei",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "button"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "brown",
+    "grey",
+    "blue",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "wrinkled": true,
+   "blue_tongue": true,
+   "_note": "China - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Shar%20pei.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AShar_pei.jpg",
+    "credit": "UpdOWN . Original uploader was UpdOWN at ru.wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Nova Scotia Duck Tolling Retriever",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "medium"
+   ],
+   "coat_texture": [
+    "curly"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "low",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Canada - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Duck%20Toller.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADuck_Toller.jpg",
+    "credit": "Cal119 at English Wikipedia",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Kooikerhondje",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "medium",
+    "short"
+   ],
+   "coat_texture": [
+    "wavy",
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "level"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Nederlandse Kooikerhondje - The Netherlands - FCI group 8",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Kooiker03.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AKooiker03.jpg",
+    "credit": "Caronna (Wikimedia Commons)",
+    "license": "CC BY 2.5"
+   }
+  },
+  {
+   "name": "Caucasian Shepherd Dog",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high",
+    "low"
+   ],
+   "colour": [
+    "black",
+    "brown",
+    "blue"
+   ],
+   "markings": [
+    "ticked",
+    "white_markings"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "_note": "Kavkazskaïa Ovtcharka - Russian Federation - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Owczarek%20kaukaski%2065556.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AOwczarek_kaukaski_65556.jpg",
+    "credit": "Pleple2000",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Czechoslovakian Wolfdog",
+   "size": [
+    "large"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "grey",
+    "silver",
+    "gold"
+   ],
+   "markings": [
+    "mask"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Ceskoslovenský Vlciak - Czechoslovakia - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/TWH-jolly.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ATWH-jolly.JPG",
+    "credit": "Margo-CzW at Dutch Wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Korean Jindo Dog",
+   "size": [
+    "medium"
+   ],
+   "ears": [
+    "erect"
+   ],
+   "tail": [
+    "over_back",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "grey"
+   ],
+   "markings": [
+    "brindle",
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Korea Jindo Dog - Korea (Republic Of) - FCI group 5"
+  },
+  {
+   "name": "Central Asian Shepherd Dog",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "cream",
+    "gold",
+    "red",
+    "fawn",
+    "grey",
+    "silver"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "short",
+   "build": "massive",
+   "feathering": true,
+   "_note": "Sredneasiatskaya Ovtcharka - Russian Federation - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1%D1%80%D0%B5%D0%B4%D0%BD%D0%B5%D0%B0%D0%B7%D0%B8%D0%B0%D1%82%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BE%D0%B2%D1%87%D0%B0%D1%80%D0%BA%D0%B0%2C%20%D0%BC%D0%BE%D0%BB%D0%BE%D0%B4%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%B1%D0%B5%D0%BB%D1%8C.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A%D0%A1%D1%80%D0%B5%D0%B4%D0%BD%D0%B5%D0%B0%D0%B7%D0%B8%D0%B0%D1%82%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B2%D1%87%D0%B0%D1%80%D0%BA%D0%B0%2C_%D0%BC%D0%BE%D0%BB%D0%BE%D0%B4%D0%BE%D0%B9_%D0%BA%D0%BE%D0%B1%D0%B5%D0%BB%D1%8C.jpg",
+    "credit": "https://kara-yulduz.com/asian_shepherd_dogs/breeding/breeding_list/aladzha/ (Webpage with photo & СС license)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Parson Russell Terrier",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh",
+    "smooth"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "gold"
+   ],
+   "markings": [
+    "solid"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Parson%20Russell%20Terrier.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AParson_Russell_Terrier.jpg",
+    "credit": "Ranveig (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Australian Shepherd",
+   "size": [
+    "medium"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "wavy"
+   ],
+   "ears": [
+    "rose"
+   ],
+   "tail": [
+    "short"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "blue"
+   ],
+   "markings": [
+    "merle",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "United States Of America - FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Aussi.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAussi.jpg",
+    "credit": "Christoph Aeschlimann",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Cane Corso",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red",
+    "fawn",
+    "grey",
+    "blue"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "flat",
+   "build": "massive",
+   "wrinkled": true,
+   "_note": "Cane Corso Italiano - Italy - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/FINLEY%20DE%20LA%20MIRAGE%20DE%20TORRELLAS%2001.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFINLEY_DE_LA_MIRAGE_DE_TORRELLAS_01.jpg",
+    "credit": "Marta García, juan Manuel Morato",
+    "license": "CC BY-SA 2.1 es"
+   }
+  },
+  {
+   "name": "Jack Russell Terrier",
+   "size": [
+    "toy"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh",
+    "smooth"
+   ],
+   "ears": [
+    "button",
+    "dropped"
+   ],
+   "tail": [
+    "low",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "red"
+   ],
+   "markings": [
+    "tan_points"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Great Britain - FCI group 3",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Jack%20Russell%20Terrier%201.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AJack_Russell_Terrier_1.jpg",
+    "credit": "Plank",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Presa Canario",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "rose",
+    "erect"
+   ],
+   "tail": [
+    "low"
+   ],
+   "colour": [
+    "black",
+    "white",
+    "fawn"
+   ],
+   "markings": [
+    "brindle",
+    "mask",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "_note": "Spain - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Canary%20Mastiff%20red-brindle2.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACanary_Mastiff_red-brindle2.JPG",
+    "credit": "Canarian",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Tornjak",
+   "size": [
+    "large"
+   ],
+   "coat_length": [
+    "long"
+   ],
+   "coat_texture": [
+    "harsh"
+   ],
+   "ears": [
+    "dropped"
+   ],
+   "tail": [
+    "low",
+    "high"
+   ],
+   "colour": [
+    "black",
+    "white"
+   ],
+   "markings": [
+    "saddle",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "Bosnia And Herzegovina, Croatia - FCI group 2",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Bosniantornjak.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABosniantornjak.jpg",
+    "credit": "Caronna (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Miniature American Shepherd",
+   "size": [
+    "small"
+   ],
+   "coat_length": [
+    "short"
+   ],
+   "coat_texture": [
+    "smooth"
+   ],
+   "ears": [
+    "rose",
+    "erect"
+   ],
+   "tail": [
+    "short"
+   ],
+   "colour": [
+    "white",
+    "fawn"
+   ],
+   "markings": [
+    "merle",
+    "ticked",
+    "tan_points",
+    "white_markings"
+   ],
+   "muzzle": "medium",
+   "build": "athletic",
+   "feathering": true,
+   "_note": "FCI group 1",
+   "_image": {
+    "url": "http://commons.wikimedia.org/wiki/Special:FilePath/Miniature-american-shepherd-energies.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AMiniature-american-shepherd-energies.jpg",
+    "credit": "TanSinVic",
+    "license": "CC BY-SA 4.0"
+   }
+  }
+ ]
+}
