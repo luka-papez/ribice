@@ -44,23 +44,24 @@
     ]
    ],
    "labels": {
-    "wispy": "wispy - fibres, streaks or filaments, like brushed hair",
-    "sheet": "a continuous sheet or veil with no separate parts",
-    "rolls": "rows, rolls or a patchwork of separate lumps",
-    "tufts": "small rounded tufts, each on its own",
-    "lens": "a smooth almond or lens, sharp-edged",
-    "roll_cloud": "one long tube lying horizontally, rolling",
-    "heaped": "heaped like cauliflower, wider than it is tall",
-    "towering": "towering - distinctly taller than it is wide",
+    "wispy": "thin streaks, like brushed hair",
+    "sheet": "a smooth, featureless layer",
+    "rolls": "rows or patches of lumps",
+    "tufts": "small separate tufts",
+    "lens": "a smooth almond, like a lens",
+    "roll_cloud": "one long horizontal tube",
+    "heaped": "a puffy cotton-wool heap",
+    "towering": "a tall tower, higher than it was wide",
     "flat_patches": "dense flat patches",
-    "ragged": "torn, ragged shreds with no definite shape"
-   }
+    "ragged": "torn, ragged shreds"
+   },
+   "cost": 1.0
   },
   "element_size": {
-   "question": "If it was made of separate lumps, how big was one? Hold your arm out straight and compare.",
+   "question": "How big was one lump, at arm's length?",
    "noise": 0.12,
    "confusion": 0.4,
-   "cost": 1.2,
+   "cost": 1.8,
    "confusable": [
     [
      "tiny",
@@ -76,18 +77,19 @@
     ]
    ],
    "labels": {
-    "none": "it had no separate lumps - one continuous cloud or sheet",
-    "tiny": "smaller than your little finger's width",
-    "small": "between one and three finger widths",
+    "none": "there were no separate lumps",
+    "tiny": "smaller than a fingertip",
+    "small": "a finger or two wide",
     "large": "bigger than your fist"
    }
   },
   "shading": {
-   "question": "Did the individual lumps have grey shaded undersides?",
-   "noise": 0.12
+   "question": "Were the lumps shaded grey underneath?",
+   "noise": 0.12,
+   "cost": 1.8
   },
   "opacity": {
-   "question": "What could you see of the sun through it?",
+   "question": "Could you see the sun through it?",
    "noise": 0.1,
    "confusion": 0.35,
    "confusable": [
@@ -101,10 +103,11 @@
     ]
    ],
    "labels": {
-    "transparent": "the sun shone through clearly and cast sharp shadows",
-    "translucent": "the sun showed as a bright patch, as if through frosted glass",
-    "opaque": "the sun was hidden completely"
-   }
+    "transparent": "yes, clearly",
+    "translucent": "only as a bright blur",
+    "opaque": "no, it was hidden"
+   },
+   "cost": 0.8
   },
   "colour": {
    "question": "What colour was it?",
@@ -123,11 +126,12 @@
    "labels": {
     "white": "white or very pale",
     "grey": "grey",
-    "dark_grey": "dark grey, almost threatening"
-   }
+    "dark_grey": "dark grey, almost black"
+   },
+   "cost": 0.7
   },
   "sky_cover": {
-   "question": "How much of the sky did it take up?",
+   "question": "How much of the sky did it cover?",
    "noise": 0.12,
    "confusion": 0.4,
    "confusable": [
@@ -146,10 +150,11 @@
    ],
    "labels": {
     "isolated": "one cloud on its own",
-    "patches": "scattered patches with plenty of blue",
-    "most_of_sky": "most of the sky, with gaps",
+    "patches": "scattered patches, with blue between",
+    "most_of_sky": "most of the sky, with a few gaps",
     "whole_sky": "the whole sky, edge to edge"
-   }
+   },
+   "cost": 0.7
   },
   "base": {
    "question": "What was its underside like?",
@@ -170,14 +175,15 @@
     ]
    ],
    "labels": {
-    "flat": "a definite flat bottom, all at one level",
+    "flat": "a flat bottom, all at one level",
     "ragged": "ragged and torn",
-    "undefined": "no clear underside - it just faded out",
-    "not_visible": "too high or too uniform to make out a base at all"
-   }
+    "undefined": "no clear bottom - it faded out",
+    "not_visible": "you could not make one out"
+   },
+   "cost": 1.4
   },
   "precipitation": {
-   "question": "Was anything falling out of it?",
+   "question": "Was anything falling from it?",
    "noise": 0.08,
    "confusion": 0.3,
    "confusable": [
@@ -196,34 +202,40 @@
    ],
    "labels": {
     "none": "nothing",
-    "virga": "streaks falling from it that never reached the ground",
-    "steady": "steady rain or snow, going on and on",
+    "virga": "streaks that never reached the ground",
+    "steady": "steady rain or snow, for hours",
     "showers": "showers - heavy, then stopping",
     "thunder": "thunder, lightning or hail"
-   }
+   },
+   "cost": 0.8
   },
   "halo": {
    "question": "Was there a ring of light around the sun or moon?",
-   "noise": 0.06
+   "noise": 0.06,
+   "cost": 1.6
   },
   "anvil": {
-   "question": "Did the top flatten out and spread sideways, like an anvil?",
-   "noise": 0.07
+   "question": "Did its top spread out flat, like an anvil?",
+   "noise": 0.07,
+   "cost": 1.6
   },
   "turrets": {
-   "question": "Did small towers rise from a shared base, like battlements?",
-   "noise": 0.1
+   "question": "Did little turrets rise from its top?",
+   "noise": 0.1,
+   "cost": 2.5
   },
   "hooks": {
-   "question": "Were the filaments hooked or comma-shaped at one end?",
-   "noise": 0.1
+   "question": "Were the streaks hooked, like commas?",
+   "noise": 0.1,
+   "cost": 2.5
   },
   "mamma": {
    "question": "Did it have rounded pouches hanging underneath?",
-   "noise": 0.08
+   "noise": 0.08,
+   "cost": 2.2
   },
   "depth": {
-   "question": "How tall was it compared to how wide?",
+   "question": "How tall was it, next to how wide?",
    "noise": 0.12,
    "confusion": 0.25,
    "confusable": [
@@ -237,11 +249,12 @@
     ]
    ],
    "labels": {
-    "none": "it was not a heaped cloud - flat or layered",
+    "none": "flat or layered, not a heap",
     "flat": "much wider than it was tall",
     "square": "about as tall as it was wide",
-    "tall": "distinctly taller than it was wide"
-   }
+    "tall": "taller than it was wide"
+   },
+   "cost": 1.8
   },
   "top": {
    "question": "What was the top of it like?",
@@ -258,11 +271,12 @@
     ]
    ],
    "labels": {
-    "none": "it had no distinct top - flat, layered or wispy",
-    "cauliflower": "hard and sharp-edged, like a cauliflower",
-    "smooth": "the sharp edges had gone soft and fuzzy",
-    "fibrous": "gone streaky and fibrous, often spreading sideways"
-   }
+    "none": "no distinct top - flat or wispy",
+    "cauliflower": "sharp-edged, like a cauliflower",
+    "smooth": "gone soft and fuzzy at the edges",
+    "fibrous": "gone streaky, spreading sideways"
+   },
+   "cost": 2.0
   }
  },
  "entities": [
