@@ -1,7 +1,8 @@
 # Calibration loop
 
-Status: phase 0 (`-replay`) built; the rest is design. Clouds first; fish and dogs after, on the
-same harness.
+Status: phase 0 (`-replay`) built. Phase 1a: corpus built (235 photos) and label-checked;
+the 94 doubts in `tools/calib/corpus/clouds/review.json` await a keep/drop decision. The
+rest is design. Clouds first; fish and dogs after, on the same harness.
 
 We will measure how a layperson actually answers the cloud quiz, using Claude
 as a stand-in, then tune the knowledge base against those measurements instead
@@ -111,10 +112,33 @@ scoring in `tools/cloud_pick.py`, but keeps many photos per cloud instead of one
 | Scarce (under 5) | Cirrocumulus castellanus (4), Stratocumulus volutus (3), Stratus fractus (1) |
 | Category not found yet | Altocumulus volutus, Altostratus opacus, Cumulus fractus, Cumulonimbus calvus, Cumulonimbus capillatus |
 
-The last row probably uses other category names: `Category:Cumulonimbus
+The last row mostly uses other category names: `Category:Cumulonimbus
 calvus` (without "clouds") exists with 457 files. The corpus script tries both
 spellings, then the parent genus category with a filename filter. A cloud still
 under 4 photos is flagged in the report and left out of accuracy totals.
+
+**What the corpus script found** (2026-09-26). Cumulus fractus, both
+Cumulonimbus and Stratus fractus have plenty under the name without "clouds".
+The other five are scarce for real: roll clouds (both volutus) and castellanus
+turrets on a high layer are rare and brief, their photos mostly show two cloud
+types and so fail the rules below, and opacus is a variety that people file
+under plain Altostratus. For a cloud still short after its categories, the
+script falls back to a full-text search of Commons, ranked after every
+category photo and marked as such. That search is low-yield: of its 11 picks
+the label check passed 2. The first build has 235 photos: 27 clouds with 8,
+Altostratus opacus 8 (4 by file name, 4 by search), Cirrus castellanus 4, both
+volutus 3 and Cirrocumulus castellanus 1. That is 28 clouds at 5 or more,
+before the review drops any; since a dropped photo is refilled, only the
+scarce clouds can fall below the gate of 27. Filling them means photos from
+outside Commons, such as your own.
+
+**The label check** (2026-09-26, `claude-opus-5` at effort `low`, through the
+CLI) doubted 94 of 235 photos: some plainly wrong (a contrail filed as
+altocumulus castellanus, shots from a plane, fog among trees, a blown-out white
+sky), most arguing a species boundary (mediocris or congestus, fibratus or
+uncinus, cirrocumulus or altocumulus lenticularis). The second kind is itself
+a finding: if the people who file Commons photos disagree with Claude at those
+boundaries, a layperson will too, and the quiz's mix-up tables should show it.
 
 **Selection rules**
 
@@ -122,6 +146,8 @@ under 4 photos is flagged in the report and left out of accuracy totals.
   filename and by MIME type.
 - Skip files whose names mention a second genus or species. `cloud_pick.py`
   already penalises these, since they show a whole sky rather than one cloud.
+- Skip files filed in two clouds' categories. Whoever filed them saw both, and
+  the score would punish the quiz for picking either. About 300 files are.
 - Skip the photo the quiz already shows for that cloud, so the answerer is
   never tested on the reference picture.
 - Prefer different photographers, so 8 shots of one afternoon don't count as 8
@@ -132,13 +158,17 @@ under 4 photos is flagged in the report and left out of accuracy totals.
 **Label check.** Commons labels are sometimes wrong. A one-time vision pass
 asks Claude whether each photo shows mainly one cloud type and whether it
 matches the label; photos it doubts go to a short list for a person to accept
-or drop. This pass sees the label, so it never feeds scores, only cleaning.
+or drop, in `corpus/<kb>/review.json`. This pass sees the label, so it never
+feeds scores, only cleaning. It also flags photos taken from above the clouds,
+since every question is asked from the ground.
 
 **Split.** A fixed split by hash of the file name puts 5 photos in tune and 3
-in held-out per cloud, and it never changes between runs. Phase 2 edits may
-only look at tune transcripts.
+in held-out per cloud (fewer held out for a cloud with under 6), and it never
+changes between runs: the manifest pins every photo's split, and a later run
+only adds photos to fill a cloud that is short. Phase 2 edits may only look at
+tune transcripts.
 
-**Storage.** `tools/calib/corpus/manifest.json` (committed) lists file name,
+**Storage.** `tools/calib/corpus/<kb>/manifest.json` (committed) lists file name,
 label, split, credit and licence. The image bytes go in a gitignored cache and
 are fetched again from the manifest. Photos are used locally and never
 published, but the credits are kept in case a photo is ever promoted into the
@@ -345,15 +375,28 @@ playing games conversationally, and nothing here needs that.
 ## The harness
 
 The harness is a handful of Python scripts in `tools/calib/`, next to the
-existing knowledge-base tools. They use the `anthropic` SDK and shell out to
-the Go engine. A full measurement of the cloud quiz costs roughly $40 once, and
+existing knowledge-base tools. They reach Claude through the Claude Code CLI
+(`claude -p`) on a Claude subscription by default, or through the `anthropic`
+SDK with an API key, and shell out to the Go engine.
+
+**Through the CLI.** `claude_cli.py` sends the same request as the API path as
+a locked-down headless call: our system prompt replaces Claude Code's, no
+tools except the one returning the `--json-schema` answer, no settings, hooks
+or MCP servers, an empty working directory, and the image as a content block
+rather than a file path. A short preamble remains (date, working directory,
+account e-mail), which says nothing about any photo. There is no Batch API
+and each call carries some overhead: the label check used about $0.03 of
+API-equivalent usage per photo. Every call reports how full the
+subscription's five-hour window is, and the harness stops starting calls at
+80% so a run never locks its owner out. The full answer matrix is then paced
+over several windows rather than run in one go. A full measurement of the cloud quiz costs roughly $40 once, and
 each later wording change costs a few dollars.
 
 **Scripts**
 
 | Script | Does | Calls Claude |
 | --- | --- | --- |
-| `corpus.py` | builds `corpus/manifest.json`, downloads, strips metadata, resizes, assigns the split | no |
+| `corpus.py` | builds `corpus/<kb>/manifest.json`, downloads, strips metadata, resizes, assigns the split | no |
 | `label_check.py` | one-off check that each photo matches its label, writes a doubt list | yes, once per photo |
 | `ask.py` | finds every (photo, question) pair missing from the cache and asks it, through the Batch API by default | yes |
 | `replay.py` | writes `answers.jsonl` for a given knowledge base and runs `ribice -replay -json` | no |
@@ -397,7 +440,7 @@ prints the actual figures.
 | --- | --- | --- | --- |
 | Full answer matrix (240 photos × 15 questions) | 3,600 | ~2,750 in (image ~2,200) + ~250 out | ~$40 batched, ~$75 direct |
 | Reword one question | 240 | same | ~$3 batched |
-| Label check | 240 | ~2,700 in + ~150 out | ~$2 batched |
+| Label check | 240 | ~2,700 in + ~150 out | ~$2 batched; ~30% of a five-hour window by CLI |
 | Leakage name test | 240 | ~2,600 in + ~100 out | ~$2 batched |
 | Replay, report, compare | none | none | $0 |
 

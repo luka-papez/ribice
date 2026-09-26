@@ -51,4 +51,5 @@ def main():
     print(f"\n{sum(1 for v in out.values() if v['candidates'])}/{len(out)} have candidates",
           file=sys.stderr)
 
-main()
+if __name__ == "__main__":
+    main()

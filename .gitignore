@@ -26,3 +26,9 @@ tools/pageviews.json
 tools/cloud-images.json
 tools/cloud-credits.json
 tools/__pycache__/
+
+# Calibration harness (see tools/calib/README.md). The manifest, review and
+# label-check results are committed; photos and cached answers regenerate.
+tools/calib/cache/
+tools/calib/.venv/
+tools/calib/__pycache__/

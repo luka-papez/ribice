@@ -75,6 +75,9 @@ categories lead with computer renders rather than photographs. A hand-picked
 override that matches no candidate is reported rather than used, which caught a
 filename typed from memory.
 
+`calib/` is the calibration loop that measures the cloud quiz on photos; see
+its own README.
+
 ## Where the values come from
 
 Three kinds, in descending order of how much you should trust them.

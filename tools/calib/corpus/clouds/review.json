@@ -1,0 +1,942 @@
+{
+ "File:Cirrus fibratus am Herbsthimmel.jpg": {
+  "id": "e4dfc828",
+  "label": "Cirrus fibratus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus uncinus/floccus",
+  "reason": "The cloud is a ragged tufted patch with trailing fallstreaks rather than long straight parallel filaments.",
+  "decision": null
+ },
+ "File:Cirrus spissatus mamma.jpg": {
+  "id": "2581a837",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus / cirrostratus",
+  "reason": "The cloud is thin, translucent and streaky rather than dense and grey, so it reads as ordinary fibrous cirrus, not spissatus.",
+  "decision": null
+ },
+ "File:Cirrus spissatus cumulonimbogenitus 2.jpg": {
+  "id": "480261ba",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "Cumulonimbus with spreading anvil (incus)",
+  "reason": "The dominant fibrous mass looks like a live thunderstorm anvil, with towering cumulus congestus sharing the right side, so calling it detached cirrus spissatus is debatable.",
+  "decision": null
+ },
+ "File:Cirrus4 - NOAA.jpg": {
+  "id": "cf34bc57",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus/uncinus (thin cirrus at dusk)",
+  "reason": "The cloud is thin, streaky and translucent rather than the dense grey patches that define cirrus spissatus.",
+  "decision": null
+ },
+ "File:Spissatus spi.jpg": {
+  "id": "ea1a2712",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus/uncinus with cumulus humilis",
+  "reason": "The cirrus is thin and wispy rather than dense and grey, and cumulus shares the lower frame.",
+  "decision": null
+ },
+ "File:CirrusCloudsNLSalinasVictoria.jpg": {
+  "id": "66eebd85",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrostratus / cirrus fibratus",
+  "reason": "The sky is a thin, fibrous whitish veil of cirrus/cirrostratus rather than a dense grey spissatus patch.",
+  "decision": null
+ },
+ "File:Ephesus3.jpg": {
+  "id": "d654452e",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus/uncinus",
+  "reason": "The sky shows thin translucent white fibrous cirrus streaks, not the dense grey patches of cirrus spissatus, and ancient columns dominate the frame.",
+  "decision": null
+ },
+ "File:Clouds CH3.jpg": {
+  "id": "03010414",
+  "label": "Cirrus spissatus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "Cumulonimbus incus (anvil) with cumulus below",
+  "reason": "The dense fibrous sheet is an active thunderstorm anvil rather than detached cirrus spissatus, and lower cumulus/cumulonimbus occupy much of the frame.",
+  "decision": null
+ },
+ "File:Cirrus castellanus.jpg": {
+  "id": "72be2e36",
+  "label": "Cirrus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus/uncinus",
+  "reason": "The sky shows broad fibrous, streaky cirrus veils without any turrets rising from a common base.",
+  "decision": null
+ },
+ "File:Distant cirrus castellanus (28112021).jpg": {
+  "id": "f2d6b002",
+  "label": "Cirrus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altostratus",
+  "reason": "The frame is dominated by a smooth grey stratiform sheet with no high turrets rising from a common base.",
+  "decision": null
+ },
+ "File:Cirrus stream over Melbourne CBD (4838023810).jpg": {
+  "id": "1d6f5dba",
+  "label": "Cirrus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus/uncinus",
+  "reason": "Sky is a broad fibrous cirrus/cirrostratus veil in a heavily saturated HDR image, lacking the discrete rounded tufts of floccus.",
+  "decision": null
+ },
+ "File:Archery Range.jpg": {
+  "id": "1f5f2c86",
+  "label": "Cirrus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus fibratus/uncinus",
+  "reason": "The sky shows long fibrous, hooked cirrus filaments rather than rounded tufts with ragged undersides.",
+  "decision": null
+ },
+ "File:Karoopoort Outspan.jpg": {
+  "id": "90ed8f2a",
+  "label": "Cirrus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cirrus uncinus/fibratus",
+  "reason": "The sky shows long feathery hooked filaments rather than the rounded tufts with ragged undersides typical of floccus.",
+  "decision": null
+ },
+ "File:Pôr do sol - parte 2.jpg": {
+  "id": "60e28bc9",
+  "label": "Cirrus floccus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cirrus uncinus/fibratus with altostratus-like sheets",
+  "reason": "The frame is dominated by extensive fibrous streaks and layered sheets rather than the rounded, ragged tufts of floccus.",
+  "decision": null
+ },
+ "File:Cirrocumulus lenticularis clouds 2.jpg": {
+  "id": "7411771e",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis",
+  "reason": "The clouds are low, opaque, lumpy puffs with no fine granular high-level structure, typical of small cumulus rather than cirrocumulus lenticularis.",
+  "decision": null
+ },
+ "File:Irisieren bzw. Kranz an Cirrocumulus nahe an der Sonne III.jpg": {
+  "id": "557123b9",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "iridescent cirrus/altocumulus with cumulus below",
+  "reason": "The frame is dominated by sun glare and iridescence over ragged wispy cloud plus cumulus, with no smooth almond-shaped lenticular patch, and a thumb blocks part of the view.",
+  "decision": null
+ },
+ "File:Cc len 22-09-2021.jpg": {
+  "id": "0731fdc6",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "altocumulus with a small lenticular patch",
+  "reason": "A single smooth almond-shaped lenticular patch is present but a large granular altocumulus field occupies much of the sky alongside it.",
+  "decision": null
+ },
+ "File:Wetterhorn and Bärglistock.jpg": {
+  "id": "6160be4c",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus lenticularis",
+  "reason": "These are dense, well-defined lens clouds at mid-level over the peak, typical of altocumulus lenticularis rather than fine-grained cirrocumulus.",
+  "decision": null
+ },
+ "File:Torres del Paine National Park (5484136565).jpg": {
+  "id": "68334073",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus lenticularis",
+  "reason": "The two dense, smooth lens clouds sit at mid-level over the peaks with no fine granulation, making them altocumulus lenticularis rather than cirrocumulus.",
+  "decision": null
+ },
+ "File:Flickr - Nicholas T - Cirrocumulus Patches (2).jpg": {
+  "id": "d50ae7f4",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus lenticularis",
+  "reason": "The lens-shaped clouds are smooth, dense and fairly large with no fine granulation, more typical of altocumulus lenticularis than cirrocumulus.",
+  "decision": null
+ },
+ "File:Cclen29092021.jpg": {
+  "id": "73551cd8",
+  "label": "Cirrocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Altocumulus with some cirrus wisps",
+  "reason": "The sky is dominated by a ragged altocumulus/cirrus patch plus thin wisps and heavy foreground wires, with no clear fine-grained almond-shaped lenticular patches.",
+  "decision": null
+ },
+ "File:Cirrocumulus floccus bei Limburg am 21.06.2011.jpg": {
+  "id": "3c9d3e6e",
+  "label": "Cirrocumulus floccus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "cirrus/cirrocumulus mix",
+  "reason": "Tight telephoto crop shows granular tufty patches that could be cirrocumulus floccus, but fibrous cirrus shares the frame about equally and no clear sky or scale is visible.",
+  "decision": null
+ },
+ "File:Cirrocumulus Cloud.jpg": {
+  "id": "14ea1610",
+  "label": "Cirrocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus",
+  "reason": "The cloud is a patch of ragged mid-level altocumulus elements with visible shading and size, not the tiny shadeless tufts of cirrocumulus floccus.",
+  "decision": null
+ },
+ "File:Cirrocumulus 20040830.jpg": {
+  "id": "23ec6588",
+  "label": "Cirrocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus floccus",
+  "reason": "The tufts are fairly large and show visible grey shading, indicating a mid-level altocumulus floccus rather than the tiny shadeless elements of cirrocumulus.",
+  "decision": null
+ },
+ "File:Cirrostratus fibratus (06122021).jpg": {
+  "id": "3ac88396",
+  "label": "Cirrostratus fibratus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altostratus",
+  "reason": "The sky shows a featureless grey-white veil without fibrous cirrus striations, reading as altostratus/haze rather than cirrostratus fibratus.",
+  "decision": null
+ },
+ "File:Cirrostratus fibratus on a summer evening.jpg": {
+  "id": "0490957a",
+  "label": "Cirrostratus fibratus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "cirrus fibratus with cumulus/stratocumulus below",
+  "reason": "The streaky high cloud looks more like separate cirrus filaments than a continuous cirrostratus veil, and low cumulus shares a large part of the frame.",
+  "decision": null
+ },
+ "File:Comienzo Del Atardecer (121881055).jpeg": {
+  "id": "a6df2bb4",
+  "label": "Cirrostratus nebulosus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus (stratiformis/perlucidus)",
+  "reason": "The sky is filled with a mottled, granular cloud sheet rather than the smooth featureless milky veil of cirrostratus nebulosus.",
+  "decision": null
+ },
+ "File:Vereisender Altocumulus stratiformis.jpg": {
+  "id": "165b1dd2",
+  "label": "Altocumulus stratiformis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cirrus/cirrostratus with some altocumulus patches",
+  "reason": "The frame is dominated by fibrous, streaky high cloud rather than the shaded rolls or patches of altocumulus stratiformis.",
+  "decision": null
+ },
+ "File:Altocumulus stratiformis - 20150430 12h46 (10127).jpg": {
+  "id": "d810f138",
+  "label": "Altocumulus stratiformis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cirrus/cirrostratus with a small patch of altocumulus",
+  "reason": "The frame is dominated by wispy fibrous high cloud and open blue sky rather than rows of shaded altocumulus rolls.",
+  "decision": null
+ },
+ "File:Altocumulus Lenticularis.jpg": {
+  "id": "5f792c7f",
+  "label": "Altocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "cumulus with some lenticular elements",
+  "reason": "The dominant mass is a lumpy cumuliform cloud, with only its right-hand extension and the small lower clouds showing smooth lens shapes.",
+  "decision": null
+ },
+ "File:Altocumulus lenticularis.jpg": {
+  "id": "aee93e35",
+  "label": "Altocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cumulus congestus/cumulonimbus with pileus cap cloud",
+  "reason": "The frame is dominated by a dark backlit convective tower topped by a pileus cap, not a smooth almond-shaped lenticular altocumulus.",
+  "decision": null
+ },
+ "File:Monte Cinto Altocumulus lenticularis.jpg": {
+  "id": "d672716b",
+  "label": "Altocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "yes",
+  "seen_as": "",
+  "reason": "Prominent smooth lens-shaped lenticular clouds over the ridge dominate, though cumulus fragments and a patch of altocumulus share the frame.",
+  "decision": null
+ },
+ "File:Altocumulus castellanus.jpg": {
+  "id": "2fe71939",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus fractus / stratocumulus",
+  "reason": "The band is flat, ragged low cloud without the distinct turrets on a common base that define altocumulus castellanus.",
+  "decision": null
+ },
+ "File:Altocumulus castellanus (Corfidi).jpg": {
+  "id": "80731e92",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Stratocumulus with cumulus congestus above",
+  "reason": "The frame is dominated by a flat grey stratocumulus/altocumulus stratiformis deck with separate congestus towers behind, not turrets rising from a common mid-level base.",
+  "decision": null
+ },
+ "File:Altocumulus castellanus break 1.JPG": {
+  "id": "22032b46",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis",
+  "reason": "The cloud is a thin low band of small flat cumulus near the horizon rather than turreted altocumulus castellanus.",
+  "decision": null
+ },
+ "File:Distant altocumulus castellanus (24112021).jpg": {
+  "id": "c3b94085",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus",
+  "reason": "The sky is a dull layered stratocumulus deck with small sunlit puffs, lacking the rising turrets on a common base that define altocumulus castellanus.",
+  "decision": null
+ },
+ "File:2025-07-30 08 46 36 Altocumulus clouds viewed from Aquetong Lane in the Mountainview section of Ewing Township, Mercer County, New Jersey.jpg": {
+  "id": "48234b8f",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus floccus",
+  "reason": "Field of small tufted altocumulus elements with no turrets rising from a shared base, better called altocumulus floccus.",
+  "decision": null
+ },
+ "File:Altocumulus castellanus break 2.JPG": {
+  "id": "a09bd147",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cumulus humilis/mediocris with thin cirrus",
+  "reason": "Mostly blue sky with low cumulus on the horizon and wispy cirrus, no altocumulus turrets on a common base.",
+  "decision": null
+ },
+ "File:Ac cas bei Limburg.jpg": {
+  "id": "f7a8bff5",
+  "label": "Altocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Contrail (cirrus homogenitus)",
+  "reason": "The only cloud is a single linear spreading contrail across otherwise clear blue sky, with no turreted altocumulus base.",
+  "decision": null
+ },
+ "File:Altocumulus floccus 001.jpg": {
+  "id": "a158cfef",
+  "label": "Altocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus (or altocumulus stratiformis) ",
+  "reason": "The sky shows broad ragged sheets and flat patches rather than the discrete tufted floccus elements with trailing undersides.",
+  "decision": null
+ },
+ "File:Altocumulus floccus über dem Atlantik.jpg": {
+  "id": "2bdaa49b",
+  "label": "Altocumulus floccus",
+  "view": "aerial",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis (viewed from above)",
+  "reason": "Taken looking down from a plane, the flat-based puffs are small cumulus rather than ragged altocumulus floccus tufts with trailing virga.",
+  "decision": null
+ },
+ "File:Alto cumulos floccus av.jpg": {
+  "id": "fd607875",
+  "label": "Altocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus stratiformis",
+  "reason": "An extensive granular altocumulus layer covering the sky, lacking the isolated ragged tufts with trailing virga that define floccus.",
+  "decision": null
+ },
+ "File:Altostratus opacus cloud.jpg": {
+  "id": "f36eff88",
+  "label": "Altostratus opacus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus (low cloud patches on a largely clear twilight sky)",
+  "reason": "The sky is essentially clear with only a few low, lumpy cloud patches near the horizon, not a thick sun-hiding altostratus sheet.",
+  "decision": null
+ },
+ "File:Sunset with Stratocumulus stratiformis clouds (140318071).jpg": {
+  "id": "890843c7",
+  "label": "Stratocumulus stratiformis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cirrus (with stratocumulus low on the horizon)",
+  "reason": "The frame is dominated by streaky high cirrus, with stratocumulus confined to a band near the horizon, so it isn't a clean stratocumulus stratiformis example.",
+  "decision": null
+ },
+ "File:Stratocumulus stratiformis undulatus opacus.jpg": {
+  "id": "c5d83b18",
+  "label": "Stratocumulus stratiformis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altostratus / featureless overcast stratus",
+  "reason": "The sky is a nearly uniform dark grey overcast with only vague mottling and no distinct shaded rolls or blue gaps, so it reads as a featureless stratiform sheet rather than stratocumulus stratiformis.",
+  "decision": null
+ },
+ "File:روستای دراج علیای مراغه - panoramio.jpg": {
+  "id": "fdaead43",
+  "label": "Stratocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "mixed cumulus humilis with some lenticular/cirrus",
+  "reason": "The two smooth lens-shaped clouds fit the label, but scattered cumulus and thin cirrus occupy much of the frame, making it a cluttered example.",
+  "decision": null
+ },
+ "File:Stratocumulus lenticularis bei Mackenzell.jpg": {
+  "id": "838439fd",
+  "label": "Stratocumulus lenticularis",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "Stratocumulus (partly lenticularis, with a large ragged stratocumulus sheet above)",
+  "reason": "The lower half shows clear smooth lens-shaped elements, but a big ragged non-lenticular stratocumulus mass occupies roughly half the frame.",
+  "decision": null
+ },
+ "File:Stratocumulus castellanus 3oct.jpg": {
+  "id": "574c9a5b",
+  "label": "Stratocumulus castellanus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cumulus (mediocris/congestus) with a higher thin cirrostratus/altocumulus veil",
+  "reason": "The low clouds are discrete heaped cumulus on the horizon rather than turrets rising from a stratocumulus sheet, and a separate hazy high layer fills the upper half of the frame.",
+  "decision": null
+ },
+ "File:Stratocumulus castellanus (06122021).jpg": {
+  "id": "68e34021",
+  "label": "Stratocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratus or featureless stratocumulus",
+  "reason": "Low-quality blurry shot showing a featureless hazy stratiform layer with faint patches and no discernible rising turrets, plus heavy foreground obstruction.",
+  "decision": null
+ },
+ "File:Stratocumulus castellanus LM 04.08.2020.jpg": {
+  "id": "a427ea42",
+  "label": "Stratocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus (stratiformis) with some cumulus",
+  "reason": "The low layer is flat and ragged with no distinct turrets rising from it, so the castellanus feature isn't shown.",
+  "decision": null
+ },
+ "File:Stratocumulus castellanus clouds (165472005).jpg": {
+  "id": "4b7959ae",
+  "label": "Stratocumulus castellanus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "cumulus with altocumulus/altostratus above",
+  "reason": "The low horizon clouds look like scattered cumulus/stratocumulus rather than turrets on a layer, and a mid-level altocumulus/altostratus deck occupies much of the frame.",
+  "decision": null
+ },
+ "File:Closeup of stratocumulus floccus 1.jpg": {
+  "id": "2cdbfaf6",
+  "label": "Stratocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus stratiformis (ragged layer)",
+  "reason": "The sky is a broad ragged grey stratocumulus/stratus fractus layer rather than isolated tufted floccus elements.",
+  "decision": null
+ },
+ "File:Гродно Фарный касцел.JPG": {
+  "id": "e21c50aa",
+  "label": "Stratocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis / stratocumulus",
+  "reason": "The photo is mainly an architectural shot with small flat cumulus patches, not isolated domed floccus tufts.",
+  "decision": null
+ },
+ "File:Поле в Раменском районе.jpg": {
+  "id": "86e68a5b",
+  "label": "Stratocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus stratiformis",
+  "reason": "The sky is covered by a uniform field of small, flat cloudlets typical of altocumulus stratiformis rather than isolated domed floccus tufts.",
+  "decision": null
+ },
+ "File:La Provençale.jpg": {
+  "id": "20d9d64b",
+  "label": "Stratocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus (cumulus humilis/stratiformis)",
+  "reason": "The clouds are broad, flattish cumulus/stratocumulus patches in a partly sheet-like layer, lacking the isolated domed tufts with ragged bases of floccus.",
+  "decision": null
+ },
+ "File:Crusher clouds.jpg": {
+  "id": "f05af1ea",
+  "label": "Stratocumulus floccus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Altocumulus stratiformis",
+  "reason": "The sky is filled with an extensive regular layer of small cloudlets typical of altocumulus stratiformis, not isolated ragged tufts of floccus.",
+  "decision": null
+ },
+ "File:-2019-03-01 Weather front moving in over Overstrand, Norfolk.JPG": {
+  "id": "d75a0cf6",
+  "label": "Stratocumulus volutus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "stratocumulus band with cirrus/cirrostratus",
+  "reason": "There is an elongated smooth-edged low cloud band that could be a roll cloud, but it shares the frame with extensive high cirrus and the sky is largely blocked by the coastal foreground.",
+  "decision": null
+ },
+ "File:Frost and Stratus.jpg": {
+  "id": "c529678a",
+  "label": "Stratus nebulosus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Fog (cloud touching the ground), with trees filling most of the frame",
+  "reason": "The frame is dominated by rime-covered trees in fog reaching ground level, not a featureless stratus layer overhead.",
+  "decision": null
+ },
+ "File:Stratusfractusaftercoldfront1.jpg": {
+  "id": "2eaecaeb",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus/nimbostratus overcast",
+  "reason": "The sky is a continuous dull grey overcast layer with soft lumps, showing none of the ragged detached shreds that define stratus fractus.",
+  "decision": null
+ },
+ "File:Sich nähernde Shelfcloud im Zwielicht, teilweise verborgen hinter Stratus fractus.jpg": {
+  "id": "61e036a8",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Nimbostratus (with low ragged pannus beneath)",
+  "reason": "The frame is dominated by a dark, heavy rain-bearing layer rather than isolated torn grey shreds.",
+  "decision": null
+ },
+ "File:Archontophoenix alexandrae stratus and fractus at sunset Delaware St Geebung P1060579.jpg": {
+  "id": "fdac68aa",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus (with some altocumulus)",
+  "reason": "The sky shows broken patchy mid/low cloud banks lit by sunset, not the ragged grey shreds beneath a precipitating cloud base that define stratus fractus.",
+  "decision": null
+ },
+ "File:2026-09-03 08 35 48 Stratus fractus in front of other clouds viewed from Mercer County Route 611 (Scotch Road) in Ewing Township, Mercer County, New Jersey.jpg": {
+  "id": "5b515b69",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "stratus fractus under nimbostratus",
+  "reason": "Ragged pale shreds drift beneath a dark overcast layer, consistent with stratus fractus/pannus, but the smooth grey nimbostratus-like sheet occupies a comparable share of the frame.",
+  "decision": null
+ },
+ "File:Fractostratus.JPG": {
+  "id": "f8da4aa8",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Nimbostratus / stratus nebulosus overcast",
+  "reason": "The frame is dominated by a featureless grey overcast layer, with only a small ragged darker patch rather than clear torn stratus fractus shreds.",
+  "decision": null
+ },
+ "File:Stractus fractus with fog and moon (103843645).jpg": {
+  "id": "94a240a1",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus",
+  "reason": "The twilight sky shows broad flat-based dark cloud banks and layers rather than small torn grey shreds beneath a rain cloud.",
+  "decision": null
+ },
+ "File:P (181105441).jpeg": {
+  "id": "d57adc0a",
+  "label": "Stratus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "orographic stratus / cloud cap (or blowing snow) over a cliff",
+  "reason": "The cloud is a thin smooth veil streaming over a rock escarpment, not the torn grey shreds of stratus fractus beneath a raining cloud base.",
+  "decision": null
+ },
+ "File:'विमानतून दिसलेले विहंगम दृश्य\".jpg": {
+  "id": "f065bc79",
+  "label": "Cumulus humilis",
+  "view": "aerial",
+  "one_type": true,
+  "matches": "yes",
+  "seen_as": "",
+  "reason": "Scattered small shallow fair-weather cumulus fill the frame, seen from above out of an aircraft.",
+  "decision": null
+ },
+ "File:A worm..jpg": {
+  "id": "37b354a8",
+  "label": "Cumulus humilis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus / cumulus mediocris",
+  "reason": "The sky is filled by a large, deep, diffuse grey cloud mass with no small flat-based fair-weather cumulus visible.",
+  "decision": null
+ },
+ "File:Cloud2.jpg": {
+  "id": "89ac1893",
+  "label": "Cumulus humilis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus congestus/mediocris",
+  "reason": "The cloud shows significant vertical buildup with cauliflower turrets, not the flat, shallow form of cumulus humilis.",
+  "decision": null
+ },
+ "File:Clouds .jpg": {
+  "id": "b67b4369",
+  "label": "Cumulus humilis",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus mediocris/congestus",
+  "reason": "The clouds are tall, bulky and vertically developed rather than the small flat-based fair-weather humilis.",
+  "decision": null
+ },
+ "File:Cumulus mediocris-1.jpg": {
+  "id": "11f97c26",
+  "label": "Cumulus mediocris",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis/fractus",
+  "reason": "The cumulus are flat, wider than tall and ragged, lacking the sprouting cauliflower tops of mediocris.",
+  "decision": null
+ },
+ "File:Big Cumulus Mediocris 1.jpg": {
+  "id": "bbfab438",
+  "label": "Cumulus mediocris",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus congestus",
+  "reason": "The cloud is a large, deep towering mass with vigorous cauliflower turrets rising well above its base, taller and more developed than mediocris.",
+  "decision": null
+ },
+ "File:Cumulus mediocris at sunset 1.jpg": {
+  "id": "71c66a49",
+  "label": "Cumulus mediocris",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus / cumulus congestus mass",
+  "reason": "The sky is dominated by a large merged cloud mass with a flat grey base and tall bulging tops, not separate heaps as wide as they are tall.",
+  "decision": null
+ },
+ "File:Cumulus mediocris, Balassagyarmat.jpg": {
+  "id": "07db3f2d",
+  "label": "Cumulus mediocris",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus congestus",
+  "reason": "The dominant cloud is a large, hard cauliflower-topped tower typical of congestus rather than the modest mediocris.",
+  "decision": null
+ },
+ "File:Cumulus mediocris virga.jpg": {
+  "id": "bf3c7a9d",
+  "label": "Cumulus mediocris",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus",
+  "reason": "The cloud mass is broad, flattened and merged into layered sheets rather than discrete puffs as tall as they are wide.",
+  "decision": null
+ },
+ "File:Cumulus congestus slant 1.JPG": {
+  "id": "5b2a0576",
+  "label": "Cumulus congestus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cumulus mediocris with cirrus/cirrostratus above",
+  "reason": "The cumulus is broader than tall with no sharp cauliflower tower, and fibrous high cloud shares much of the frame.",
+  "decision": null
+ },
+ "File:Cumulus congestus Clouds 1.jpg": {
+  "id": "afec2191",
+  "label": "Cumulus congestus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Cumulus mediocris with stratocumulus",
+  "reason": "The cloud is wider than tall with a soft flattened top, and a dark stratocumulus sheet fills the upper half, so it is not a congestus tower.",
+  "decision": null
+ },
+ "File:迭浪碎积云 Cumulus fractus fluctus.jpg": {
+  "id": "3a465b85",
+  "label": "Cumulus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis/mediocris",
+  "reason": "The clouds are rounded, coherent heaps with defined bases rather than ragged fractus shreds.",
+  "decision": null
+ },
+ "File:Cumulus fractus fluctus 1.jpg": {
+  "id": "e9123cd1",
+  "label": "Cumulus fractus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis/mediocris",
+  "reason": "The dominant cloud is a coherent rounded cumulus puff with a soft but continuous base, not the ragged torn shreds of cumulus fractus.",
+  "decision": null
+ },
+ "File:Taipei-Beitou-Cumulonimbus calvus.jpg": {
+  "id": "e9a705af",
+  "label": "Cumulonimbus calvus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus congestus",
+  "reason": "The distant tops retain sharp cauliflower outlines with no smooth, softened summit, so it reads as congestus rather than cumulonimbus calvus.",
+  "decision": null
+ },
+ "File:Cumulonimbus calvus over Zonalnyy raion 01.JPG": {
+  "id": "18bf32ea",
+  "label": "Cumulonimbus calvus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulonimbus capillatus (with praecipitatio/virga)",
+  "reason": "The distant storm has already spread into a diffuse fibrous top with visible falling rain, not the smooth un-spread top of calvus.",
+  "decision": null
+ },
+ "File:Cumulonimbus calvus cloud seen from Keyport, NJ,, July 8, 2025 01.jpg": {
+  "id": "a8d3d273",
+  "label": "Cumulonimbus calvus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "unsure",
+  "seen_as": "cumulus congestus under an altostratus/cumulonimbus anvil layer",
+  "reason": "The tower still shows hard cauliflower bulges rather than a smoothed calvus top, and a dark overcast layer fills much of the frame alongside it.",
+  "decision": null
+ },
+ "File:Cumulonimbus capillatus incus-pjt.jpg": {
+  "id": "3e1bc50c",
+  "label": "Cumulonimbus capillatus",
+  "view": "aerial",
+  "one_type": true,
+  "matches": "yes",
+  "seen_as": "",
+  "reason": "A clear anvil-topped cumulonimbus dominates, though seen from above rather than the ground.",
+  "decision": null
+ },
+ "File:Nimbostratus j3.jpg": {
+  "id": "480492e6",
+  "label": "Nimbostratus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "featureless overexposed white sky, likely stratus",
+  "reason": "The frame is a blown-out white void with no dark, rain-bearing layer visible, so it shows none of the diagnostic nimbostratus traits.",
+  "decision": null
+ },
+ "File:Nimbostratus Forest.jpg": {
+  "id": "1f0be746",
+  "label": "Nimbostratus",
+  "view": "aerial",
+  "one_type": true,
+  "matches": "unsure",
+  "seen_as": "cumulonimbus / precipitating convective cloud",
+  "reason": "A dark precipitating layer with a visible rain shaft fits nimbostratus, but the lumpy convective base and localized shower suggest a cumulonimbus instead.",
+  "decision": null
+ },
+ "File:Nimbostratus clouds.jpg": {
+  "id": "bc93bc56",
+  "label": "Nimbostratus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratus/altostratus overcast",
+  "reason": "Blurry roadside shot of a featureless pale grey overcast with no rain or dark thick base; reads as stratus/altostratus rather than nimbostratus.",
+  "decision": null
+ },
+ "File:Nov20-05-Nimbostratus.jpg": {
+  "id": "e6b9f38a",
+  "label": "Nimbostratus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus (undulatus)",
+  "reason": "The sky shows a well-defined rolled, lumpy grey layer with visible structure rather than the diffuse, featureless precipitating murk of nimbostratus.",
+  "decision": null
+ },
+ "File:Cirrus clouds in the morning.jpg": {
+  "id": "860e9d01",
+  "label": "Cirrus castellanus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Altocumulus with stratocumulus/altostratus patches",
+  "reason": "The cloud is thick, opaque mid/low-level cumuliform and layered patches, not fibrous high cirrus with turrets.",
+  "decision": null
+ },
+ "File:Cumulusradiatus1.jpg": {
+  "id": "2a506591",
+  "label": "Cirrus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Cumulus humilis / stratocumulus",
+  "reason": "The frame is dominated by low cumulus/stratocumulus fields with only a wispy cirrus streak at top, not cirrus castellanus turrets.",
+  "decision": null
+ },
+ "File:Cirrocumulus-castellanus-homogenitus.jpg": {
+  "id": "d800bf7a",
+  "label": "Cirrocumulus castellanus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "contrail / thin cirrus in clear sky",
+  "reason": "The frame is nearly clear blue sky dominated by a contrail and faint wisps, with no granular turreted cirrocumulus elements.",
+  "decision": null
+ },
+ "File:Altocumulus volutus 1 (18112021).jpg": {
+  "id": "26af4a3f",
+  "label": "Altocumulus volutus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus / altostratus overcast",
+  "reason": "The sky shows a dull layered grey overcast with no detached horizontal tube cloud.",
+  "decision": null
+ },
+ "File:Morning altocumulus cloud formation in Okitipupa, Ondo State.jpg": {
+  "id": "9083f600",
+  "label": "Altocumulus volutus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus stratiformis",
+  "reason": "The elongated dark band at sunset is a ragged low stratocumulus patch, not a single detached rolling tube.",
+  "decision": null
+ },
+ "File:Strange cloud 002.jpg": {
+  "id": "2e332230",
+  "label": "Altocumulus volutus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus/altostratus layer",
+  "reason": "The photo shows a formless grey layered sheet, not a single detached horizontal roll cloud.",
+  "decision": null
+ },
+ "File:Wavy altostratus.jpg": {
+  "id": "29aaf127",
+  "label": "Altostratus opacus",
+  "view": "ground",
+  "one_type": false,
+  "matches": "no",
+  "seen_as": "Altocumulus stratiformis undulatus with thin cirrostratus/altostratus translucidus above",
+  "reason": "The dominant feature is a rippled, element-patterned altocumulus band with visible blue sky, not a thick opaque altostratus sheet hiding the sun.",
+  "decision": null
+ },
+ "File:Altostratus Clouds 1.jpg": {
+  "id": "24ad755a",
+  "label": "Altostratus opacus",
+  "view": "ground",
+  "one_type": true,
+  "matches": "no",
+  "seen_as": "Stratocumulus",
+  "reason": "Most of the sky is clear blue with a lumpy low cloud bank near the horizon, not a featureless sun-hiding altostratus veil.",
+  "decision": null
+ }
+}

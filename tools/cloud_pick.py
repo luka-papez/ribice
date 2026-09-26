@@ -76,4 +76,5 @@ def main():
               indent=1, ensure_ascii=False)
     print(f"\npicked {len(picked)}/{len(cands)}", file=sys.stderr)
 
-main()
+if __name__ == "__main__":
+    main()
