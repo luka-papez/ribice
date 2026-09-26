@@ -2,7 +2,6 @@ package engine
 
 import (
 	"fmt"
-	"math"
 	"reflect"
 	"strings"
 	"testing"
@@ -45,14 +44,10 @@ func truthSightings(k *kb.KB) []Sighting {
 	return out
 }
 
-// Replaying the knowledge base's own answers must be the simulator: the same
-// questions in the same order, the same options, the same guess. This is what
-// makes a replay of real answers comparable with -simulate.
-//
-// Probabilities are compared to within float rounding, not to the bit. The
-// engine sums over an entity's value set in map order, so on a knowledge base
-// with multi-valued attributes even two runs of Simulate differ in the last
-// bits (never, so far, in a question or a guess).
+// Replaying the knowledge base's own answers must be the simulator, exactly:
+// the same questions in the same order, the same options, the same guess, and
+// the same probabilities to the bit. This is what makes a replay of real
+// answers comparable with -simulate.
 func TestReplayOfTheTruthIsSimulate(t *testing.T) {
 	for _, name := range []string{"clouds", "adriatic-fish", "dogs", "example"} {
 		t.Run(name, func(t *testing.T) {
@@ -82,23 +77,17 @@ func TestReplayOfTheTruthIsSimulate(t *testing.T) {
 // gameDiff describes the first way two games differ, or returns "" if they
 // are the same game.
 func gameDiff(a, b SimResult) string {
-	const eps = 1e-9
 	switch {
 	case a.GuessName != b.GuessName || a.Rank != b.Rank:
 		return fmt.Sprintf("guessed %s (#%d) against %s (#%d)", a.GuessName, a.Rank, b.GuessName, b.Rank)
-	case math.Abs(a.Prob-b.Prob) > eps:
+	case a.Prob != b.Prob:
 		return fmt.Sprintf("probability %v against %v", a.Prob, b.Prob)
 	case len(a.Steps) != len(b.Steps):
 		return fmt.Sprintf("%d questions against %d", len(a.Steps), len(b.Steps))
 	}
 	for i := range a.Steps {
-		x, y := a.Steps[i], b.Steps[i]
-		if math.Abs(x.Entropy-y.Entropy) > eps {
-			return fmt.Sprintf("step %d: entropy %v against %v", i+1, x.Entropy, y.Entropy)
-		}
-		x.Entropy, y.Entropy = 0, 0
-		if !reflect.DeepEqual(x, y) {
-			return fmt.Sprintf("step %d: %+v against %+v", i+1, x, y)
+		if !reflect.DeepEqual(a.Steps[i], b.Steps[i]) {
+			return fmt.Sprintf("step %d: %+v against %+v", i+1, a.Steps[i], b.Steps[i])
 		}
 	}
 	return ""

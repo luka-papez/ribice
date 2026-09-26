@@ -183,12 +183,19 @@ type Entity struct {
 	Image *Image  // nil when the knowledge base has no picture
 
 	values map[string]map[Value]bool
+	lists  map[string][]Value // the same sets, sorted
 }
 
 // Values returns the set of values this entity may present for an attribute.
 // A set with more than one member means "any of these", e.g. a fish that looks
 // either grey or silver. Every attribute in the KB is present in the map.
 func (e *Entity) Values(attr string) map[Value]bool { return e.values[attr] }
+
+// ValueList returns the same values as Values, sorted. Anything that adds up
+// floats over an entity's values should range over this rather than the map:
+// Go randomises map order, and float addition depends on order in the last
+// bits, which is enough to break a tie differently from one run to the next.
+func (e *Entity) ValueList(attr string) []Value { return e.lists[attr] }
 
 // Has reports whether the entity may present v for attr.
 func (e *Entity) Has(attr string, v Value) bool { return e.values[attr][v] }
@@ -270,7 +277,7 @@ func Load(data []byte) (*KB, error) {
 		if name == "" {
 			return nil, fmt.Errorf("entity %d: missing or empty \"name\"", i)
 		}
-		ent := &Entity{Name: name, Prior: 1, values: map[string]map[Value]bool{}}
+		ent := &Entity{Name: name, Prior: 1, values: map[string]map[Value]bool{}, lists: map[string][]Value{}}
 		if p, ok := raw["_prior"].(float64); ok {
 			if p < 0 {
 				return nil, fmt.Errorf("%s: _prior must not be negative", name)
@@ -370,9 +377,13 @@ func Load(data []byte) (*KB, error) {
 				set[v] = true
 			}
 			ent.values[a.Name] = set
+			list := make([]Value, 0, len(set))
 			for v := range set {
 				a.holders[v]++
+				list = append(list, v)
 			}
+			sort.Slice(list, func(x, y int) bool { return list[x] < list[y] })
+			ent.lists[a.Name] = list
 		}
 	}
 

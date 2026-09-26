@@ -3,6 +3,7 @@ package engine
 import (
 	"fmt"
 	"math"
+	"reflect"
 	"testing"
 
 	"github.com/lpapez/ribice/kb"
@@ -607,6 +608,24 @@ func TestUnknownLikelihoodIsADistribution(t *testing.T) {
 		}
 		if math.Abs(total-1) > 1e-9 {
 			t.Errorf("%s: unknown's option probabilities sum to %v, want 1", q.Attr.Name, total)
+		}
+	}
+}
+
+// The same knowledge base and answers must give the same game to the last bit,
+// every run. Go randomises map order, so any sum taken over a map would make
+// this fail on knowledge bases where an entity holds several values at once.
+func TestSimulateIsRepeatable(t *testing.T) {
+	k := fishKB(t)
+	first := Simulate(k, DefaultConfig(), SimOptions{Noise: 0.2, Seed: 3})
+	for run := 0; run < 3; run++ {
+		again := Simulate(k, DefaultConfig(), SimOptions{Noise: 0.2, Seed: 3})
+		for i := range first.Results {
+			a, b := first.Results[i], again.Results[i]
+			if a.Prob != b.Prob || !reflect.DeepEqual(a.Steps, b.Steps) {
+				t.Fatalf("%s: run %d differs from the first (%v against %v)",
+					a.Target.Name, run+2, b.Prob, a.Prob)
+			}
 		}
 	}
 }

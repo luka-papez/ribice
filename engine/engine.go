@@ -390,12 +390,12 @@ func (s *Session) likelihood(e int, a *kb.Attribute, values []kb.Value) float64 
 	if len(a.Domain) <= 1 {
 		return 1
 	}
-	truth := s.KB.Entities[e].Values(a.Name)
+	truth := s.KB.Entities[e].ValueList(a.Name)
 	if len(truth) == 0 {
 		return 1
 	}
 	total := 0.0
-	for actual := range truth {
+	for _, actual := range truth {
 		for _, reported := range values {
 			total += a.Report(reported, actual)
 		}
