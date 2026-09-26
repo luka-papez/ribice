@@ -1,8 +1,6 @@
 # Calibration loop
 
-Status: phase 0 (`-replay`) built. Phase 1a: corpus built (235 photos) and label-checked;
-the 94 doubts in `tools/calib/corpus/clouds/review.json` await a keep/drop decision. The
-rest is design. Clouds first; fish and dogs after, on the same harness.
+Status: phases 0 (`-replay`) and 1a (corpus, 235 photos) done; the rest is design. Clouds first; fish and dogs after, on the same harness.
 
 We will measure how a layperson actually answers the cloud quiz, using Claude
 as a stand-in, then tune the knowledge base against those measurements instead
@@ -139,6 +137,12 @@ sky), most arguing a species boundary (mediocris or congestus, fibratus or
 uncinus, cirrocumulus or altocumulus lenticularis). The second kind is itself
 a finding: if the people who file Commons photos disagree with Claude at those
 boundaries, a layperson will too, and the quiz's mix-up tables should show it.
+
+The doubts were kept without review, to get to measurements sooner; each is
+marked "kept unreviewed" in `review.json`. To tell whether that matters, the
+phase 1b report gives accuracy twice: on all photos, and on those the label
+check passed. A large gap means the doubted photos are worth reviewing after
+all.
 
 **Selection rules**
 
@@ -462,7 +466,7 @@ tune split alone, with no model involved.
 
 | Metric | Definition |
 | --- | --- |
-| Accuracy | true cloud ranked first when the game ends |
+| Accuracy | true cloud ranked first when the game ends; also given for label-check-passed photos only |
 | Genus accuracy | guessed cloud is at least the right genus (cumulus, cirrus…) |
 | Top 3 | true cloud among the three candidates shown |
 | Questions | mean and worst per game |
@@ -609,7 +613,7 @@ base on the same held-out photos (96 games), so the comparison is paired.
 | Phase | Work | Gate to move on |
 | --- | --- | --- |
 | 0. Replay | `-replay`, `-json`, tests | answers generated from the knowledge base itself reproduce `-simulate` exactly (done) |
-| 1a. Corpus | `corpus.py`, `label_check.py` | at least 5 photos for at least 27 of 32 clouds; doubt list reviewed |
+| 1a. Corpus | `corpus.py`, `label_check.py` | at least 5 photos for at least 27 of 32 clouds; doubt list reviewed (done: 28 clouds; doubts kept unreviewed) |
 | 1b. Baseline | answerer, cache, `run.py`, report | the 30-photo human comparison and leakage checks come out acceptable |
 | 1c. Calibration | calibrated candidate, `compare.py` | the candidate passes the acceptance rule, or we learn why not |
 | 2. Editor | editor rounds | capped at 5 rounds or $50, whichever comes first, then a review of what it changed |
