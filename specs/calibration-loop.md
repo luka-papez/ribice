@@ -1,6 +1,6 @@
 # Calibration loop
 
-Status: design, nothing built yet. Clouds first; fish and dogs after, on the
+Status: phase 0 (`-replay`) built; the rest is design. Clouds first; fish and dogs after, on the
 same harness.
 
 We will measure how a layperson actually answers the cloud quiz, using Claude
@@ -297,26 +297,47 @@ A question with no cached answer (new or reworded, not yet asked) counts as a
 skip, and the report lists it as a gap, so a stale cache is never mistaken for
 a real skip.
 
-**Output** (`-replay answers.jsonl -json`, one line per game):
+**Giving up.** A skipped question comes back once three more have been
+answered, and a person who couldn't tell the first time can't tell the second
+time either. So replay skips it again. When the engine offers a question the
+sighting can't answer and every answer since that question was last skipped
+was also a skip, only unanswerable questions are left. The game then ends
+there, counted as `gave_up`, the way a person would give up. Without this rule
+such a game never ends. Every skip counts as a question asked, as it does on
+the site.
+
+**Output** (`-replay answers.jsonl -json`, one line per game, in file order;
+`-simulate -json` prints the same shape without `photo` and `split`):
 
 ```json
-{"photo": "c3f9a1", "target": "Cumulus mediocris", "guess": "Cumulus mediocris",
- "correct": true, "rank": 1, "prob": 0.93, "questions": 6, "unsure": false,
- "steps": [{"attr": "shape", "offered": ["heaped", "towering", "rolls", "*"],
-            "chosen": ["heaped"], "skipped": false, "entropy_after": 2.1}]}
+{"photo": "c3f9a1", "split": "tune", "target": "Cumulus mediocris",
+ "guess": "Cumulus mediocris", "correct": true, "unsure": false, "gave_up": false,
+ "rank": 1, "prob": 0.93, "questions": 6, "skipped": 1,
+ "steps": [{"attr": "shape", "offered": [["heaped"], ["towering"], ["rolls"], ["lens", "ragged"]],
+            "picked": [0], "skipped": false, "entropy_after": 2.1},
+           {"attr": "halo", "offered": [["yes"], ["no"]], "picked": [], "skipped": true,
+            "entropy_after": 2.1}]}
 ```
 
-**Code changes** (about 150 lines of Go, plus tests)
+`offered` lists the values behind each option in the order shown; an option
+with several values is "something else". `picked` holds indexes into
+`offered`. A step also carries `"gap": true` when the answers file had nothing
+for that question, and `"reoffered": true` when it had been skipped before.
 
-- `engine/replay.go`: `Replay(k, cfg, answers) []SimResult` with the
-  value-to-option mapping above. It reuses `SimResult` and adds per-step
-  records.
-- `cmd/ribice`: the `-replay FILE` flag, and `-json` for machine-readable
-  output from both `-replay` and `-simulate`.
-- `engine/replay_test.go`: a pooled value maps to "something else", two values
-  map to `AskMany`, a cant-tell maps to a skip, a missing answer is reported as
-  a gap, and answers generated from the knowledge base itself reproduce
-  `-simulate` exactly.
+**Code** (built in phase 0)
+
+- `engine/replay.go`: `LoadSightings` reads and checks the answers file against
+  the knowledge base, and `Replay` plays one game per sighting. A value the
+  attribute can't take is an error rather than a skip, because it means the
+  answers were recorded against another version of the knowledge base.
+- `engine/simulate.go`: `Simulate` and `Replay` share one game loop, and each
+  game now records its steps.
+- `kb.Attribute.Parse` reads a value the way the loader does.
+- `cmd/ribice`: `-replay FILE` (`-` for stdin) and `-json`.
+- `engine/replay_test.go`: replaying each knowledge base's own answers is
+  `-simulate` question for question, on every entity without multi-valued
+  attributes, which is all 32 clouds. It also tests value-to-option mapping,
+  giving up, gaps and every loading error.
 
 A live stdin/stdout protocol (`-serve`) is deferred. It is only needed for
 playing games conversationally, and nothing here needs that.
@@ -544,7 +565,7 @@ base on the same held-out photos (96 games), so the comparison is paired.
 
 | Phase | Work | Gate to move on |
 | --- | --- | --- |
-| 0. Replay | `-replay`, `-json`, tests | answers generated from the knowledge base itself reproduce `-simulate` exactly |
+| 0. Replay | `-replay`, `-json`, tests | answers generated from the knowledge base itself reproduce `-simulate` exactly (done) |
 | 1a. Corpus | `corpus.py`, `label_check.py` | at least 5 photos for at least 27 of 32 clouds; doubt list reviewed |
 | 1b. Baseline | answerer, cache, `run.py`, report | the 30-photo human comparison and leakage checks come out acceptable |
 | 1c. Calibration | calibrated candidate, `compare.py` | the candidate passes the acceptance rule, or we learn why not |

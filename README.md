@@ -124,10 +124,11 @@ and merges. A change is kept only if it scores better on held-out photos and a
 person approves the diff. The language model does the offline work; the quiz
 still runs without one.
 
-Nothing of this is built yet. Clouds come first, since that quiz asks the most
-questions (8.2 on average, where 5 would do). The design, including the
-answerer's prompt and the costs, is in
-[`specs/calibration-loop.md`](specs/calibration-loop.md).
+The first piece is built: `-replay` plays one game per recorded sighting (see
+[Commands](#commands)). The photos, the answerer and the report come next.
+Clouds come first, since that quiz asks the most questions (8.2 on average,
+where 5 would do). The design, including the answerer's prompt and the costs,
+is in [`specs/calibration-loop.md`](specs/calibration-loop.md).
 
 ## How it picks questions
 
@@ -378,6 +379,8 @@ go run ./cmd/ribice -lint                # check a knowledge base for problems
 go run ./cmd/ribice -stats               # attributes, domains, uncertainty
 go run ./cmd/ribice -simulate            # self-test: play one game per entity
 go run ./cmd/ribice -simulate -sim-noise 0.25
+go run ./cmd/ribice -replay answers.jsonl   # play one game per recorded sighting
+go run ./cmd/ribice -replay answers.jsonl -json  # one JSON line per game, steps included
 ```
 
 `-lint` catches the mistakes that quietly ruin a knowledge base: one property
@@ -405,6 +408,18 @@ Every entity was identified.
 With 15% of answers wrong it still lands 95%. With a quarter wrong it lands
 70%, and the misses are mostly a declared look-alike rather than nonsense —
 one seabream for another, the stargazer for the scorpionfish.
+
+`-replay` plays one game per sighting in a JSON Lines file, answering each
+question from the record instead of from the knowledge base. A sighting is what
+someone answered about one thing they saw. A value the knowledge base can't
+take is an error, a recorded "can't tell" is a skip, and a question with no
+answer at all is a skip reported as a gap. It is the measuring end of the
+[calibration loop](specs/calibration-loop.md):
+
+```json
+{"photo": "c3f9a1", "target": "Cumulus mediocris", "split": "tune",
+ "answers": {"shape": {"values": ["heaped"]}, "halo": {"cant_tell": "not_in_photo"}}}
+```
 
 ## In the browser
 
@@ -598,7 +613,7 @@ licences require.
 
 ```
 kb/         loading, normalising and linting a knowledge base
-engine/     belief state, Bayesian update, question selection, self-test
+engine/     belief state, Bayesian update, question selection, self-test, replay
 cmd/ribice/ the CLI
 cmd/wasm/   the same engine, exposed to JavaScript
 web/        the embeddable widget, its theme, a demo page, and build output
@@ -606,6 +621,7 @@ dist/       the published assets, committed so embedding needs no Go toolchain
 data/       knowledge bases
 tools/      how data/dogs.json was built -- see tools/README.md
 docs/       images for this README
+specs/      designs for larger work, and how far each has got
 ```
 
 Neither `web/` nor `dist/` contains a knowledge base. They are the engine and

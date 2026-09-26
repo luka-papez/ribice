@@ -4,10 +4,12 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -27,6 +29,8 @@ func main() {
 		doSim    = flag.Bool("simulate", false, "self-test: play one game per entity and report, then exit")
 		simNoise = flag.Float64("sim-noise", 0, "probability the simulated user answers wrongly")
 		seed     = flag.Int64("seed", 1, "random seed for -simulate")
+		replayF  = flag.String("replay", "", "play one game per recorded sighting in this JSON Lines file (- for stdin), report, then exit")
+		asJSON   = flag.Bool("json", false, "with -simulate or -replay: print one JSON object per game instead of a summary")
 	)
 	flag.Float64Var(&cfg.Threshold, "threshold", cfg.Threshold, "stop once a candidate reaches this probability")
 	flag.Float64Var(&cfg.MinGain, "min-gain", cfg.MinGain, "stop once the best question is worth fewer bits than this")
@@ -56,7 +60,12 @@ func main() {
 	case *doStats:
 		stats(k)
 	case *doSim:
-		simulate(k, cfg, engine.SimOptions{Noise: *simNoise, Seed: *seed})
+		simulate(k, cfg, engine.SimOptions{Noise: *simNoise, Seed: *seed}, *asJSON)
+	case *replayF != "":
+		if err := replay(k, cfg, *replayF, *asJSON); err != nil {
+			fmt.Fprintln(os.Stderr, "error:", err)
+			os.Exit(1)
+		}
 	default:
 		quiz(k, cfg, *top, *explain)
 	}
@@ -285,18 +294,14 @@ func stats(k *kb.KB) {
 	}
 }
 
-func simulate(k *kb.KB, cfg engine.Config, opts engine.SimOptions) {
+func simulate(k *kb.KB, cfg engine.Config, opts engine.SimOptions, asJSON bool) {
 	r := engine.Simulate(k, cfg, opts)
-	n := len(r.Results)
-	fmt.Printf("self-test: %d entities, answer error rate %.0f%%\n\n", n, opts.Noise*100)
-	fmt.Printf("identified      %d/%d (%.0f%%)\n", r.Correct, n, 100*float64(r.Correct)/float64(n))
-	if wrong := n - r.Correct - r.Unsure; r.Unsure > 0 || wrong > 0 {
-		fmt.Printf("named wrongly   %d (%.0f%%)\n", wrong, 100*float64(wrong)/float64(n))
-		fmt.Printf("said unsure     %d (%.0f%%)\n", r.Unsure, 100*float64(r.Unsure)/float64(n))
+	if asJSON {
+		writeGames(r, nil)
+		return
 	}
-	fmt.Printf("questions       %.1f average, %d worst\n", r.MeanAsked, r.MaxAsked)
-	fmt.Printf("uncertainty     %.2f bits to resolve (%.2f if priors were flat)\n",
-		k.Stats().PriorEntropy, math.Log2(float64(len(k.Entities))))
+	fmt.Printf("self-test: %d entities, answer error rate %.0f%%\n\n", len(r.Results), opts.Noise*100)
+	summary(k, r)
 	if len(r.Worst) == 0 {
 		fmt.Println("\nEvery entity was identified.")
 		return
@@ -305,5 +310,171 @@ func simulate(k *kb.KB, cfg engine.Config, opts engine.SimOptions) {
 	for _, res := range r.Worst {
 		fmt.Printf("  %-28s ranked #%d at %4.1f%%, guessed %s (%d questions)\n",
 			res.Target.Name, res.Rank, res.Prob*100, res.GuessName, res.Questions)
+	}
+}
+
+// replay plays one game per recorded sighting, answering from the record.
+func replay(k *kb.KB, cfg engine.Config, path string, asJSON bool) error {
+	in := os.Stdin
+	if path != "-" {
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+		in = f
+	}
+	sightings, err := engine.LoadSightings(in, k)
+	if err != nil {
+		return fmt.Errorf("%s: %w", path, err)
+	}
+	if len(sightings) == 0 {
+		return fmt.Errorf("%s: no sightings", path)
+	}
+	r := engine.Replay(k, cfg, sightings)
+	if asJSON {
+		writeGames(r, sightings)
+		return nil
+	}
+
+	fmt.Printf("replay: %d sightings from %s\n\n", len(sightings), path)
+	summary(k, r)
+	skipped, gaps, gaveUp := 0, 0, 0
+	for _, res := range r.Results {
+		skipped += res.Skipped
+		if res.GaveUp {
+			gaveUp++
+		}
+		for _, st := range res.Steps {
+			if st.Gap {
+				gaps++
+			}
+		}
+	}
+	n := float64(len(r.Results))
+	fmt.Printf("not sure        %.1f per game\n", float64(skipped)/n)
+	if gaveUp > 0 {
+		fmt.Printf("gave up         %d (only unanswerable questions were left)\n", gaveUp)
+	}
+	if gaps > 0 {
+		fmt.Printf("gaps            %d questions had no recorded answer -- ask them before trusting this\n", gaps)
+	}
+
+	// Per split, when there is more than one.
+	var splits []string
+	by := map[string][]engine.SimResult{}
+	for i, sg := range sightings {
+		if _, ok := by[sg.Split]; !ok {
+			splits = append(splits, sg.Split)
+		}
+		by[sg.Split] = append(by[sg.Split], r.Results[i])
+	}
+	if len(splits) > 1 {
+		sort.Strings(splits)
+		fmt.Println()
+		for _, name := range splits {
+			sr := by[name]
+			correct, asked := 0, 0
+			for _, res := range sr {
+				if res.Correct {
+					correct++
+				}
+				asked += res.Questions
+			}
+			label := name
+			if label == "" {
+				label = "(none)"
+			}
+			fmt.Printf("  %-12s %4d games  identified %3.0f%%  %.1f questions\n", label, len(sr),
+				100*float64(correct)/float64(len(sr)), float64(asked)/float64(len(sr)))
+		}
+	}
+
+	if len(r.Worst) == 0 {
+		fmt.Println("\nEvery sighting was identified.")
+		return nil
+	}
+	var misses []int
+	for i, res := range r.Results {
+		if !res.Correct {
+			misses = append(misses, i)
+		}
+	}
+	sort.SliceStable(misses, func(a, b int) bool { return r.Results[misses[a]].Prob < r.Results[misses[b]].Prob })
+	fmt.Printf("\nnot identified (%d):\n", len(misses))
+	const show = 20
+	for n, i := range misses {
+		if n == show {
+			fmt.Printf("  ... and %d more (-json has them all)\n", len(misses)-show)
+			break
+		}
+		res := r.Results[i]
+		fmt.Printf("  %-12s %-28s ranked #%d at %4.1f%%, guessed %s (%d questions)\n",
+			sightings[i].ID, res.Target.Name, res.Rank, res.Prob*100, res.GuessName, res.Questions)
+	}
+	return nil
+}
+
+// summary prints the totals -simulate and -replay share.
+func summary(k *kb.KB, r engine.SimReport) {
+	n := len(r.Results)
+	fmt.Printf("identified      %d/%d (%.0f%%)\n", r.Correct, n, 100*float64(r.Correct)/float64(n))
+	if wrong := n - r.Correct - r.Unsure; r.Unsure > 0 || wrong > 0 {
+		fmt.Printf("named wrongly   %d (%.0f%%)\n", wrong, 100*float64(wrong)/float64(n))
+		fmt.Printf("said unsure     %d (%.0f%%)\n", r.Unsure, 100*float64(r.Unsure)/float64(n))
+	}
+	fmt.Printf("questions       %.1f average, %d worst\n", r.MeanAsked, r.MaxAsked)
+	fmt.Printf("uncertainty     %.2f bits to resolve (%.2f if priors were flat)\n",
+		k.Stats().PriorEntropy, math.Log2(float64(len(k.Entities))))
+}
+
+type gameJSON struct {
+	Photo     string     `json:"photo,omitempty"`
+	Split     string     `json:"split,omitempty"`
+	Target    string     `json:"target"`
+	Guess     string     `json:"guess"`
+	Correct   bool       `json:"correct"`
+	Unsure    bool       `json:"unsure"`
+	GaveUp    bool       `json:"gave_up"`
+	Rank      int        `json:"rank"`
+	Prob      float64    `json:"prob"`
+	Questions int        `json:"questions"`
+	Skipped   int        `json:"skipped"`
+	Steps     []stepJSON `json:"steps"`
+}
+
+type stepJSON struct {
+	Attr      string       `json:"attr"`
+	Offered   [][]kb.Value `json:"offered"`
+	Picked    []int        `json:"picked"`
+	Skipped   bool         `json:"skipped"`
+	Gap       bool         `json:"gap,omitempty"`
+	Reoffered bool         `json:"reoffered,omitempty"`
+	Entropy   float64      `json:"entropy_after"`
+}
+
+// writeGames prints one JSON object per game, in the order played. sightings
+// is nil for -simulate, where each game is named by its target alone.
+func writeGames(r engine.SimReport, sightings []engine.Sighting) {
+	enc := json.NewEncoder(os.Stdout)
+	for i, res := range r.Results {
+		g := gameJSON{Target: res.Target.Name, Guess: res.GuessName, Correct: res.Correct,
+			Unsure: res.Unsure, GaveUp: res.GaveUp, Rank: res.Rank, Prob: res.Prob,
+			Questions: res.Questions, Skipped: res.Skipped, Steps: []stepJSON{}}
+		if sightings != nil {
+			g.Photo, g.Split = sightings[i].ID, sightings[i].Split
+		}
+		for _, st := range res.Steps {
+			picked := st.Picked
+			if picked == nil {
+				picked = []int{}
+			}
+			g.Steps = append(g.Steps, stepJSON{Attr: st.Attr, Offered: st.Offered, Picked: picked,
+				Skipped: st.Skipped, Gap: st.Gap, Reoffered: st.Reoffered, Entropy: st.Entropy})
+		}
+		if err := enc.Encode(g); err != nil {
+			fmt.Fprintln(os.Stderr, "error:", err)
+			os.Exit(1)
+		}
 	}
 }

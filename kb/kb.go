@@ -119,6 +119,22 @@ func (a *Attribute) Report(reported, actual Value) float64 {
 	return noise / float64(far)
 }
 
+// Parse reads a value written the way a knowledge base would write it ("Yes",
+// "large", "not visible") and reports whether this attribute can take it. As
+// when loading, "none" on a boolean attribute means no.
+func (a *Attribute) Parse(s string) (Value, bool) {
+	v, _ := canonString(s)
+	if a.Kind == Boolean && v == Absent {
+		v = No
+	}
+	for _, d := range a.Domain {
+		if d == v {
+			return v, true
+		}
+	}
+	return v, false
+}
+
 // Label renders a value for display.
 func (a *Attribute) Label(v Value) string {
 	if s, ok := a.labels[v]; ok && s != "" {

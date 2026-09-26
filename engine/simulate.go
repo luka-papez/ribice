@@ -13,7 +13,8 @@ type SimOptions struct {
 	Seed  int64
 }
 
-// SimResult is one simulated run against a known entity.
+// SimResult is one game played against a known entity, by the simulator or by
+// replaying a recorded sighting.
 type SimResult struct {
 	Target    *kb.Entity
 	Guess     *kb.Entity // nil when the leading candidate was "unknown"
@@ -23,6 +24,20 @@ type SimResult struct {
 	Rank      int  // position of the true entity in the final ranking, 1-based
 	Prob      float64
 	Questions int
+	Skipped   int  // questions answered "not sure", counted in Questions too
+	GaveUp    bool // the answerer stopped because only questions it could not answer were left
+	Steps     []Step
+}
+
+// Step is one question put during a game and what came back.
+type Step struct {
+	Attr      string
+	Offered   [][]kb.Value // the values each option covered, in the order shown
+	Picked    []int        // indexes into Offered; empty when skipped
+	Skipped   bool
+	Gap       bool // skipped because the sighting had no answer recorded at all
+	Reoffered bool
+	Entropy   float64 // uncertainty left after the answer, in bits
 }
 
 // SimReport aggregates a full self-test.
@@ -43,36 +58,78 @@ type SimReport struct {
 // whether a knowledge base actually separates the things in it.
 func Simulate(k *kb.KB, cfg Config, opts SimOptions) SimReport {
 	rng := rand.New(rand.NewSource(opts.Seed))
-	report := SimReport{}
-	totalAsked := 0
-
+	var results []SimResult
 	for _, target := range k.Entities {
-		s := New(k, cfg)
-		for {
-			if done, _ := s.Done(); done {
-				break
-			}
-			q := s.Next()
-			if q == nil {
-				break
-			}
-			s.Ask(q, answerAs(target, q, opts.Noise, rng))
-		}
+		results = append(results, play(k, cfg, target, func(_ *Session, q *Question) reply {
+			return reply{options: []int{answerAs(target, q, opts.Noise, rng)}}
+		}))
+	}
+	return summarise(results)
+}
 
-		ranking := s.Top(0)
-		res := SimResult{Target: target, Questions: s.Asked()}
-		if len(ranking) > 0 {
-			res.Guess, res.GuessName = ranking[0].Entity, ranking[0].Name
-			res.Correct = res.Guess == target
+// reply is what an answerer gives back for one question: the options it picks,
+// none meaning "not sure".
+type reply struct {
+	options []int
+	gap     bool // not sure because nothing was recorded, rather than by choice
+	giveUp  bool // stop the game here instead of answering
+}
+
+// play runs one game against target, asking answer for every question.
+func play(k *kb.KB, cfg Config, target *kb.Entity, answer func(*Session, *Question) reply) SimResult {
+	s := New(k, cfg)
+	res := SimResult{Target: target}
+	for {
+		if done, _ := s.Done(); done {
+			break
 		}
-		for i, c := range ranking {
-			if c.Entity == target {
-				res.Rank, res.Prob = i+1, c.Prob
-				break
-			}
+		q := s.Next()
+		if q == nil {
+			break
 		}
-		if len(ranking) > 0 && ranking[0].Unknown {
-			res.Unsure = true
+		r := answer(s, q)
+		if r.giveUp {
+			res.GaveUp = true
+			break
+		}
+		if len(r.options) == 0 {
+			s.Skip(q)
+		} else {
+			s.AskMany(q, r.options)
+		}
+		step := Step{Attr: q.Attr.Name, Picked: r.options, Skipped: len(r.options) == 0,
+			Gap: r.gap && len(r.options) == 0, Reoffered: q.Reoffered, Entropy: s.Entropy()}
+		for _, opt := range q.Options {
+			step.Offered = append(step.Offered, opt.Values)
+		}
+		if step.Skipped {
+			res.Skipped++
+		}
+		res.Steps = append(res.Steps, step)
+	}
+	res.Questions = s.Asked()
+
+	ranking := s.Top(0)
+	if len(ranking) > 0 {
+		res.Guess, res.GuessName = ranking[0].Entity, ranking[0].Name
+		res.Correct = res.Guess == target
+		res.Unsure = ranking[0].Unknown
+	}
+	for i, c := range ranking {
+		if c.Entity == target {
+			res.Rank, res.Prob = i+1, c.Prob
+			break
+		}
+	}
+	return res
+}
+
+// summarise totals a set of games into a report.
+func summarise(results []SimResult) SimReport {
+	report := SimReport{Results: results}
+	totalAsked := 0
+	for _, res := range results {
+		if res.Unsure {
 			report.Unsure++
 		}
 		if res.Correct {
@@ -84,10 +141,8 @@ func Simulate(k *kb.KB, cfg Config, opts SimOptions) SimReport {
 		if res.Questions > report.MaxAsked {
 			report.MaxAsked = res.Questions
 		}
-		report.Results = append(report.Results, res)
 	}
-
-	if n := len(report.Results); n > 0 {
+	if n := len(results); n > 0 {
 		report.MeanAsked = float64(totalAsked) / float64(n)
 	}
 	sort.SliceStable(report.Worst, func(i, j int) bool {
