@@ -104,6 +104,31 @@ the rocks", and covers 61 species because 61 were entered. About anything else
 the most it can honestly say is that this guide does not have it, which is
 what [_When it is none of them_](#when-it-is-none-of-them) below is for.
 
+### Are the questions any good?
+
+Not measurably, yet. The knowledge bases here were written by a language model,
+and `-simulate` only proves they agree with themselves: its simulated user
+answers straight from the JSON and never struggles with a question. A real
+person looking up at a cloud does. Asked "were the lumps shaded grey
+underneath?", a layperson mostly guesses, and every `noise` and `cost` value in
+the knowledge base is a guess about how often.
+
+The plan is to measure it instead. Claude plays the part of the layperson: it
+sees a labelled photograph, never the label, and answers each question as
+someone with no training would, including "I can't tell from this". Its
+answers are cached, and the engine replays one game per photo from them. That
+gives accuracy on photos the knowledge base was never tuned on, which
+questions people can't judge, and which answers they mix up. The measured
+error rates replace the guessed ones, and a second Claude proposes rewordings
+and merges. A change is kept only if it scores better on held-out photos and a
+person approves the diff. The language model does the offline work; the quiz
+still runs without one.
+
+Nothing of this is built yet. Clouds come first, since that quiz asks the most
+questions (8.2 on average, where 5 would do). The design, including the
+answerer's prompt and the costs, is in
+[`specs/calibration-loop.md`](specs/calibration-loop.md).
+
 ## How it picks questions
 
 The session holds a probability distribution over every candidate, starting at
