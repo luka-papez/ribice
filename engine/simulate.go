@@ -24,8 +24,9 @@ type SimResult struct {
 	Rank      int  // position of the true entity in the final ranking, 1-based
 	Prob      float64
 	Questions int
-	Skipped   int  // questions answered "not sure", counted in Questions too
-	GaveUp    bool // the answerer stopped because only questions it could not answer were left
+	Skipped   int     // questions answered "not sure", counted in Questions too
+	GaveUp    bool    // the answerer stopped because only questions it could not answer were left
+	Start     float64 // uncertainty before the first question, in bits
 	Steps     []Step
 }
 
@@ -78,7 +79,7 @@ type reply struct {
 // play runs one game against target, asking answer for every question.
 func play(k *kb.KB, cfg Config, target *kb.Entity, answer func(*Session, *Question) reply) SimResult {
 	s := New(k, cfg)
-	res := SimResult{Target: target}
+	res := SimResult{Target: target, Start: s.Entropy()}
 	for {
 		if done, _ := s.Done(); done {
 			break

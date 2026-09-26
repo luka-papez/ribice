@@ -440,6 +440,7 @@ type gameJSON struct {
 	Prob      float64    `json:"prob"`
 	Questions int        `json:"questions"`
 	Skipped   int        `json:"skipped"`
+	Start     float64    `json:"entropy_start"`
 	Steps     []stepJSON `json:"steps"`
 }
 
@@ -460,7 +461,7 @@ func writeGames(r engine.SimReport, sightings []engine.Sighting) {
 	for i, res := range r.Results {
 		g := gameJSON{Target: res.Target.Name, Guess: res.GuessName, Correct: res.Correct,
 			Unsure: res.Unsure, GaveUp: res.GaveUp, Rank: res.Rank, Prob: res.Prob,
-			Questions: res.Questions, Skipped: res.Skipped, Steps: []stepJSON{}}
+			Questions: res.Questions, Skipped: res.Skipped, Start: res.Start, Steps: []stepJSON{}}
 		if sightings != nil {
 			g.Photo, g.Split = sightings[i].ID, sightings[i].Split
 		}

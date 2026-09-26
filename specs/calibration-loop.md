@@ -614,9 +614,16 @@ base on the same held-out photos (96 games), so the comparison is paired.
 | --- | --- | --- |
 | 0. Replay | `-replay`, `-json`, tests | answers generated from the knowledge base itself reproduce `-simulate` exactly (done) |
 | 1a. Corpus | `corpus.py`, `label_check.py` | at least 5 photos for at least 27 of 32 clouds; doubt list reviewed (done: 28 clouds; doubts kept unreviewed) |
-| 1b. Baseline | answerer, cache, `run.py`, report | the 30-photo human comparison and leakage checks come out acceptable |
+| 1b. Baseline | answerer, cache, `run.py`, report | the leakage checks come out acceptable; the human comparison is deferred (see below) |
 | 1c. Calibration | calibrated candidate, `compare.py` | the candidate passes the acceptance rule, or we learn why not |
 | 2. Editor | editor rounds | capped at 5 rounds or $50, whichever comes first, then a review of what it changed |
 | 3. Other quizzes | fish and dogs, on the same harness | a photo source per quiz (fish photos are harder: underwater, often blurry) |
+
+**The human comparison is deferred** (2026-09-26). For now the loop's aim is
+to get Claude's reading of the photos into the knowledge base; tuning against
+how people answer comes later, on the same harness (`human_page.py` and the
+report's comparison section are built and wait for it). Until then the
+numbers measure the quiz against Claude as the answerer, and the leakage
+checks are the only guard on how human that answerer is.
 
 Phase 0 and 1a cost nothing to run. The first money is spent in 1b, about $40.

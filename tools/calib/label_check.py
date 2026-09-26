@@ -12,22 +12,17 @@ a review.json with no null decisions left.
 Results are saved as they arrive and a photo is never asked twice, so
 running it again only checks what is new.
 
-Three ways to reach Claude (--via):
-  cli    the Claude Code CLI, on a Claude subscription (see claude_cli.py).
-         Stops starting calls when the five-hour window is --max-window full;
-         run it again after the window resets to go on.
-  batch  the Batch API, at half the API price; needs ANTHROPIC_API_KEY. A
-         submitted batch is remembered, so an interrupted run resumes it.
-  api    the API directly: faster than a batch, twice the price.
+--via picks how to reach Claude: the Claude Code CLI on a subscription (the
+default), the Batch API or the API; see backends.py.
 
     python tools/calib/label_check.py --kb data/clouds.json [--via cli] [--limit 5]
 """
-import argparse, base64, concurrent.futures, datetime, json, os, sys, time
+import argparse, base64, json, os, sys
+
+import backends
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = "claude-opus-5"
-PRICE = {"claude-opus-5": (5.00, 25.00), "claude-sonnet-5": (2.00, 10.00),
-         "claude-haiku-4-5": (1.00, 5.00)}     # $ per million tokens, in / out, June 2026
 
 SYSTEM = """\
 You check photographs for a test set. Each was filed on Wikimedia Commons as
@@ -81,128 +76,14 @@ def request(photo, note, image_b64):
     }
 
 
-def parse(message):
-    """The verdict in a reply, or None for a refusal or a reply cut short."""
-    if message.stop_reason != "end_turn":
-        return None
-    text = next((b.text for b in message.content if b.type == "text"), "")
-    try:
-        v = json.loads(text)
-    except json.JSONDecodeError:
-        return None
-    return v if valid(v) else None
-
-
 def doubted(v):
     """What a person must look at. "unsure" is not on the list: arguable
     species calls are what the quiz is tested on, not a labelling error."""
     return v["view"] != "ground" or not v["one_type"] or v["matches"] == "no"
 
 
-class Usage:
-    def __init__(self, batched):
-        self.inp = self.out = 0
-        self.batched = batched
-
-    def add(self, message):
-        u = message.usage
-        self.inp += u.input_tokens + (u.cache_creation_input_tokens or 0) + \
-                    (u.cache_read_input_tokens or 0)
-        self.out += u.output_tokens
-
-    def __str__(self):
-        pin, pout = PRICE.get(MODEL, (0, 0))
-        cost = (self.inp * pin + self.out * pout) / 1e6 * (0.5 if self.batched else 1)
-        return f"{self.inp:,} tokens in, {self.out:,} out, about ${cost:.2f}"
-
-
 def valid(v):
     return isinstance(v, dict) and set(SCHEMA["required"]) <= set(v)
-
-
-def run_cli(reqs, record, jobs, max_window):
-    """A few at a time through `claude -p`, each retried once if unusable."""
-    import claude_cli
-    pool = claude_cli.Pool(max_window)
-
-    def one(item):
-        pid, params = item
-        for _ in range(2):
-            v, info = pool.call(params)
-            if valid(v):
-                return pid, v, None
-            if info["error"] == "paused":
-                break
-        return pid, None, info["error"]
-
-    done = 0
-    with concurrent.futures.ThreadPoolExecutor(jobs) as ex:
-        for pid, v, err in ex.map(one, reqs.items()):
-            if err == "paused":
-                continue
-            done += 1
-            record(pid, v)
-            if err:
-                print(f"\n  {pid}: {err}", file=sys.stderr)
-            print(f"\r  {done}/{len(reqs)}  window {pool.window or 0:.0%}", end="", file=sys.stderr)
-    print(f"\n  about ${pool.cost:.2f} at API prices, from the subscription", file=sys.stderr)
-    if pool.paused():
-        at = datetime.datetime.fromtimestamp(pool.resets).strftime("%H:%M") if pool.resets else "later"
-        print(f"  paused with {len(reqs) - done} left: the five-hour window is {pool.window:.0%} "
-              f"used (limit {max_window:.0%}); it resets at {at}", file=sys.stderr)
-
-
-def run_direct(client, reqs, usage, record):
-    """Eight at a time, each retried once if its reply is unusable."""
-    def one(item):
-        pid, params = item
-        for _ in range(2):
-            m = client.messages.create(**params)
-            usage.add(m)
-            v = parse(m)
-            if v:
-                return pid, v
-        return pid, None
-
-    with concurrent.futures.ThreadPoolExecutor(8) as pool:
-        for n, (pid, v) in enumerate(pool.map(one, reqs.items()), 1):
-            record(pid, v)
-            print(f"\r  {n}/{len(reqs)}", end="", file=sys.stderr)
-    print(f"\n  {usage}", file=sys.stderr)
-
-
-def run_batch(client, reqs, usage, record, state_path):
-    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
-    from anthropic.types.messages.batch_create_params import Request
-
-    state = json.load(open(state_path)) if os.path.exists(state_path) else None
-    if state:
-        # whatever it asked for, it is paid for: collect it rather than ask again
-        print(f"  resuming batch {state['batch']}", file=sys.stderr)
-    else:
-        batch = client.messages.batches.create(requests=[
-            Request(custom_id=pid, params=MessageCreateParamsNonStreaming(**params))
-            for pid, params in reqs.items()])
-        state = {"batch": batch.id, "ids": list(reqs)}
-        json.dump(state, open(state_path, "w"))
-        print(f"  submitted batch {batch.id} ({len(reqs)} photos)", file=sys.stderr)
-
-    while True:
-        b = client.messages.batches.retrieve(state["batch"])
-        if b.processing_status == "ended":
-            break
-        c = b.request_counts
-        print(f"  {c.processing} processing, {c.succeeded} done", file=sys.stderr)
-        time.sleep(60)
-
-    for r in client.messages.batches.results(state["batch"]):
-        if r.result.type == "succeeded":
-            usage.add(r.result.message)
-            record(r.custom_id, parse(r.result.message))
-        else:
-            print(f"  {r.custom_id}: {r.result.type}", file=sys.stderr)
-    os.remove(state_path)
-    print(f"  {usage}", file=sys.stderr)
 
 
 def main():
@@ -252,17 +133,8 @@ def main():
         for p in todo:
             with open(os.path.join(cache, p["id"] + ".jpg"), "rb") as f:
                 reqs[p["id"]] = request(p, notes.get(p["label"]), base64.b64encode(f.read()).decode())
-        if a.via == "cli":
-            run_cli(reqs, record, a.jobs, a.max_window)
-        else:
-            import anthropic
-            client = anthropic.Anthropic()
-            usage = Usage(batched=a.via == "batch")
-            if a.via == "api":
-                run_direct(client, reqs, usage, record)
-            else:
-                state = os.path.join(HERE, "cache", f"label-check-{base}.batch.json")
-                run_batch(client, reqs, usage, record, state)
+        backends.run(reqs, record, valid, via=a.via, jobs=a.jobs, max_window=a.max_window,
+                     state_path=os.path.join(HERE, "cache", f"label-check-{base}.batch.json"))
         if bad:
             print(f"  {len(bad)} unusable replies, asked again next run: {' '.join(bad)}",
                   file=sys.stderr)

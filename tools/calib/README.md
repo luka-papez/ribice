@@ -2,7 +2,8 @@
 
 The calibration loop from [`specs/calibration-loop.md`](../../specs/calibration-loop.md):
 measure how people answer a quiz from photos, then tune the knowledge base
-against the measurements. Built so far: the photo corpus (phase 1a).
+against the measurements. Built so far: the photo corpus (phase 1a) and the
+baseline measurement (phase 1b).
 
 ```
 python3 -m venv tools/calib/.venv
@@ -67,7 +68,42 @@ a score.
 | `corpus/<kb>/manifest.json` | yes | file, label, split, credit and licence per photo |
 | `corpus/<kb>/label-check.json` | yes | Claude's verdict per photo |
 | `corpus/<kb>/review.json` | yes | doubted photos and a person's keep/drop decisions |
-| `cache/` | no | downloaded photos, an in-flight batch id |
+| `corpus/<kb>/human.json` | yes | a person's answers to the 10-photo page |
+| `runs/<date>-<label>/` | yes | the scored knowledge base, config, answers file, games and report |
+| `cache/` | no | downloaded photos, cached answers, names, the engine binary, the 10-photo page |
 
 Photos are used locally and never published. The credits are kept in case one
 is ever promoted into the quiz.
+
+## The baseline
+
+```
+python tools/calib/run.py --kb data/clouds.json --label baseline     # ask, replay, report
+python tools/calib/name_test.py --kb data/clouds.json                # leakage: can it name them?
+python tools/calib/human_page.py --kb data/clouds.json               # your 10 photos (deferred for now)
+```
+
+`ask.py` is the answerer: Claude sees one photo, never its label or file
+name, and answers the quiz's questions as a person without training would, or
+says it can't tell and why. Answers are cached in `cache/answers.sqlite` by
+photo, question, option labels, prompt, model and mode, so rewording one
+question re-asks only that one. `--mode single` asks one question per call,
+as the spec has it; `--mode photo` asks all of a photo's questions in one
+call, 15 times cheaper, if a pilot shows its answers hold up.
+
+`replay.py` turns the cache into the answers file and plays one game per photo
+through `ribice -replay`. `report.py` measures the games and the whole answer
+matrix: accuracy on held-out photos (also on label-check-passed photos only,
+and on clouds with 4+ photos), then per question agreement with the knowledge
+base, skip causes, mix-up tables and bits removed per ask, and per cloud
+accuracy. `run.py` does all three and writes `runs/<date>-<label>/`, which is
+committed. A run that stops at the window limit still reports, marking itself
+incomplete; the same command later fills the gaps.
+
+Two checks say whether to trust the answerer. `name_test.py` asks, in a
+separate call, what each photo shows; the report then compares agreement on
+photos it named right and wrong. `human_page.py` writes a local page with 10
+photos and the same questions; save its download as `corpus/<kb>/human.json`
+and the report compares your answers with Claude's, question by question.
+The human comparison is deferred for now (see the spec); the name test is
+the check that runs.
