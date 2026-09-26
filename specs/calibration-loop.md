@@ -1,6 +1,8 @@
 # Calibration loop
 
-Status: phases 0 (`-replay`) and 1a (corpus, 235 photos) done; the rest is design. Clouds first; fish and dogs after, on the same harness.
+Status: phases 0 (`-replay`) and 1a (corpus, 235 photos) done. Phase 1b (baseline) and 1c
+(calibration) are built; the baseline has answers for 148 of 235 photos so far. Phase 2 is
+design. Clouds first; fish and dogs after, on the same harness.
 
 We will measure how a layperson actually answers the cloud quiz, using Claude
 as a stand-in, then tune the knowledge base against those measurements instead
@@ -199,6 +201,16 @@ the question wording is scored without a new API call.
   Batch API at half price.
 - **Reusable.** Answers are keyed by photo, question text and option labels.
   Rewording one question invalidates only that question's 240 answers.
+
+**What the pilot showed** (2026-09-26, 8 tune photos, both modes). Asking
+all of a photo's questions in one call (`ask.py --mode photo`) gave the same
+answer as one call per question on 114 of 120 questions, and agreed with the
+knowledge base on 75% of answers against 80%, a gap of about 8 answers. It
+cost about $0.09 of API-equivalent usage per photo against $0.52, so 5.5
+times less, not 15: every call has overhead. Through the CLI the difference
+decides it: one call per question would use more of a subscription's week
+than was left. The baseline runs in photo mode; a one-call-per-question run
+on a sample stays the check on whether the shared context skews answers.
 
 **Model.** `claude-opus-5` with adaptive thinking at effort `low`, since each
 answer is a short visual judgement. The JSON reply is enforced with structured

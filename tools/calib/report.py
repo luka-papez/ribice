@@ -16,22 +16,9 @@ photos, as the spec counts them.
 import argparse, collections, json, os, statistics
 
 import ask
+from calibrate import truth
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-
-
-def truth(kb, entity, attr):
-    """The knowledge base's value(s) for one entity, as a set of strings."""
-    a = kb["attributes"][attr]
-    v = entity.get(attr)
-    boolean = "labels" not in a
-    if v is None or v is False:
-        return {"no" if boolean else "none"}
-    if v is True:
-        return {"yes"}
-    if isinstance(v, list):
-        return {str(x) for x in v}
-    return {str(v)}
 
 
 def genus(name):

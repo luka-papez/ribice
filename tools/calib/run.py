@@ -13,7 +13,7 @@ stopped.
 """
 import argparse, datetime, json, os, shutil, subprocess, sys
 
-import ask, replay, report
+import ask, calibrate, compare, replay, report
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -79,6 +79,21 @@ def main():
                             f"asked yet, and {gaps} answers missing on the rest (they replay as "
                             "gaps). Run again to fill them before trusting these numbers.\n\n"
                             "## Headline", 1)
+
+    # phase 1c: calibrate on the tune photos, judge on the held-out ones
+    tune = {l["photo"]: l["target"] for l in lines if l["split"] == "tune"}
+    if tune:
+        cal, notes = calibrate.calibrate(kb, matrix, tune)
+        cal_path = os.path.join(run_dir, f"{base}.calibrated.json")
+        with open(cal_path, "w") as f:
+            json.dump(cal, f, indent=1, ensure_ascii=False)
+        text += "\n" + calibrate.describe(notes, kb)
+        if any(l["split"] == "held_out" for l in lines):
+            r = compare.compare(a.kb, cal_path, "held_out", a.mode, a.model)
+            text += ("\n## Calibrated against current, held-out photos\n\n"
+                     + compare.describe(r, "current", "calibrated"))
+            print(f"calibrated: {'accepted' if r['accepted'] else 'not accepted'} "
+                  f"({r['base'][2]:.1f} -> {r['cand'][2]:.1f})", file=sys.stderr)
     with open(os.path.join(run_dir, "report.md"), "w") as f:
         f.write(text)
     right = sum(g["correct"] for g in games)

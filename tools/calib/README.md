@@ -2,8 +2,8 @@
 
 The calibration loop from [`specs/calibration-loop.md`](../../specs/calibration-loop.md):
 measure how people answer a quiz from photos, then tune the knowledge base
-against the measurements. Built so far: the photo corpus (phase 1a) and the
-baseline measurement (phase 1b).
+against the measurements. Built so far: the photo corpus (phase 1a), the
+baseline measurement (phase 1b) and calibration (phase 1c).
 
 ```
 python3 -m venv tools/calib/.venv
@@ -107,3 +107,25 @@ photos and the same questions; save its download as `corpus/<kb>/human.json`
 and the report compares your answers with Claude's, question by question.
 The human comparison is deferred for now (see the spec); the name test is
 the check that runs.
+
+## Calibration
+
+`run.py` also calibrates. `calibrate.py` rewrites each question's `noise`,
+`confusion`, `confusable` and `cost` from the tune photos' answers, by the
+spec's rules: look-alike pairs from repeated mix-ups, rates blended with the
+current values as 10 observations, cost from skip rate and low confidence. It
+writes `runs/<date>-<label>/<kb>.calibrated.json` and a table of what changed.
+
+`compare.py` then plays the current and calibrated knowledge bases on the
+same held-out photos from the same answers, and accepts the candidate when
+accuracy minus 5 points per question improves, at most 2 games go from right
+to wrong, and it still passes `-lint` and identifies as many entities under
+`-simulate`. The verdict goes in the report. It works for any two knowledge
+bases, so phase 2's edits are judged the same way:
+
+```
+python tools/calib/compare.py data/clouds.json tools/calib/runs/<run>/clouds.calibrated.json
+```
+
+A candidate that rewords a question has no answers for it yet; `compare.py`
+refuses to accept it until `ask.py` has been run on it.
