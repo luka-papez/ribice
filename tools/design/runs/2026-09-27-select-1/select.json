@@ -1,0 +1,89 @@
+{
+  "before": {
+    "games": 320,
+    "accuracy": 0.484375,
+    "questions": 11.096875,
+    "gave_up": 0,
+    "score": -7.046875
+  },
+  "after": {
+    "games": 320,
+    "accuracy": 0.65,
+    "questions": 9.9,
+    "gave_up": 0.003125,
+    "score": 15.5
+  },
+  "steps": [
+    {
+      "move": {
+        "add": "sun_view",
+        "drop": "opacity"
+      },
+      "score": {
+        "games": 320,
+        "accuracy": 0.5375,
+        "questions": 10.490625,
+        "gave_up": 0,
+        "score": 1.296875
+      }
+    },
+    {
+      "move": {
+        "add": "cloud_form",
+        "drop": "shape"
+      },
+      "score": {
+        "games": 320,
+        "accuracy": 0.58125,
+        "questions": 10.321875,
+        "gave_up": 0.00625,
+        "score": 6.515625000000007
+      }
+    },
+    {
+      "move": {
+        "add": "falling_visible",
+        "drop": "precipitation"
+      },
+      "score": {
+        "games": 320,
+        "accuracy": 0.628125,
+        "questions": 10.28125,
+        "gave_up": 0,
+        "score": 11.406250000000007
+      }
+    },
+    {
+      "move": {
+        "drop": "anvil"
+      },
+      "score": {
+        "games": 320,
+        "accuracy": 0.65,
+        "questions": 9.9,
+        "gave_up": 0.003125,
+        "score": 15.5
+      }
+    }
+  ],
+  "added": [
+    "sun_view",
+    "cloud_form",
+    "falling_visible"
+  ],
+  "dropped": [
+    "anvil",
+    "opacity",
+    "precipitation",
+    "shape"
+  ],
+  "guessed": [
+    "sun_view",
+    "falling_visible"
+  ],
+  "pending": {
+    "cloud_form": 2,
+    "falling_visible": 5,
+    "sun_view": 17
+  }
+}

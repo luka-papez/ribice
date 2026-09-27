@@ -133,6 +133,12 @@ rates the experts reported (`-simulate -sim-model`). A person approves the
 diff, and the quiz still runs without a language model. The design is in
 [`specs/question-design.md`](specs/question-design.md).
 
+The first round (2026-09-27) replaced three cloud questions and dropped one.
+Answered with each question's error rates, the quiz now names 60% of clouds
+in 10.1 questions, up from 49% in 11.0; with perfect answers, it needs 6.7
+questions, down from 8.2. Some of the new answers are still to be confirmed
+by a person, and a check on real photos is still to come.
+
 ## How it picks questions
 
 The session holds a probability distribution over every candidate, starting at
