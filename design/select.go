@@ -109,9 +109,7 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 			res.Skipped[name] = fmt.Sprintf("%d values to settle", pending)
 			continue
 		}
-		if !complete {
-			c.model, c.guessed = guessedModel(e.Proposal), true
-		}
+		c.model, c.guessed = ModelFor(e)
 		cands[name] = c
 		order = append(order, name)
 	}
@@ -281,6 +279,16 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		}
 	}
 	return res, nil
+}
+
+// ModelFor is the error model a pool entry goes into a knowledge base with:
+// its fit, when every value has perceive answers, or else the default one,
+// reported as guessed.
+func ModelFor(e PoolEntry) (ErrorModel, bool) {
+	if len(e.Errors.Rows) > 0 && len(e.Errors.Missing) == 0 {
+		return e.Errors, false
+	}
+	return guessedModel(e.Proposal), true
 }
 
 // guessedModel is the knowledge base's default error model, for a question

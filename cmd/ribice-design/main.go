@@ -450,6 +450,9 @@ func selectQuestions(args []string) error {
 		minGain  = fs.Float64("min-gain", 0.5, "score points a move must add")
 		disputed = fs.Bool("allow-disputed", false, "use questions with values still to settle, with the proposer's values")
 		guessed  = fs.Bool("allow-guessed", false, "use questions without perceive answers, with default error rates")
+		refresh  = fs.Bool("refresh", true, "first rewrite questions already in the knowledge base from their pool entries: settled values, fitted error rates")
+		refit    = fs.String("refit", "", "comma-separated perceive task files: first refit the error rates of current questions from them")
+		store    = fs.String("store", "tools/design/verdicts.jsonl", "verdict store, for -refit")
 	)
 	fs.Parse(args)
 	if *poolPath == "" || *out == "" {
@@ -468,6 +471,62 @@ func selectQuestions(args []string) error {
 		return err
 	}
 
+	// Bring the starting point up to date, so the score it is compared with
+	// is measured the same way as the candidates'.
+	var prep strings.Builder
+	current, err := kb.Load(base.Bytes())
+	if err != nil {
+		return err
+	}
+	refreshed := map[string]bool{}
+	if *refresh {
+		for _, e := range pool {
+			if current.Attr(e.Proposal.Name) == nil {
+				continue
+			}
+			m, guess := design.ModelFor(e)
+			if err := base.ReplaceAttribute(e.Proposal, m); err != nil {
+				return err
+			}
+			refreshed[e.Proposal.Name] = true
+			how := "fitted error rates"
+			if guess {
+				how = "default error rates, no perceive answers yet"
+			}
+			fmt.Fprintf(&prep, "- refreshed **%s** from the pool: settled values, %s\n", e.Proposal.Name, how)
+		}
+	}
+	if *refit != "" {
+		st, err := design.OpenStore(*store)
+		if err != nil {
+			return err
+		}
+		var tasks []design.Task
+		for _, f := range strings.Split(*refit, ",") {
+			ts, err := readTasks(strings.TrimSpace(f))
+			if err != nil {
+				return err
+			}
+			tasks = append(tasks, ts...)
+		}
+		fitted, missing := design.Refit(current, tasks, st.Verdicts)
+		for _, a := range current.Attributes {
+			if refreshed[a.Name] {
+				continue
+			}
+			if m, ok := fitted[a.Name]; ok {
+				if err := base.SetErrors(a.Name, m); err != nil {
+					return err
+				}
+				fmt.Fprintf(&prep, "- refitted **%s**: noise %.2f → %.2f, answer rate %.0f%%\n",
+					a.Name, a.Noise, m.Noise, 100*m.AnswerRate)
+			} else if vs, ok := missing[a.Name]; ok {
+				fmt.Fprintf(&prep, "- kept **%s**'s error rates: no perceive answers for %v\n", a.Name, vs)
+			}
+		}
+	}
+	fmt.Print(prep.String())
+
 	start := time.Now()
 	r, err := design.Select(base, pool, engine.DefaultConfig(), design.SelectOptions{Seeds: *seeds,
 		MinGain: *minGain, AllowDisputed: *disputed, AllowGuessed: *guessed})
@@ -483,7 +542,11 @@ func selectQuestions(args []string) error {
 	if err := writeJSON(filepath.Join(*out, "select.json"), r); err != nil {
 		return err
 	}
-	md := "# Selection from " + *poolPath + "\n\n" + design.SelectReport(r, pool)
+	md := "# Selection from " + *poolPath + "\n\n"
+	if prep.Len() > 0 {
+		md += "## Starting point\n\nBefore the search, the current knowledge base was brought up to date:\n\n" + prep.String() + "\n"
+	}
+	md += design.SelectReport(r, pool)
 	if err := os.WriteFile(filepath.Join(*out, "select.md"), []byte(md), 0o644); err != nil {
 		return err
 	}

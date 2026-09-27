@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"slices"
 	"strings"
 
 	"github.com/lpapez/ribice/kb"
@@ -270,3 +271,57 @@ func (f *KBFile) AddAttribute(p Proposal, m ErrorModel) error {
 func round3(x float64) float64 { return math.Round(x*1000) / 1000 }
 
 func jsonString(raw json.RawMessage, s *string) error { return json.Unmarshal(raw, s) }
+
+// SetErrors rewrites an attribute's error model in place: noise,
+// confusion, look-alikes, cost and answer_rate, leaving its question, labels
+// and every entity's value as they are. A field at its default is removed.
+func (f *KBFile) SetErrors(name string, m ErrorModel) error {
+	raw, ok := f.attrs.vals[name]
+	if !ok {
+		raw = json.RawMessage("{}")
+	}
+	meta, err := parseObject(raw)
+	if err != nil {
+		return fmt.Errorf("attribute %q: %w", name, err)
+	}
+	meta.set("noise", marshal(round3(m.Noise)), nil)
+	if c := round3(m.Confusion); c > 0 && len(m.Confusable) > 0 {
+		var pairs [][]string
+		for _, p := range m.Confusable {
+			pairs = append(pairs, []string{string(p[0]), string(p[1])})
+		}
+		meta.set("confusion", marshal(c), func(k string) bool { return k != "question" && k != "noise" })
+		meta.set("confusable", marshal(pairs), func(k string) bool { return k == "labels" || k == "cost" })
+	} else {
+		meta.del("confusion")
+		meta.del("confusable")
+	}
+	meta.set("cost", marshal(round3(m.Cost)), nil)
+	if r := round3(m.AnswerRate); r < 1 {
+		meta.set("answer_rate", marshal(r), nil)
+	} else {
+		meta.del("answer_rate")
+	}
+	f.attrs.set(name, meta.marshal(), nil)
+	return nil
+}
+
+// ReplaceAttribute swaps an attribute for a newer version of it, with its
+// settled values and error model, keeping its place among the attributes.
+func (f *KBFile) ReplaceAttribute(p Proposal, m ErrorModel) error {
+	at := -1
+	for i, k := range f.attrs.keys {
+		if k == p.Name {
+			at = i
+		}
+	}
+	f.DropAttribute(p.Name)
+	if err := f.AddAttribute(p, m); err != nil {
+		return err
+	}
+	if at >= 0 {
+		keys := slices.DeleteFunc(f.attrs.keys, func(k string) bool { return k == p.Name })
+		f.attrs.keys = slices.Insert(keys, min(at, len(keys)), p.Name)
+	}
+	return nil
+}
