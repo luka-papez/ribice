@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"path/filepath"
 	"strings"
 
 	"github.com/lpapez/ribice/design"
@@ -23,6 +24,7 @@ const usage = `usage: ribice-design <command> [flags]
 commands:
   tasks     make tasks for a knowledge base's current questions
   consult   put tasks to an expert, storing each verdict as it comes
+  aggregate settle each value against the verdicts; write the disputes as tasks
 
 Run ribice-design <command> -h for its flags.
 `
@@ -41,6 +43,8 @@ func main() {
 		err = tasks(args)
 	case "consult":
 		err = consult(ctx, args)
+	case "aggregate":
+		err = aggregate(args)
 	case "-h", "-help", "--help", "help":
 		fmt.Print(usage)
 	default:
@@ -148,6 +152,123 @@ func consult(ctx context.Context, args []string) error {
 		}
 	}
 	return nil
+}
+
+func aggregate(args []string) error {
+	fs := flag.NewFlagSet("aggregate", flag.ExitOnError)
+	var (
+		path      = fs.String("kb", "data/clouds.json", "knowledge base whose values are settled")
+		tasksPath = fs.String("tasks", "", "assign tasks, as written by the tasks command")
+		storePath = fs.String("store", "tools/design/verdicts.jsonl", "verdict store")
+		outDir    = fs.String("out", "", "directory for settled.md and disputes.jsonl; default: next to -tasks")
+	)
+	fs.Parse(args)
+	if *tasksPath == "" {
+		return fmt.Errorf("-tasks is required")
+	}
+	k, err := kb.LoadFile(*path)
+	if err != nil {
+		return err
+	}
+	ts, err := readTasks(*tasksPath)
+	if err != nil {
+		return err
+	}
+	st, err := design.OpenStore(*storePath)
+	if err != nil {
+		return err
+	}
+	dir := *outDir
+	if dir == "" {
+		dir = filepath.Dir(*tasksPath)
+	}
+
+	settled := design.Settle(ts, design.KBValues(k), st.Verdicts)
+	var disputes []design.Task
+	for _, s := range settled {
+		if s.Status == design.Disputed {
+			disputes = append(disputes, s.Task)
+		}
+	}
+	f, err := os.Create(filepath.Join(dir, "disputes.jsonl"))
+	if err != nil {
+		return err
+	}
+	if err := design.WriteTasks(f, disputes); err != nil {
+		f.Close()
+		return err
+	}
+	if err := f.Close(); err != nil {
+		return err
+	}
+	report := settledReport(k, settled)
+	if err := os.WriteFile(filepath.Join(dir, "settled.md"), []byte(report), 0o644); err != nil {
+		return err
+	}
+	counts := map[design.Status]int{}
+	for _, s := range settled {
+		counts[s.Status]++
+	}
+	fmt.Printf("%d values: %d agreed, %d disputed, %d abstained, %d not asked yet\n",
+		len(settled), counts[design.Agreed], counts[design.Disputed], counts[design.Abstained], counts[design.Unasked])
+	fmt.Printf("wrote %s and %s\n", filepath.Join(dir, "settled.md"), filepath.Join(dir, "disputes.jsonl"))
+	return nil
+}
+
+// settledReport is a table per attribute, then every value not agreed.
+func settledReport(k *kb.KB, settled []design.Settlement) string {
+	var b strings.Builder
+	fmt.Fprintf(&b, "# %s: the answer key against the experts\n\n", k.Name)
+	b.WriteString("Agreed: the experts' combined answer backs the knowledge base's value. ")
+	b.WriteString("Disputed: it leans elsewhere. Abstained: most experts could not answer.\n\n")
+	b.WriteString("| attribute | agreed | disputed | abstained | not asked |\n| --- | --- | --- | --- | --- |\n")
+	type row struct{ agreed, disputed, abstained, unasked int }
+	rows := map[string]*row{}
+	for _, s := range settled {
+		r := rows[s.Task.Attribute]
+		if r == nil {
+			r = &row{}
+			rows[s.Task.Attribute] = r
+		}
+		switch s.Status {
+		case design.Agreed:
+			r.agreed++
+		case design.Disputed:
+			r.disputed++
+		case design.Abstained:
+			r.abstained++
+		default:
+			r.unasked++
+		}
+	}
+	for _, a := range k.Attributes {
+		if r := rows[a.Name]; r != nil {
+			fmt.Fprintf(&b, "| %s | %d | %d | %d | %d |\n", a.Name, r.agreed, r.disputed, r.abstained, r.unasked)
+		}
+	}
+
+	b.WriteString("\n## Not agreed\n\n| entity | attribute | knowledge base | experts | abstain |\n| --- | --- | --- | --- | --- |\n")
+	for _, s := range settled {
+		if s.Status != design.Disputed && s.Status != design.Abstained {
+			continue
+		}
+		var kbv []string
+		for _, v := range s.Proposed {
+			kbv = append(kbv, string(v))
+		}
+		experts := fmt.Sprintf("%s %.0f%%", s.Top(), 100*s.Combined[s.Top()])
+		abstain := fmt.Sprintf("%.0f%%", 100*s.Abstain)
+		if s.Abstain > 0 {
+			abstain += " " + string(s.MainReason())
+		}
+		who := ""
+		if s.ByPerson {
+			who = " (person)"
+		}
+		fmt.Fprintf(&b, "| %s | %s | %s | %s%s | %s |\n", s.Task.Subject.Entity, s.Task.Attribute,
+			strings.Join(kbv, ", "), experts, who, abstain)
+	}
+	return b.String()
 }
 
 func readTasks(path string) ([]design.Task, error) {

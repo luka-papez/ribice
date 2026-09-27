@@ -255,3 +255,46 @@ func cloudKB(t *testing.T) *kb.KB {
 	}
 	return k
 }
+
+func TestSettle(t *testing.T) {
+	task := hooksTask()
+	proposed := func(Task) []kb.Value { return []kb.Value{"curled"} }
+	v := func(expert string, p map[kb.Value]float64, abstain float64, r Reason) Verdict {
+		return Verdict{Task: task.ID, Expert: expert, P: p, Abstain: abstain, Reason: r}
+	}
+	curled := map[kb.Value]float64{"curled": 1}
+	straight := map[kb.Value]float64{"straight": 1}
+	for _, c := range []struct {
+		name     string
+		verdicts []Verdict
+		want     Status
+	}{
+		{"none yet", nil, Unasked},
+		{"all agree", []Verdict{v("a", curled, 0, ""), v("b", curled, 0, "")}, Agreed},
+		{"two of three", []Verdict{v("a", curled, 0, ""), v("b", curled, 0, ""), v("c", straight, 0, "")}, Agreed},
+		{"one of three", []Verdict{v("a", curled, 0, ""), v("b", straight, 0, ""), v("c", straight, 0, "")}, Disputed},
+		{"most abstain", []Verdict{v("a", nil, 1, NotObservable), v("b", curled, 0, "")}, Abstained},
+		{"a person settles it", []Verdict{v("a", straight, 0, ""), v("b", straight, 0, ""), v("human:luka", curled, 0, "")}, Agreed},
+		{"a person disputes it", []Verdict{v("a", curled, 0, ""), v("human:luka", straight, 0, "")}, Disputed},
+	} {
+		got := Settle([]Task{task}, proposed, func(string) []Verdict { return c.verdicts })
+		if len(got) != 1 || got[0].Status != c.want {
+			t.Errorf("%s: %+v, want %s", c.name, got, c.want)
+		}
+	}
+}
+
+func TestKBValuesAreTheCurrentAnswerKey(t *testing.T) {
+	k := cloudKB(t)
+	tasks, _ := FromKB(k, Assign)
+	values := KBValues(k)
+	for _, task := range tasks {
+		if task.Subject.Entity == "Cirrus uncinus" && task.Attribute == "hooks" {
+			if got := values(task); len(got) != 1 || got[0] != kb.Yes {
+				t.Errorf("Cirrus uncinus hooks = %v, want yes", got)
+			}
+			return
+		}
+	}
+	t.Fatal("no task for Cirrus uncinus hooks")
+}
