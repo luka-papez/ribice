@@ -1,5 +1,11 @@
 """Write data/clouds.json -- the ten WMO cloud genera and their species.
 
+This is how the knowledge base began. Since 2026-09-27 question design
+(specs/question-design.md) edits data/clouds.json directly: its questions and
+answers are no longer the ones below, and running this script would undo that
+work. Keep it as the record of the first version; change the JSON through
+ribice-design.
+
 Unlike the dog knowledge base this one is authored rather than extracted. The
 classification is an international standard that has been in every textbook
 since Luke Howard named it in 1802, and the WMO's own Cloud Atlas reserves all

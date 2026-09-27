@@ -60,6 +60,9 @@ use, no derivative works -- so there is nothing to scrape and no need to. The
 taxonomy is not anyone's to own. Descriptions were checked against the Wikipedia
 list of cloud types (CC BY-SA); no wording is copied.
 
+It wrote the first version only. Question design now edits
+`../data/clouds.json` directly, so rerunning `clouds.py` would undo its changes.
+
 Two decisions shape it. **Varieties are attributes, not entities**: translucidus,
 opacus, undulatus and the rest describe a particular cloud on a particular day,
 so they are things to ask about rather than things to identify. And **height is

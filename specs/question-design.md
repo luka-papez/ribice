@@ -252,8 +252,8 @@ expert however many prompt variants it has:
   quarter of entities drops the attribute.
 - **Mix-up table.** The combined `perceive` rows, true value against
   answered value; `observe` rows replace them where photos measured them.
-- **`confusable`**: pairs where either direction gets at least 10% of
-  answers. **`confusion`**: mean share landing on a declared look-alike.
+- **`confusable`**: pairs where either direction gets at least 20% of
+  answers, two people in ten: at 10%, one imagined outlier made a pair. **`confusion`**: mean share landing on a declared look-alike.
   **`noise`**: mean share landing elsewhere, floored at 0.02.
 - **`answer_rate`**: 1 − mean abstain. **`cost`**: `1 / answer_rate`,
   clamped to 0.7–3.0, so a question few people can answer is asked late.

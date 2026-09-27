@@ -126,7 +126,7 @@ func TestClientPausesPastTheWindow(t *testing.T) {
 
 func cloudTasks(t *testing.T, kind design.Kind) ([]design.Task, *kb.KB) {
 	t.Helper()
-	k, err := kb.LoadFile("../../data/clouds.json")
+	k, err := kb.LoadFile("../../testdata/clouds-2026-09-26.json")
 	if err != nil {
 		t.Fatal(err)
 	}

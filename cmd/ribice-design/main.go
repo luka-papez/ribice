@@ -30,6 +30,7 @@ commands:
   tasks     make tasks for current or proposed questions
   consult   put tasks to an expert, storing each verdict as it comes
   aggregate settle each value against the verdicts; write the disputes as tasks
+  select    choose the questions that score best, and write the candidate
 
 Run ribice-design <command> -h for its flags.
 `
@@ -54,6 +55,8 @@ func main() {
 		err = consult(ctx, args)
 	case "aggregate":
 		err = aggregate(args)
+	case "select":
+		err = selectQuestions(args)
 	case "-h", "-help", "--help", "help":
 		fmt.Print(usage)
 	default:
@@ -179,6 +182,7 @@ func aggregate(args []string) error {
 		path      = fs.String("kb", "data/clouds.json", "knowledge base whose values are settled")
 		tasksPath = fs.String("tasks", "", "assign tasks, as written by the tasks command")
 		props     = fs.String("proposals", "", "settle against these proposals' values instead of the knowledge base's")
+		perceive  = fs.String("perceive", "", "with -proposals: perceive tasks; also fit error rates and write pool.json")
 		storePath = fs.String("store", "tools/design/verdicts.jsonl", "verdict store")
 		outDir    = fs.String("out", "", "directory for settled.md and disputes.jsonl; default: next to -tasks")
 	)
@@ -204,12 +208,14 @@ func aggregate(args []string) error {
 	}
 
 	proposed := design.KBValues(k)
+	var set design.ProposalSet
 	if *props != "" {
-		set, err := readProposals(*props)
-		if err != nil {
+		if set, err = readProposals(*props); err != nil {
 			return err
 		}
 		proposed = design.ProposedValues(set.Attributes)
+	} else if *perceive != "" {
+		return fmt.Errorf("-perceive needs -proposals")
 	}
 	settled := design.Settle(ts, proposed, st.Verdicts)
 	var disputes []design.Task
@@ -240,6 +246,32 @@ func aggregate(args []string) error {
 	fmt.Printf("%d values: %d agreed, %d disputed, %d abstained, %d not asked yet\n",
 		len(settled), counts[design.Agreed], counts[design.Disputed], counts[design.Abstained], counts[design.Unasked])
 	fmt.Printf("wrote %s and %s\n", filepath.Join(dir, "settled.md"), filepath.Join(dir, "disputes.jsonl"))
+
+	if *perceive == "" {
+		return nil
+	}
+	pts, err := readTasks(*perceive)
+	if err != nil {
+		return err
+	}
+	pool := design.BuildPool(set.Attributes, ts, pts, st.Verdicts)
+	if err := writeJSON(filepath.Join(dir, "pool.json"), pool); err != nil {
+		return err
+	}
+	table := design.PoolReport(pool)
+	md := "# Proposed questions after consultation\n\n" +
+		"Agreed: values the experts back. To settle: disputed or abstained values, for a person. " +
+		"Answer rate, noise, confusion and look-alikes are fitted from the perceive answers.\n\n" + table
+	if err := os.WriteFile(filepath.Join(dir, "pool.md"), []byte(md), 0o644); err != nil {
+		return err
+	}
+	ready := 0
+	for _, e := range pool {
+		if e.Ready {
+			ready++
+		}
+	}
+	fmt.Printf("%d of %d questions ready for select; wrote %s and pool.md\n", ready, len(pool), filepath.Join(dir, "pool.json"))
 	return nil
 }
 
@@ -396,6 +428,100 @@ func propose(ctx context.Context, args []string) error {
 		}
 		fmt.Printf("  %s %s%s: %s\n", pr.ID, pr.Name, re, pr.Question)
 	}
+	return nil
+}
+
+func selectQuestions(args []string) error {
+	fs := flag.NewFlagSet("select", flag.ExitOnError)
+	var (
+		path     = fs.String("kb", "data/clouds.json", "knowledge base to start from")
+		poolPath = fs.String("pool", "", "pool.json from aggregate (required)")
+		out      = fs.String("out", "", "directory for candidate.json, select.md and settle.jsonl (required)")
+		seeds    = fs.Int("seeds", 10, "games per entity for each candidate")
+		minGain  = fs.Float64("min-gain", 0.5, "score points a move must add")
+		disputed = fs.Bool("allow-disputed", false, "use questions with values still to settle, with the proposer's values")
+		guessed  = fs.Bool("allow-guessed", false, "use questions without perceive answers, with default error rates")
+	)
+	fs.Parse(args)
+	if *poolPath == "" || *out == "" {
+		return fmt.Errorf("-pool and -out are required")
+	}
+	data, err := os.ReadFile(*path)
+	if err != nil {
+		return err
+	}
+	base, err := design.ParseKBFile(data)
+	if err != nil {
+		return fmt.Errorf("%s: %w", *path, err)
+	}
+	var pool []design.PoolEntry
+	if err := readJSON(*poolPath, &pool); err != nil {
+		return err
+	}
+
+	start := time.Now()
+	r, err := design.Select(base, pool, engine.DefaultConfig(), design.SelectOptions{Seeds: *seeds,
+		MinGain: *minGain, AllowDisputed: *disputed, AllowGuessed: *guessed})
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(*out, 0o755); err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(*out, "candidate.json"), r.File, 0o644); err != nil {
+		return err
+	}
+	if err := writeJSON(filepath.Join(*out, "select.json"), r); err != nil {
+		return err
+	}
+	md := "# Selection from " + *poolPath + "\n\n" + design.SelectReport(r, pool)
+	if err := os.WriteFile(filepath.Join(*out, "select.md"), []byte(md), 0o644); err != nil {
+		return err
+	}
+
+	// The values still to settle on the questions chosen, as tasks for a person.
+	k, err := kb.LoadFile(*path)
+	if err != nil {
+		return err
+	}
+	var settle []design.Task
+	for _, e := range pool {
+		if r.Pending[e.Proposal.Name] == 0 {
+			continue
+		}
+		who := map[string]bool{}
+		for _, n := range append(append([]string(nil), e.Disputed...), e.Abstained...) {
+			who[n] = true
+		}
+		ts, err := design.FromProposals(k, []design.Proposal{e.Proposal}, design.Assign)
+		if err != nil {
+			return err
+		}
+		for _, t := range ts {
+			if who[t.Subject.Entity] {
+				settle = append(settle, t)
+			}
+		}
+	}
+	f, err := os.Create(filepath.Join(*out, "settle.jsonl"))
+	if err != nil {
+		return err
+	}
+	if err := design.WriteTasks(f, settle); err != nil {
+		f.Close()
+		return err
+	}
+	if err := f.Close(); err != nil {
+		return err
+	}
+
+	fmt.Printf("before: identified %.0f%% in %.1f questions, score %.1f\n", 100*r.Before.Accuracy, r.Before.Questions, r.Before.Value)
+	for _, s := range r.Steps {
+		fmt.Printf("  %-50s score %.1f\n", s.Move, s.Score.Value)
+	}
+	fmt.Printf("after:  identified %.0f%% in %.1f questions, score %.1f  (%s)\n", 100*r.After.Accuracy, r.After.Questions,
+		r.After.Value, time.Since(start).Round(time.Second))
+	fmt.Printf("%d values to settle on the questions chosen; wrote %s\n", len(settle), *out)
 	return nil
 }
 

@@ -10,15 +10,24 @@ import (
 )
 
 // With no errors to make and every question answerable, the error model is
-// the honest simulator, game for game.
+// the honest simulator, game for game, for every entity with one value per
+// question. One with several draws among them in a different order, so its
+// games may differ and prove nothing either way.
 func TestErrorModelWithoutErrorsIsSimulate(t *testing.T) {
-	k := dataKB(t, "clouds")
+	k := pinnedClouds(t)
 	for _, a := range k.Attributes {
 		a.Noise, a.Confusion, a.AnswerRate = 0, 0, 1
+	}
+	single := map[*kb.Entity]bool{}
+	for _, s := range truthSightings(k) {
+		single[s.Target] = true
 	}
 	honest := Simulate(k, DefaultConfig(), SimOptions{}).Results
 	model := Simulate(k, DefaultConfig(), SimOptions{ErrorModel: true}).Results
 	for i := range honest {
+		if !single[honest[i].Target] {
+			continue
+		}
 		if diff := gameDiff(model[i], honest[i]); diff != "" {
 			t.Errorf("%s: error model and honest simulation differ: %s", honest[i].Target.Name, diff)
 		}
@@ -27,7 +36,7 @@ func TestErrorModelWithoutErrorsIsSimulate(t *testing.T) {
 
 // The simulated person names each value as often as Attribute.Report says.
 func TestSampleReportFollowsReport(t *testing.T) {
-	a := dataKB(t, "clouds").Attr("shape")
+	a := pinnedClouds(t).Attr("shape")
 	const truth, draws = kb.Value("heaped"), 200000
 	rng := rand.New(rand.NewSource(1))
 	got := map[kb.Value]int{}
@@ -45,7 +54,7 @@ func TestSampleReportFollowsReport(t *testing.T) {
 // A question the person could not answer stays unanswerable for the whole
 // game, and a game with only such questions left ends instead of circling.
 func TestErrorModelSkipsForTheWholeGame(t *testing.T) {
-	k := dataKB(t, "clouds")
+	k := pinnedClouds(t)
 	for _, a := range k.Attributes {
 		a.AnswerRate = 0.5
 	}
@@ -75,7 +84,7 @@ func TestErrorModelSkipsForTheWholeGame(t *testing.T) {
 }
 
 func TestErrorModelIsRepeatable(t *testing.T) {
-	k := dataKB(t, "clouds")
+	k := pinnedClouds(t)
 	opts := SimOptions{ErrorModel: true, Seed: 7}
 	first := Simulate(k, DefaultConfig(), opts)
 	again := Simulate(k, DefaultConfig(), opts)

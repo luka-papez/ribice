@@ -251,7 +251,7 @@ func TestFromKBAndBack(t *testing.T) {
 
 func cloudKB(t *testing.T) *kb.KB {
 	t.Helper()
-	k, err := kb.LoadFile("../data/clouds.json")
+	k, err := kb.LoadFile("../testdata/clouds-2026-09-26.json")
 	if err != nil {
 		t.Fatal(err)
 	}

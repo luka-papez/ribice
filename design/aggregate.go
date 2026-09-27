@@ -50,34 +50,14 @@ func Settle(tasks []Task, proposed func(Task) []kb.Value, verdicts func(task str
 		if t.Kind != Assign {
 			continue
 		}
-		s := Settlement{Task: t, Proposed: proposed(t), Reasons: map[Reason]int{}}
-		vs := verdicts(t.ID)
-		var people []Verdict
-		for _, v := range vs {
-			if strings.HasPrefix(v.Expert, "human:") {
-				people = append(people, v)
-			}
-		}
-		if len(people) > 0 {
-			vs, s.ByPerson = people, true
-		}
-		if len(vs) == 0 {
+		s := Settlement{Task: t, Proposed: proposed(t)}
+		c, ok := Combine(t, verdicts(t.ID))
+		if !ok {
 			s.Status = Unasked
 			out = append(out, s)
 			continue
 		}
-
-		s.Combined = map[kb.Value]float64{}
-		for _, v := range vs {
-			s.Experts = append(s.Experts, v.Expert)
-			for _, o := range t.Options {
-				s.Combined[o.Value] += v.P[o.Value] / float64(len(vs))
-			}
-			s.Abstain += v.Abstain / float64(len(vs))
-			if v.Abstain > 0 {
-				s.Reasons[v.Reason]++
-			}
-		}
+		s.Combined, s.Abstain, s.Reasons, s.Experts, s.ByPerson = c.P, c.Abstain, c.Reasons, c.Experts, c.ByPerson
 
 		held := 0.0
 		for _, v := range s.Proposed {
@@ -97,6 +77,45 @@ func Settle(tasks []Task, proposed func(Task) []kb.Value, verdicts func(task str
 		out = append(out, s)
 	}
 	return out
+}
+
+// Combined is several experts' verdicts on one task, as one.
+type Combined struct {
+	P        map[kb.Value]float64 // averaged, one vote per expert
+	Abstain  float64
+	Reasons  map[Reason]int // how many experts abstained for each reason
+	Experts  []string       // whose verdicts counted
+	ByPerson bool           // only people's verdicts counted
+}
+
+// Combine averages verdicts on t, one vote per expert. A person's verdict
+// outweighs any model's: once one exists, only people count. It reports
+// false when there is no verdict at all.
+func Combine(t Task, vs []Verdict) (Combined, bool) {
+	c := Combined{P: map[kb.Value]float64{}, Reasons: map[Reason]int{}}
+	var people []Verdict
+	for _, v := range vs {
+		if strings.HasPrefix(v.Expert, "human:") {
+			people = append(people, v)
+		}
+	}
+	if len(people) > 0 {
+		vs, c.ByPerson = people, true
+	}
+	if len(vs) == 0 {
+		return c, false
+	}
+	for _, v := range vs {
+		c.Experts = append(c.Experts, v.Expert)
+		for _, o := range t.Options {
+			c.P[o.Value] += v.P[o.Value] / float64(len(vs))
+		}
+		c.Abstain += v.Abstain / float64(len(vs))
+		if v.Abstain > 0 {
+			c.Reasons[v.Reason]++
+		}
+	}
+	return c, true
 }
 
 // Top is the option the experts gave most weight, first in the task's order
