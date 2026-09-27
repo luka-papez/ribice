@@ -123,6 +123,18 @@ func (k *KB) Lint() []Issue {
 	}
 
 	// Entities nothing in the KB can tell apart.
+	for _, names := range k.Inseparable() {
+		add(Warning, "no question can tell these apart: %s", strings.Join(names, ", "))
+	}
+
+	return issues
+}
+
+// signature is a stable encoding of everything the KB knows about an entity.
+// Inseparable lists the groups of entities that answer every question the
+// same way, which no quiz over this knowledge base can tell apart, in the
+// order their first member appears.
+func (k *KB) Inseparable() [][]string {
 	groups := map[string][]string{}
 	var order []string
 	for _, e := range k.Entities {
@@ -132,16 +144,15 @@ func (k *KB) Lint() []Issue {
 		}
 		groups[sig] = append(groups[sig], e.Name)
 	}
+	var out [][]string
 	for _, sig := range order {
 		if names := groups[sig]; len(names) > 1 {
-			add(Warning, "no question can tell these apart: %s", strings.Join(names, ", "))
+			out = append(out, names)
 		}
 	}
-
-	return issues
+	return out
 }
 
-// signature is a stable encoding of everything the KB knows about an entity.
 func (k *KB) signature(e *Entity) string {
 	var b strings.Builder
 	for _, a := range k.Attributes {

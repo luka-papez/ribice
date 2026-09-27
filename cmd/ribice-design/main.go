@@ -449,8 +449,9 @@ func selectQuestions(args []string) error {
 		path     = fs.String("kb", "data/clouds.json", "knowledge base to start from")
 		poolPath = fs.String("pool", "", "pool.json from aggregate (required)")
 		out      = fs.String("out", "", "directory for candidate.json, select.md and settle.jsonl (required)")
-		seeds    = fs.Int("seeds", 10, "games per entity for each candidate")
-		minGain  = fs.Float64("min-gain", 0.5, "score points a move must add")
+		seeds    = fs.Int("seeds", 10, "games per entity to screen each candidate move")
+		confirm  = fs.Int("confirm-seeds", 100, "games per entity a move's gain must hold up over to be taken")
+		minGain  = fs.Float64("min-gain", 2, "score points a move must add, when confirmed")
 		disputed = fs.Bool("allow-disputed", false, "use questions with values still to settle, with the proposer's values")
 		guessed  = fs.Bool("allow-guessed", false, "use questions without perceive answers, with default error rates")
 		refresh  = fs.Bool("refresh", true, "first rewrite questions already in the knowledge base from their pool entries: settled values, fitted error rates")
@@ -532,7 +533,7 @@ func selectQuestions(args []string) error {
 
 	start := time.Now()
 	r, err := design.Select(base, pool, engine.DefaultConfig(), design.SelectOptions{Seeds: *seeds,
-		MinGain: *minGain, AllowDisputed: *disputed, AllowGuessed: *guessed})
+		ConfirmSeeds: *confirm, MinGain: *minGain, AllowDisputed: *disputed, AllowGuessed: *guessed})
 	if err != nil {
 		return err
 	}

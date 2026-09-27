@@ -106,3 +106,47 @@ func TestSelectLeavesOutWhatItMayNotUse(t *testing.T) {
 		t.Errorf("the report does not say the rates were guessed")
 	}
 }
+
+// Scores reported are the confirmed ones, and every move confirmed is
+// listed, taken or not.
+func TestSelectConfirmsOnMoreGames(t *testing.T) {
+	base, _ := ParseKBFile([]byte(pairsKB))
+	r, err := Select(base, []PoolEntry{pairsPool(1, nil)}, engine.DefaultConfig(),
+		SelectOptions{Seeds: 3, ConfirmSeeds: 25, MinGain: 2})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if r.Before.Games != 25*4 || r.After.Games != 25*4 {
+		t.Errorf("before %d games, after %d; want 100 each, the confirming run", r.Before.Games, r.After.Games)
+	}
+	if len(r.Steps) == 0 || len(r.Tried) < len(r.Steps) || r.Tried[0].Move != r.Steps[0].Move {
+		t.Errorf("steps %+v, tried %+v", r.Steps, r.Tried)
+	}
+
+	// A gain no move can reach is never taken, though moves were tried.
+	r, _ = Select(base, []PoolEntry{pairsPool(1, nil)}, engine.DefaultConfig(),
+		SelectOptions{Seeds: 3, ConfirmSeeds: 25, MinGain: 1000})
+	if len(r.Steps) != 0 || len(r.Tried) == 0 {
+		t.Errorf("steps %v, tried %v; want nothing taken after trying", r.Steps, r.Tried)
+	}
+}
+
+// Dropping the one question that tells two entities apart is never taken,
+// whatever it saves in questions.
+func TestSelectKeepsEntitiesSeparable(t *testing.T) {
+	base, _ := ParseKBFile([]byte(pairsKB))
+	e := pairsPool(1, nil)
+	r, err := Select(base, []PoolEntry{e}, engine.DefaultConfig(), SelectOptions{Seeds: 3, ConfirmSeeds: 10})
+	if err != nil {
+		t.Fatal(err)
+	}
+	k, _ := kb.Load(r.File)
+	if g := k.Inseparable(); len(g) != 0 {
+		t.Errorf("the candidate leaves %v inseparable", g)
+	}
+	for _, s := range r.Tried {
+		if s.Move.Drop == "side" || s.Move.Drop == "top" {
+			t.Errorf("tried %s, which leaves two entities alike", s.Move)
+		}
+	}
+}

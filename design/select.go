@@ -14,9 +14,19 @@ import (
 
 // SelectOptions controls Select.
 type SelectOptions struct {
-	Seeds   int     // games per entity for each candidate; more is steadier and slower
-	MinGain float64 // score points a move must add to be taken
-	Workers int     // candidates scored at once; 0 means one per CPU
+	Seeds   int     // games per entity to screen each candidate move; 0 means 10
+	MinGain float64 // score points a move must add, when confirmed, to be taken
+
+	// ConfirmSeeds is how many games per entity a move's screening gain must
+	// hold up over before it is taken; 0 means 100. At 10 seeds the score
+	// wanders by about 3 points on chance alone, so screening finds the
+	// promising moves and confirming decides.
+	ConfirmSeeds int
+	// ConfirmTries is how many of a round's most promising moves are
+	// confirmed before the search gives up; 0 means 3.
+	ConfirmTries int
+
+	Workers int // candidates scored at once; 0 means one per CPU
 
 	// AllowDisputed lets a question with values not yet settled in, using
 	// the proposer's values for them; the report lists them for a person.
@@ -56,6 +66,7 @@ type SelectResult struct {
 	Before  Score             `json:"before"`
 	After   Score             `json:"after"`
 	Steps   []SelectStep      `json:"steps"`
+	Tried   []SelectStep      `json:"tried"` // every move confirmed, taken or not, with its confirmed score
 	Added   []string          `json:"added"`
 	Dropped []string          `json:"dropped"`
 	Guessed []string          `json:"guessed,omitempty"` // added with default error rates
@@ -72,16 +83,26 @@ type candidate struct {
 
 // Select starts from the current questions and takes, one at a time, the
 // add, drop or replacement that raises the score most, until none raises it
-// by MinGain. A move is never taken that would leave the candidate failing
+// by MinGain. Every move is screened on Seeds games per entity; the most
+// promising are then confirmed on ConfirmSeeds, and only a gain that holds
+// up there is taken, so the result is not a run of lucky draws. Scores
+// reported are the confirmed ones. A move is never taken that would leave the candidate failing
 // to load or -lint, identifying fewer entities than the current questions
-// do, or identifying fewer with perfectly honest answers (-simulate): a
-// question set that cannot separate two entities even when every answer is
-// right has lost something the error model can hide. Every candidate is scored on the same seeds, so two differ
+// do, identifying fewer with perfectly honest answers (-simulate), or
+// leaving more entities with every answer the same as another's (-lint):
+// a question set that cannot separate two entities even when every answer
+// is right has lost something the error model can hide. Every candidate is scored on the same seeds, so two differ
 // only in their questions.
 func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOptions) (SelectResult, error) {
 	res := SelectResult{Skipped: map[string]string{}, Pending: map[string]int{}}
 	if opts.Seeds <= 0 {
 		opts.Seeds = 10
+	}
+	if opts.ConfirmSeeds <= 0 {
+		opts.ConfirmSeeds = 100
+	}
+	if opts.ConfirmTries <= 0 {
+		opts.ConfirmTries = 3
 	}
 	workers := opts.Workers
 	if workers <= 0 {
@@ -123,7 +144,7 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		current = append(current, a.Name)
 	}
 
-	var honestFloor int
+	var honestFloor, inseparableCeiling int
 
 	// A state is which current questions are dropped and which proposed ones
 	// added, in the order they were.
@@ -153,6 +174,9 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		}
 		if honest := engine.Simulate(k, cfg, engine.SimOptions{}).Correct; honest < honestFloor {
 			return nil, nil, fmt.Errorf("identifies %d with honest answers, fewer than %d", honest, honestFloor)
+		}
+		if n := inseparable(k); n > inseparableCeiling {
+			return nil, nil, fmt.Errorf("%d entities share every answer with another, more than %d", n, inseparableCeiling)
 		}
 		return f, k, nil
 	}
@@ -188,13 +212,15 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 	}
 
 	honestFloor = engine.Simulate(baseKB, cfg, engine.SimOptions{}).Correct
+	inseparableCeiling = inseparable(baseKB)
 	now := state{dropped: map[string]bool{}}
 	_, k0, err := build(now)
 	if err != nil {
 		return res, fmt.Errorf("the current knowledge base: %w", err)
 	}
-	res.Before = Analyse(k0, cfg, opts.Seeds).Score
-	best := res.Before
+	res.Before = Analyse(k0, cfg, opts.ConfirmSeeds).Score
+	best := res.Before                             // confirmed
+	screened := Analyse(k0, cfg, opts.Seeds).Score // the same state, screened
 	floor := res.Before.Accuracy
 
 	for {
@@ -242,21 +268,37 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		close(jobs)
 		wg.Wait()
 
-		pick := -1
+		// The moves that look like gains on screening, best first.
+		var promising []int
 		for i := range moves {
-			if !ok[i] || scores[i].Accuracy < floor {
+			if ok[i] && scores[i].Value > screened.Value {
+				promising = append(promising, i)
+			}
+		}
+		sort.SliceStable(promising, func(a, b int) bool { return scores[promising[a]].Value > scores[promising[b]].Value })
+		if len(promising) > opts.ConfirmTries {
+			promising = promising[:opts.ConfirmTries]
+		}
+
+		taken := false
+		for _, i := range promising {
+			next := apply(now, moves[i])
+			_, k, err := build(next)
+			if err != nil {
 				continue
 			}
-			if pick < 0 || scores[i].Value > scores[pick].Value {
-				pick = i
+			confirmed := Analyse(k, cfg, opts.ConfirmSeeds).Score
+			res.Tried = append(res.Tried, SelectStep{Move: moves[i], Score: confirmed})
+			if confirmed.Accuracy < floor || confirmed.Value < best.Value+opts.MinGain {
+				continue
 			}
-		}
-		if pick < 0 || scores[pick].Value < best.Value+opts.MinGain {
+			now, best, screened, taken = next, confirmed, scores[i], true
+			res.Steps = append(res.Steps, SelectStep{Move: moves[i], Score: best})
 			break
 		}
-		now = apply(now, moves[pick])
-		best = scores[pick]
-		res.Steps = append(res.Steps, SelectStep{Move: moves[pick], Score: best})
+		if !taken {
+			break
+		}
 	}
 
 	f, _, err := build(now)
@@ -279,6 +321,15 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		}
 	}
 	return res, nil
+}
+
+// inseparable counts the entities that share every answer with another.
+func inseparable(k *kb.KB) int {
+	n := 0
+	for _, g := range k.Inseparable() {
+		n += len(g)
+	}
+	return n
 }
 
 // ModelFor is the error model a pool entry goes into a knowledge base with:
@@ -319,14 +370,31 @@ func SelectReport(r SelectResult, pool []PoolEntry) string {
 			100*s.Accuracy, s.Questions, 100*s.GaveUp, s.Value)
 	}
 	fmt.Fprintf(&b, "Before: %s  \nAfter: %s\n\n", line(r.Before), line(r.After))
-	b.WriteString("Score: percent identified minus 5 per question, in games answered with each question's error rates.\n\n")
+	b.WriteString("Score: percent identified minus 5 per question, in games answered with each question's error rates. Moves are screened on a few games per entity and taken only if the gain holds up on many more; the scores here are those.\n\n")
 	if len(r.Steps) > 0 {
 		b.WriteString("## Moves, in the order taken\n\n| move | identified | questions | score |\n| --- | --- | --- | --- |\n")
 		for _, s := range r.Steps {
 			fmt.Fprintf(&b, "| %s | %.0f%% | %.1f | %.1f |\n", s.Move, 100*s.Score.Accuracy, s.Score.Questions, s.Score.Value)
 		}
 	} else {
-		b.WriteString("No move raised the score; the candidate is the current knowledge base.\n")
+		b.WriteString("No move raised the score; the candidate is the starting point, as brought up to date if it was.\n")
+	}
+
+	var rejected []SelectStep
+	for _, t := range r.Tried {
+		taken := false
+		for _, s := range r.Steps {
+			taken = taken || (s.Move == t.Move && s.Score == t.Score)
+		}
+		if !taken {
+			rejected = append(rejected, t)
+		}
+	}
+	if len(rejected) > 0 {
+		b.WriteString("\n## Promising on screening, not confirmed\n\n| move | identified | questions | score |\n| --- | --- | --- | --- |\n")
+		for _, s := range rejected {
+			fmt.Fprintf(&b, "| %s | %.0f%% | %.1f | %.1f |\n", s.Move, 100*s.Score.Accuracy, s.Score.Questions, s.Score.Value)
+		}
 	}
 
 	byName := map[string]PoolEntry{}
