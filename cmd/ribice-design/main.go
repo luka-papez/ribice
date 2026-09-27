@@ -122,8 +122,10 @@ func consult(ctx context.Context, args []string) error {
 		jobs      = fs.Int("jobs", 4, "claude: calls at once")
 		maxWindow = fs.Float64("max-window", 0.8, "claude: stop starting calls once the five-hour window is this full")
 
-		as   = fs.String("as", "", "human: your name, as it goes into the expert id")
-		open = fs.Bool("open", false, "human: open photos in the desktop's image viewer")
+		as     = fs.String("as", "", "human: your name, as it goes into the expert id")
+		open   = fs.Bool("open", false, "human: open each task's first photo in the desktop's image viewer")
+		corpus = fs.String("corpus", "", "human: show each entity's reference photo from data/<corpus>.json, then photos from its calibration corpus, e.g. clouds")
+		photos = fs.Int("photos", 3, "human, with -corpus: most photos to show per entity")
 	)
 	fs.Parse(args)
 	if *tasksPath == "" {
@@ -160,6 +162,13 @@ func consult(ctx context.Context, args []string) error {
 		h := &human.Expert{Name: *as, In: os.Stdin, Out: os.Stdout}
 		if *open {
 			h.Open = func(p string) error { return exec.Command("xdg-open", p).Start() }
+		}
+		if *corpus != "" {
+			byEntity, err := corpusPhotos(*corpus, *photos)
+			if err != nil {
+				return err
+			}
+			h.Photos = func(t design.Task) []string { return byEntity[t.Subject.Entity] }
 		}
 		experts = append(experts, h)
 	default:
@@ -551,6 +560,64 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	return os.WriteFile(path, append(b, '\n'), 0o644)
+}
+
+// corpusPhotos finds, for each entity, the reference photo the quiz shows
+// for it (a link, from data/<name>.json), then up to n photos of it in the
+// calibration corpus (tools/calib/corpus/<name>): those the label check
+// found to match first, then those it was unsure of; never one it said shows
+// something else, one a person dropped, or one not downloaded here.
+func corpusPhotos(name string, n int) (map[string][]string, error) {
+	out := map[string][]string{}
+	if k, err := kb.LoadFile(filepath.Join("data", name+".json")); err == nil {
+		for _, e := range k.Entities {
+			if e.Image != nil && e.Image.URL != "" {
+				out[e.Name] = []string{e.Image.URL}
+			}
+		}
+	}
+	dir := filepath.Join("tools", "calib", "corpus", name)
+	var manifest struct {
+		Photos []struct {
+			ID    string `json:"id"`
+			File  string `json:"file"`
+			Label string `json:"label"`
+		} `json:"photos"`
+	}
+	if err := readJSON(filepath.Join(dir, "manifest.json"), &manifest); err != nil {
+		return nil, err
+	}
+	var check map[string]struct {
+		Matches string `json:"matches"`
+	}
+	if err := readJSON(filepath.Join(dir, "label-check.json"), &check); err != nil {
+		return nil, err
+	}
+	review := map[string]struct {
+		Decision *string `json:"decision"`
+	}{}
+	if err := readJSON(filepath.Join(dir, "review.json"), &review); err != nil && !os.IsNotExist(err) {
+		return nil, err
+	}
+
+	taken := map[string]int{}
+	for _, rank := range []string{"yes", "unsure"} {
+		for _, p := range manifest.Photos {
+			if check[p.ID].Matches != rank || taken[p.Label] >= n {
+				continue
+			}
+			if r, ok := review[p.File]; ok && r.Decision != nil && *r.Decision == "drop" {
+				continue
+			}
+			path := filepath.Join("tools", "calib", "cache", "photos", name, p.ID+".jpg")
+			if _, err := os.Stat(path); err != nil {
+				continue
+			}
+			out[p.Label] = append(out[p.Label], path)
+			taken[p.Label]++
+		}
+	}
+	return out, nil
 }
 
 func readTasks(path string) ([]design.Task, error) {

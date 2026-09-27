@@ -22,8 +22,15 @@ type Expert struct {
 	Out  io.Writer // where the tasks are shown
 
 	// Open shows a photo, in the desktop's image viewer say. When nil, the
-	// photo's path is printed and nothing else.
+	// photo's path is printed and nothing else. Only a task's first photo is
+	// opened, so a sitting does not pile up windows; the rest are printed.
 	Open func(path string) error
+
+	// Photos, when set, finds pictures of a task's subject to show beside
+	// it, such as photos of the entity an assign task is about. They are for
+	// display only and never part of the task, whose id must stay the same
+	// for every expert asked it.
+	Photos func(t design.Task) []string
 }
 
 func (e *Expert) ID() string { return "human:" + e.Name }
@@ -135,23 +142,31 @@ func (e *Expert) show(t design.Task, i, n int) {
 		if t.Subject.Text != "" {
 			fmt.Fprintf(e.Out, "%s\n", t.Subject.Text)
 		}
+		if e.Photos != nil {
+			e.showPhotos(e.Photos(t))
+		}
 	case design.Perceive:
 		fmt.Fprintf(e.Out, "\nWhat is really there: %s\n", t.Subject.Text)
 		fmt.Fprintln(e.Out, "Imagine you know nothing about it and take a quick look. What would you answer?")
 	case design.Observe:
 		fmt.Fprintln(e.Out)
-		for _, p := range t.Subject.Photos {
-			fmt.Fprintf(e.Out, "photo  %s\n", p)
-			if e.Open != nil {
-				if err := e.Open(p); err != nil {
-					fmt.Fprintf(e.Out, "       (could not open it: %v)\n", err)
-				}
-			}
-		}
+		e.showPhotos(t.Subject.Photos)
 	}
 	fmt.Fprintf(e.Out, "\n%s\n", t.Question)
 	for j, o := range t.Options {
 		fmt.Fprintf(e.Out, "  %2d) %s\n", j+1, o.Label)
+	}
+}
+
+// showPhotos lists photos, opening the first.
+func (e *Expert) showPhotos(paths []string) {
+	for i, p := range paths {
+		fmt.Fprintf(e.Out, "photo  %s\n", p)
+		if i == 0 && e.Open != nil {
+			if err := e.Open(p); err != nil {
+				fmt.Fprintf(e.Out, "       (could not open it: %v)\n", err)
+			}
+		}
 	}
 }
 

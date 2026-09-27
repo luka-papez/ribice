@@ -142,3 +142,26 @@ func TestEndOfInputSaysSo(t *testing.T) {
 		t.Errorf("no word about the input ending:\n%s", out)
 	}
 }
+
+func TestPhotosAreShownButNotPartOfTheTask(t *testing.T) {
+	ts := tasks(1)
+	id := ts[0].ID
+	var opened []string
+	var out strings.Builder
+	e := &Expert{Name: "x", In: strings.NewReader("1\n"), Out: &out,
+		Open:   func(p string) error { opened = append(opened, p); return nil },
+		Photos: func(design.Task) []string { return []string{"a.jpg", "b.jpg"} }}
+	var got design.Verdict
+	if err := e.Answer(context.Background(), ts, func(v design.Verdict) error { got = v; return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), "photo  a.jpg") || !strings.Contains(out.String(), "photo  b.jpg") {
+		t.Errorf("photos not listed:\n%s", out.String())
+	}
+	if len(opened) != 1 || opened[0] != "a.jpg" {
+		t.Errorf("opened %v, want the first photo only", opened)
+	}
+	if got.Task != id {
+		t.Errorf("the verdict is for task %s, want %s", got.Task, id)
+	}
+}
