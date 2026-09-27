@@ -10,10 +10,10 @@ import (
 	"math"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/lpapez/ribice/engine"
+	"github.com/lpapez/ribice/internal/prompt"
 	"github.com/lpapez/ribice/kb"
 )
 
@@ -131,7 +131,7 @@ func quiz(k *kb.KB, cfg engine.Config, top int, explain bool) {
 		case "w", "why":
 			why(s, q)
 		default:
-			picks := parsePicks(line, len(q.Options))
+			picks := prompt.ParsePicks(line, len(q.Options))
 			if picks == nil {
 				fmt.Printf("   pick 1-%d, or several like 1,3, or s/u/w/q.\n", len(q.Options))
 				continue
@@ -142,26 +142,6 @@ func quiz(k *kb.KB, cfg engine.Config, top int, explain bool) {
 			fmt.Printf("   -> %s\n", summarise(leaders))
 		}
 	}
-}
-
-// parsePicks reads "2", "1,3" or "1 3" into option indices, or nil if the line
-// is not a valid selection.
-func parsePicks(line string, n int) []int {
-	fields := strings.FieldsFunc(line, func(r rune) bool {
-		return r == ',' || r == ' ' || r == '+' || r == '\t'
-	})
-	if len(fields) == 0 {
-		return nil
-	}
-	out := make([]int, 0, len(fields))
-	for _, f := range fields {
-		v, err := strconv.Atoi(f)
-		if err != nil || v < 1 || v > n {
-			return nil
-		}
-		out = append(out, v-1)
-	}
-	return out
 }
 
 func why(s *engine.Session, current *engine.Question) {

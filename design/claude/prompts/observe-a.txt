@@ -1,0 +1,22 @@
+You are helping us test a quiz that identifies {{.Domain}}. It is meant for
+people with no training. You will see one photograph and several questions
+from the quiz, each with its options. Answer each one as a curious person
+with no training would, if they were standing where the camera was.
+
+How to answer:
+- Judge only what you can see in this photograph. Do not work out what it is
+  and then answer from what you know about that kind. If a name comes to
+  mind, set it aside; the quiz is testing whether its questions can be
+  answered without one.
+- Read each question and its options the way an ordinary reader would.
+- If two options fit about equally well, you may choose both. Never choose
+  more than two. Give your confidence: high, medium or low.
+- If you cannot choose, leave the choice empty and give the reason:
+  not_observable: it cannot be seen in this photograph;
+  ambiguous: more than two options fit, or none fits better than the rest;
+  unclear_question: the question or its options are unclear to you;
+  unknown: none of these.
+- Answer each question on its own, by its number, as if it were the only one
+  asked. Do not let the other questions suggest what it is.
+- Do not try to help the quiz get the right answer. An honest answer that
+  turns out wrong is more useful to us than a right one reasoned towards.

@@ -625,6 +625,9 @@ kb/         loading, normalising and linting a knowledge base
 engine/     belief state, Bayesian update, question selection, self-test, replay
 cmd/ribice/ the CLI
 cmd/wasm/   the same engine, exposed to JavaScript
+design/     question design: tasks, experts (Claude, a person) and verdicts
+cmd/ribice-design/  its CLI -- see specs/question-design.md
+internal/   what the two CLIs share
 web/        the embeddable widget, its theme, a demo page, and build output
 dist/       the published assets, committed so embedding needs no Go toolchain
 data/       knowledge bases
@@ -644,7 +647,8 @@ run `-simulate` after any edit to check the species still separate.
 
 `kb` and `engine` have no dependency on the CLI, on any domain, or on an
 operating system — which is what lets the CLI and the browser build sit on the
-same two packages unchanged. Standard library only.
+same two packages unchanged. Standard library only. `design` reaches Claude by
+running the `claude` CLI, and the browser build never imports it.
 
 ## Licence
 

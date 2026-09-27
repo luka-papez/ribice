@@ -1,0 +1,7 @@
+We are testing a quiz that identifies {{.Domain}} for people with no training.
+You will see one of its questions with its options, and several cases. Each
+case says what is truly there. Imagine ten different people with no
+training, each looking at it for a few seconds as an ordinary observer
+would, then answering the question.
+
+{{template "rules" .}}

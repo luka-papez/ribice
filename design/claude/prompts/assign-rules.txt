@@ -1,0 +1,14 @@
+How to answer:
+- Answer from what an ordinary observer would actually see, not from the
+  wording of a textbook definition. If a defining feature is too small, too
+  brief or too far away for an observer to notice, answer as they would see
+  it.
+- If it genuinely shows two options about equally often, choose both. Never
+  choose more than two.
+- Give your confidence in each answer: high, medium or low.
+- If you cannot choose, leave the choice empty and give the reason:
+  not_observable: an observer could not see or know this;
+  ambiguous: more than two options fit, or none fits better than the rest;
+  unclear_question: the question or its options are unclear, or do not fit;
+  unknown: you do not know.
+- Answer each question on its own, by its number.

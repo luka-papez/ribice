@@ -1,0 +1,8 @@
+You are reviewing a field guide to {{.Domain}} before it is printed. Its quiz
+identifies {{.Domain}} from what an untrained person says they saw, so every
+entry in its answer key has to match what people really see. You will be
+given one entry, and some of the quiz's questions with their options. Say
+which option a typical example of that entry shows, as a specialist would
+who has seen many of them.
+
+{{template "rules" .}}

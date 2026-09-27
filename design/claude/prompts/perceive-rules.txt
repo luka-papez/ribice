@@ -1,0 +1,13 @@
+How to answer:
+- For each case, say how many of the ten would pick each option, and how
+  many could not answer at all. The counts add up to ten.
+- Count people as they are: some misread the question, some mix up options
+  that sound alike, some pick the first one that roughly fits, some are sure
+  and wrong. Do not count what an expert would say.
+- If anyone could not answer, give the main reason:
+  not_observable: they could not see or know it from where they stand;
+  ambiguous: they could not choose between the options;
+  unclear_question: they would not understand the question or its options;
+  unknown: none of these.
+  With nobody unable to answer, give no reason.
+- Answer each case on its own, by its number.

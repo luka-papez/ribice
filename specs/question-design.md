@@ -1,7 +1,7 @@
 # Question design
 
-Status: step 0 (`-simulate -sim-model`, `answer_rate`) done; the rest is
-plan. Replaces the aim of [calibration-loop.md](calibration-loop.md); its
+Status: step 0 (`-simulate -sim-model`, `answer_rate`) and step 1 (the
+`design` package, the Claude and human experts) done; the rest is plan. Replaces the aim of [calibration-loop.md](calibration-loop.md); its
 photo harness stays, as one kind of expert (see [Where the photo work
 fits](#where-the-photo-work-fits)). Clouds first.
 
@@ -174,7 +174,7 @@ reads the forms it understands and ignores the rest. A text model reads
 **Verdict**
 
 ```json
-{"task": "9f2c…", "expert": "claude:claude-opus-5@assign-v1a",
+{"task": "9f2c…", "expert": "claude:claude-opus-5@v1a",
  "p": {"none": 0.0, "straight": 0.1, "curled": 0.9},
  "abstain": 0.0, "reason": null}
 ```
@@ -219,11 +219,15 @@ entity's photos and averaging; the backend does that, not Consult.
 
 **Ids and cache**
 
-- **Task id** is a hash of kind, subject, question, options in order and
-  prompt version, so a reworded question is re-asked and an unchanged one
-  never is.
-- **Expert id** is `backend:model@version`, or `person:<name>`. Two experts
-  never share a cache row.
+- **Task id** is a hash of kind, attribute, subject, question and options
+  in order: everything the expert is shown. A reworded question is re-asked
+  and an unchanged one never is. `ReadTasks` refuses a task whose id no
+  longer matches its content, so a hand-edited task is never matched with
+  verdicts on its old wording.
+- **Expert id** is `backend:model@version`, or `human:<name>`. The version
+  names the expert's instructions (`v1a`: prompt set 1, wording a), so
+  changing a prompt makes a new expert rather than mixing old and new
+  answers. Two experts never share a cache row.
 - A backend implements the `Expert` interface (see
   [Implementation](#implementation)). It may batch: the Claude backend puts
   all of one entity's `assign` tasks, or all of one attribute's `perceive`
@@ -295,7 +299,7 @@ first pass needs them only for gate 4.
 | `design/claude` | the CLI call (a port of `claude_cli.py`), the Claude `Expert` and the Claude `Proposer`, prompts embedded with `embed` | Claude, through `claude -p` |
 | `design/human` | the terminal `Expert` | no |
 | `internal/prompt` | reading "2", "1,3" into picks, moved out of `cmd/ribice` so the quiz and the human expert share it | no |
-| `cmd/ribice-design` | subcommands `analyse`, `propose`, `consult`, `aggregate`, `select` | via the packages |
+| `cmd/ribice-design` | subcommands `tasks`, `consult` (built), `analyse`, `propose`, `aggregate`, `select` | via the packages |
 
 `cmd/wasm` never imports `design`, so the widget does not grow.
 
@@ -321,7 +325,7 @@ type Subject struct {
 }
 
 type Task struct {
-	ID         string // hash of kind, attribute, subject, question, options, prompt version
+	ID         string // hash of kind, attribute, subject, question and options
 	Kind       Kind
 	Attribute  string // proposal id
 	Subject    Subject
@@ -346,7 +350,7 @@ func (v Verdict) Check(t Task) error
 // ready, so an interrupted run keeps everything answered so far. A task it
 // did not get to is simply left out and asked on the next run.
 type Expert interface {
-	ID() string // "claude:claude-opus-5@assign-v1a", "human:luka"
+	ID() string // "claude:claude-opus-5@v1a", "human:luka"
 	Accepts(Task) bool
 	Answer(ctx context.Context, tasks []Task, emit func(Verdict) error) error
 }
@@ -365,7 +369,7 @@ type Store interface {
 
 `Brief` is the knowledge base, `targets.json` and the photo evidence;
 `Proposal` is one entry of `proposals.json`. The verdict store is an
-append-only JSON Lines file, `tools/design/verdicts/<kb>.jsonl`, committed:
+append-only JSON Lines file, `tools/design/verdicts.jsonl`, committed:
 a person's answers are too costly to lose to a cleaned cache.
 
 `Picks(options []Option, picks []int, c Confidence) map[kb.Value]float64`
@@ -390,10 +394,23 @@ answering the same way give the same verdict.
 - a reply that fails the schema or `Verdict.Check` is retried once, then left
   out.
 
-One `Expert` value per prompt variant (`assign-v1a`, `-v1b`, `-v1c`), each
-its own expert id. It batches: one call per entity for `assign`, one per
-attribute for `perceive`, one per photo for `observe`. The Proposer is the
-same caller with the proposer prompt at effort `high`.
+One `Expert` value per prompt variant (`v1a`, `v1b`, `v1c`), each its own
+expert id; `observe` has one wording so far. It batches: one call per entity
+for `assign`, one per attribute for `perceive`, one per photo for `observe`,
+with a shared rules text per kind and only the framing worded differently.
+The Proposer is the same caller with the proposer prompt at effort `high`.
+
+The reply schemas:
+
+- `assign` and `observe`: per question, up to two option numbers, a
+  confidence, and an abstain reason or null; turned into `p` by `Picks`.
+- `perceive`: per case, how many of ten untrained people pick each option,
+  how many cannot answer, and the main reason if any; `p` is the counts over
+  ten. A mix-up row is a distribution, so it is asked for as one, rather
+  than as a single pick with a confidence.
+
+A live call on one cloud's 15 `assign` tasks took one call and about $0.04
+at API prices.
 
 The API and Batch paths of `backends.py` are not ported. They pay off on
 photo-heavy runs, and the first pass has none.
@@ -440,11 +457,11 @@ moves; until gate 4 its numbers are Claude checking Claude, not truth.
 | Step | Command | Claude calls | Rough size |
 | --- | --- | --- | --- |
 | 0. Engine | `-simulate -sim-model`, `answer_rate` | — | done |
-| 1. Backends | `design`, `design/claude`, `design/human` with tests | — | Go |
+| 1. Backends | `design`, `design/claude`, `design/human`, `ribice-design tasks` and `consult`, with tests | — | done |
 | 2. Analyse | `ribice-design analyse -kb data/clouds.json` | none | seconds |
 | 3. Propose | `ribice-design propose` | 1–2 at effort `high` | 20–30 candidate attributes, each with 32 values |
-| 4. Consult: assign | `ribice-design consult -kind assign -expert claude` | 32 (one per entity) × 3 variants | ~100 text calls |
-| 5. Consult: perceive | `ribice-design consult -kind perceive -expert claude` | 1 per candidate × 3 variants | ~90 short calls |
+| 4. Consult: assign | `ribice-design consult -tasks assign.jsonl -expert claude -variant all -domain clouds` | 32 (one per entity) × 3 variants | ~100 text calls |
+| 5. Consult: perceive | `ribice-design consult -tasks perceive.jsonl -expert claude -variant all -domain clouds` | 1 per candidate × 3 variants | ~90 short calls |
 | 6. Aggregate | `ribice-design aggregate` | none | `pool.json`, `disputes.json` |
 | 7. Settle disputes | `ribice-design consult -tasks disputes.json -expert human -as luka` | none | you, one sitting |
 | 8. Aggregate, select | `ribice-design aggregate && ribice-design select` | none | `candidate.json`, `report.md` |
@@ -471,13 +488,11 @@ the questions as a layperson would see them; it never sees the proposer's
 values, rationale, or other clouds' answers.
 
 **The `perceive` expert** gets one true value described in plain words, the
-question and its options, never a cloud name, and is told to think of several
-different untrained people.
+question and its options, never a cloud name, and says how ten different
+untrained people would answer.
 
-**Every Claude expert replies in closed form**: up to two option numbers, a
-confidence of low, medium or high, or an abstention with one of the four
-reasons. Its reply schema has no free-text field; the backend turns it into
-`p` with `Picks`. The existing `ask.py` reply already has this shape once its
+**Every Claude expert replies in closed form**, with the schemas above and
+no free-text field. The existing `ask.py` reply already has this shape once its
 `looked_at` sentence is dropped, so the photo answerer can later become an
 `observe` expert with only a converter.
 

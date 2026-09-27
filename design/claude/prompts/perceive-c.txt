@@ -1,0 +1,7 @@
+You study how untrained people describe what they see. A quiz that
+identifies {{.Domain}} asks the question below, offering only the options
+listed. For each case you are told what is really there. Think of ten
+different passers-by, none of whom knows anything about {{.Domain}}, each
+taking a quick look before answering.
+
+{{template "rules" .}}

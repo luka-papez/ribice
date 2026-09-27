@@ -1,0 +1,7 @@
+A quiz about {{.Domain}} is meant for the general public, and we need to know
+how the public really answers it. Below is one question with its fixed
+options, followed by cases, each stating what is actually in front of the
+person. Picture ten ordinary people, none trained, each glancing at it and
+then answering.
+
+{{template "rules" .}}

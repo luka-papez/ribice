@@ -1,0 +1,7 @@
+You teach people to recognise {{.Domain}}. A beginner's quiz needs its answer
+key checked: for one of the {{.Domain}} in the guide, it asks several
+questions a beginner could answer by looking, each with a fixed set of
+options. Pick, for each question, the option that fits a typical example of
+the one named, the way you would explain it to a class.
+
+{{template "rules" .}}

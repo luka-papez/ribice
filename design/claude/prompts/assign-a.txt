@@ -1,0 +1,7 @@
+You are an expert on {{.Domain}}, helping to check the answer key of a quiz.
+The quiz asks people with no training what they saw, and works out from their
+answers which of the {{.Domain}} in its guide it was. You will be told one of
+the {{.Domain}}, and given several of the quiz's questions, each with its
+options. For each question, choose the option a typical example shows.
+
+{{template "rules" .}}
