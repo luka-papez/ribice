@@ -265,7 +265,7 @@ func (e *Expert) request(b []design.Task) (Request, error) {
 		}
 		writeQuestions(&text, b)
 	case design.Perceive:
-		req.Schema = splitSchema
+		req.Schema = splitSchema(len(b[0].Options))
 		fmt.Fprintf(&text, "Question: %s\nOptions:\n", b[0].Question)
 		writeOptions(&text, b[0].Options, "")
 		text.WriteString("\nCases:\n")
@@ -365,21 +365,28 @@ var pickSchema = json.RawMessage(`{
   "required": ["answers"],
   "additionalProperties": false}`)
 
-var splitSchema = json.RawMessage(`{
+// splitSchema is the perceive reply's schema for a question with n options.
+// It pins the counts to exactly n: left free, the model sometimes added the
+// people who cannot answer as one more count.
+func splitSchema(n int) json.RawMessage {
+	return json.RawMessage(fmt.Sprintf(splitSchemaFormat, n, n, n))
+}
+
+var splitSchemaFormat = `{
   "type": "object",
   "properties": {"answers": {"type": "array", "items": {
     "type": "object",
     "properties": {
       "case": {"type": "integer", "description": "the case's number"},
-      "counts": {"type": "array", "items": {"type": "integer", "minimum": 0},
-                 "description": "how many of the ten pick each option, in the options' order"},
+      "counts": {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": %d, "maxItems": %d,
+                 "description": "how many of the ten pick each option: exactly %d numbers, one per option, in the options' order; those who cannot answer go in cannot_answer, not here"},
       "cannot_answer": {"type": "integer", "minimum": 0},
       "reason": ` + reasonEnum + `
     },
     "required": ["case", "counts", "cannot_answer", "reason"],
     "additionalProperties": false}}},
   "required": ["answers"],
-  "additionalProperties": false}`)
+  "additionalProperties": false}`
 
 type pickReply struct {
 	Answers []struct {

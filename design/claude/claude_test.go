@@ -353,3 +353,26 @@ func TestNoPartialMessagesWithoutProgress(t *testing.T) {
 		}
 	}
 }
+
+func TestPerceiveSchemaPinsTheCounts(t *testing.T) {
+	var schema struct {
+		Properties struct {
+			Answers struct {
+				Items struct {
+					Properties struct {
+						Counts struct {
+							MinItems int `json:"minItems"`
+							MaxItems int `json:"maxItems"`
+						} `json:"counts"`
+					} `json:"properties"`
+				} `json:"items"`
+			} `json:"answers"`
+		} `json:"properties"`
+	}
+	if err := json.Unmarshal(splitSchema(5), &schema); err != nil {
+		t.Fatalf("not JSON: %v\n%s", err, splitSchema(5))
+	}
+	if c := schema.Properties.Answers.Items.Properties.Counts; c.MinItems != 5 || c.MaxItems != 5 {
+		t.Errorf("counts pinned to %d-%d, want 5", c.MinItems, c.MaxItems)
+	}
+}
