@@ -41,7 +41,7 @@ func TestFitErrors(t *testing.T) {
 		"b": {{Expert: "x", P: map[kb.Value]float64{"b": 0.5, "a": 0.3, "c": 0.2}}},
 		"c": {{Expert: "x", P: map[kb.Value]float64{"c": 0.6, "d": 0.2}, Abstain: 0.2, Reason: Ambiguous}},
 	})
-	m := FitErrors(abcd, map[kb.Value]int{"a": 2, "b": 1, "c": 1}, tasks, verdicts)
+	m := FitErrors("Q?", abcd, map[kb.Value]int{"a": 2, "b": 1, "c": 1}, tasks, verdicts)
 
 	// Rows: a answers a .85, b .1, c .05; b answers b .5, a .3, c .2;
 	// c answers c 1, with .4 not answering.
@@ -62,8 +62,9 @@ func TestFitErrors(t *testing.T) {
 		t.Errorf("confusion %v, want %v", m.Confusion, want)
 	}
 	// Games meet a twice as often; only c's .4 goes unanswered: 1 - .4/4.
-	if !near(m.AnswerRate, 0.9) || !near(m.Cost, 1/0.9) {
-		t.Errorf("answer rate %v, cost %v; want 0.9 and 1.11", m.AnswerRate, m.Cost)
+	// Reading: "Q?" and three one-word options, each 1 + 2 words: 10 words.
+	if want := 10.0 / UnitWords / 0.9; !near(m.AnswerRate, 0.9) || !near(m.Cost, want) {
+		t.Errorf("answer rate %v, cost %v; want 0.9 and %v", m.AnswerRate, m.Cost, want)
 	}
 	if len(m.Missing) != 0 {
 		t.Errorf("missing %v", m.Missing)
@@ -75,7 +76,7 @@ func TestFitErrorsWithTwoValuesIsAllNoise(t *testing.T) {
 		"a": {{Expert: "x", P: map[kb.Value]float64{"a": 0.7, "b": 0.3}}},
 		"b": {{Expert: "x", P: map[kb.Value]float64{"b": 0.9, "a": 0.1}}},
 	})
-	m := FitErrors(abcd, map[kb.Value]int{"a": 1, "b": 1}, tasks, verdicts)
+	m := FitErrors("Q?", abcd, map[kb.Value]int{"a": 1, "b": 1}, tasks, verdicts)
 	if len(m.Confusable) != 0 || m.Confusion != 0 || !near(m.Noise, 0.2) {
 		t.Errorf("fit %+v, want noise 0.2 and nothing else", m)
 	}
@@ -86,7 +87,7 @@ func TestFitErrorsFloorsAndCaps(t *testing.T) {
 		"a": {{Expert: "x", P: map[kb.Value]float64{"a": 1}}},
 		"b": {{Expert: "x", P: map[kb.Value]float64{"b": 1}}},
 	})
-	m := FitErrors(abcd, map[kb.Value]int{"a": 1, "b": 1, "c": 1}, perfect, verdicts)
+	m := FitErrors("Q?", abcd, map[kb.Value]int{"a": 1, "b": 1, "c": 1}, perfect, verdicts)
 	if m.Noise != minNoise || !reflect.DeepEqual(m.Missing, []kb.Value{"c"}) {
 		t.Errorf("perfect answers gave noise %v, missing %v; want the floor, and c missing", m.Noise, m.Missing)
 	}
@@ -96,15 +97,15 @@ func TestFitErrorsFloorsAndCaps(t *testing.T) {
 		"b": {{Expert: "x", P: map[kb.Value]float64{"a": 0.5, "c": 0.5}}},
 		"c": {{Expert: "x", P: map[kb.Value]float64{"a": 0.1}, Abstain: 0.9, Reason: NotObservable}},
 	})
-	m = FitErrors(abcd, map[kb.Value]int{"a": 1, "b": 1, "c": 1}, hopeless, verdicts)
+	m = FitErrors("Q?", abcd, map[kb.Value]int{"a": 1, "b": 1, "c": 1}, hopeless, verdicts)
 	if m.Noise+m.Confusion > maxError+1e-12 {
 		t.Errorf("noise %v plus confusion %v is over %v", m.Noise, m.Confusion, maxError)
 	}
-	if !near(m.AnswerRate, 0.7) || m.Cost != 1/0.7 {
+	if !near(m.AnswerRate, 0.7) || !near(m.Cost, 10.0/UnitWords/0.7) {
 		t.Errorf("answer rate %v, cost %v", m.AnswerRate, m.Cost)
 	}
 
-	none := FitErrors(abcd, map[kb.Value]int{"a": 1}, nil, func(string) []Verdict { return nil })
+	none := FitErrors("Q?", abcd, map[kb.Value]int{"a": 1}, nil, func(string) []Verdict { return nil })
 	if len(none.Rows) != 0 || none.AnswerRate != 1 || len(none.Missing) != 1 {
 		t.Errorf("no verdicts gave %+v", none)
 	}

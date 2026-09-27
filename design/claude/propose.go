@@ -15,7 +15,9 @@ import (
 )
 
 // ProposeVersion names the proposer's prompt; change it with the prompt.
-const ProposeVersion = "propose-v1"
+// v2 (2026-09-27): judged on reading, short questions and options, at most
+// five options, where v1 allowed eight.
+const ProposeVersion = "propose-v2"
 
 // Proposer is Claude inventing questions.
 type Proposer struct {
@@ -230,8 +232,8 @@ func convert(a proposedAttr, k *kb.KB, proposer string) (design.Proposal, error)
 	switch {
 	case a.Kind == "boolean" && !(len(p.Values) == 2 && declared[kb.Yes] && declared[kb.No]):
 		return p, fmt.Errorf("a boolean question needs exactly the values yes and no")
-	case a.Kind == "categorical" && (len(p.Values) < 2 || len(p.Values) > 8):
-		return p, fmt.Errorf("%d values, want 2 to 8", len(p.Values))
+	case a.Kind == "categorical" && (len(p.Values) < 2 || len(p.Values) > design.MaxOptions):
+		return p, fmt.Errorf("%d values, want 2 to %d", len(p.Values), design.MaxOptions)
 	case a.Kind != "boolean" && a.Kind != "categorical":
 		return p, fmt.Errorf("kind %q", a.Kind)
 	}

@@ -349,6 +349,7 @@ func analyse(args []string) error {
 		path  = fs.String("kb", "data/clouds.json", "knowledge base")
 		seeds = fs.Int("seeds", 20, "games per entity, each with its own seed")
 		out   = fs.String("out", "", "where to write targets.json (required)")
+		maxOp = fs.Int("max-options", design.MaxOptions, "most answers the quiz offers at once; more fold into \"something else\"")
 	)
 	fs.Parse(args)
 	if *out == "" {
@@ -358,15 +359,17 @@ func analyse(args []string) error {
 	if err != nil {
 		return err
 	}
-	a := design.Analyse(k, engine.DefaultConfig(), *seeds)
+	cfg := engine.DefaultConfig()
+	cfg.MaxOptions = *maxOp
+	a := design.Analyse(k, cfg, *seeds)
 	a.KB = *path
 	if err := writeJSON(*out, a); err != nil {
 		return err
 	}
 	sc := a.Score
 	fmt.Printf("%s, answered with its own error model, %d games:\n", *path, sc.Games)
-	fmt.Printf("  identified %.0f%%, %.1f questions, gave up %.0f%%: score %.1f\n",
-		100*sc.Accuracy, sc.Questions, 100*sc.GaveUp, sc.Value)
+	fmt.Printf("  identified %.0f%%, %.1f questions, %.0f words read, gave up %.0f%%: score %.1f\n",
+		100*sc.Accuracy, sc.Questions, sc.Words, 100*sc.GaveUp, sc.Value)
 	fmt.Printf("  %d pairs mixed up; the most:\n", len(a.Pairs))
 	for i, p := range a.Pairs {
 		if i == 10 {
@@ -532,7 +535,11 @@ func selectQuestions(args []string) error {
 	fmt.Print(prep.String())
 
 	start := time.Now()
-	r, err := design.Select(base, pool, engine.DefaultConfig(), design.SelectOptions{Seeds: *seeds,
+	// Games are played as the site plays them: at most design.MaxOptions
+	// answers offered at once.
+	cfg := engine.DefaultConfig()
+	cfg.MaxOptions = design.MaxOptions
+	r, err := design.Select(base, pool, cfg, design.SelectOptions{Seeds: *seeds,
 		ConfirmSeeds: *confirm, MinGain: *minGain, AllowDisputed: *disputed, AllowGuessed: *guessed})
 	if err != nil {
 		return err
@@ -591,12 +598,12 @@ func selectQuestions(args []string) error {
 		return err
 	}
 
-	fmt.Printf("before: identified %.0f%% in %.1f questions, score %.1f\n", 100*r.Before.Accuracy, r.Before.Questions, r.Before.Value)
+	fmt.Printf("before: identified %.0f%% in %.1f questions, %.0f words read, score %.1f\n", 100*r.Before.Accuracy, r.Before.Questions, r.Before.Words, r.Before.Value)
 	for _, s := range r.Steps {
 		fmt.Printf("  %-50s score %.1f\n", s.Move, s.Score.Value)
 	}
-	fmt.Printf("after:  identified %.0f%% in %.1f questions, score %.1f  (%s)\n", 100*r.After.Accuracy, r.After.Questions,
-		r.After.Value, time.Since(start).Round(time.Second))
+	fmt.Printf("after:  identified %.0f%% in %.1f questions, %.0f words read, score %.1f  (%s)\n", 100*r.After.Accuracy, r.After.Questions,
+		r.After.Words, r.After.Value, time.Since(start).Round(time.Second))
 	fmt.Printf("%d values to settle on the questions chosen; wrote %s\n", len(settle), *out)
 	return nil
 }

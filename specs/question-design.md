@@ -48,7 +48,10 @@ checks. Those measure a question set; nothing in the loop makes a better one.
 ## Goal
 
 Find the set of questions, and each entity's answer to each, that identifies
-an entity in the fewest questions a layperson can answer reliably.
+an entity with the least reading, in questions a layperson can answer
+reliably. Reading is every word of every question asked and of every option
+offered with it: a yes/no of a few words is cheap, eight long options are
+not. No question offers more than five answers.
 
 1. **Propose.** Claude invents questions (attributes, their values and labels)
    and assigns every entity a value, aimed at the pairs the quiz confuses.
@@ -323,9 +326,15 @@ entities, or that under half the people could answer, is never used.
 - **`confusable`**: pairs where either direction gets at least 20% of
   answers, two people in ten: at 10%, one imagined outlier made a pair. **`confusion`**: mean share landing on a declared look-alike.
   **`noise`**: mean share landing elsewhere, floored at 0.02.
-- **`answer_rate`**: 1 − mean abstain. **`cost`**: `1 / answer_rate`,
-  clamped to 0.7–3.0, so a question few people can answer is asked late.
-  `answer_rate` under 0.5 drops the attribute from the pool.
+- **`answer_rate`**: 1 − mean abstain. `answer_rate` under 0.5 drops the
+  attribute from the pool.
+- **`cost`**: the question's reading effort over the options people are
+  offered, divided by `answer_rate`, clamped to 0.5–6. Reading effort is the
+  words of the question plus, per option, its words and 2 more for weighing
+  it, in units of 12 words (a short yes/no). The engine ranks questions by
+  gain over cost, so a long or hard question is asked only when worth it.
+  Select works a pool entry's cost out afresh when it uses it, so a pool
+  written under an older formula cannot carry a stale one.
 
 ## The score
 
@@ -333,8 +342,16 @@ Select plays `-simulate` with the simulated user making mistakes the way each
 attribute's own error model says (`Attribute.Report`), rather than one flat
 `-sim-noise`, and skipping at the attribute's `1 − answer_rate`:
 
-- **score = accuracy in percent − 5 × mean questions**, as in the calibration
-  loop, so one question saved is worth 5 points of accuracy.
+- **score = accuracy in percent − 5 points per 12 words read**, averaged
+  over games. A game's reading is every question asked and the options
+  offered with it, "something else" included, so a short yes/no costs what
+  a question cost when the score counted questions, and eight long options
+  cost several times that. Games are played as the site plays them, with at
+  most 5 answers offered at once (the engine's `MaxOptions`).
+- **At most 5 answers** per question: the proposer is asked for that,
+  `propose` rejects more, and Select never adds a question with more. A
+  current question over the limit stays only until something shorter does
+  its work; `select.md` lists it for the next proposer.
 
 **Before searching**, Select brings the current knowledge base up to date, so
 the score it starts from is measured the same way as the candidates':
@@ -646,6 +663,17 @@ person who knows the audience agree people answer nearly at random. The
 `perceive` prompt is v2 since, counting people who would need a word of the
 field explained as unable to answer; v1 had rated `turrets` answerable by
 almost everyone.
+
+**Reading, not questions** (`tools/design/runs/2026-09-27-select-3/`).
+Playing the quiz showed the cost of counting questions: its first question
+offered eight options of up to eleven words, because eight options carry a
+lot of information and its cost counted only whether people could answer
+it. The score now charges for words read and the cost for reading effort.
+Measured with the new score, the quiz read 352 words a game; showing at most
+5 options and costing by reading brought that to 301 at the same 60% named,
+without changing a question. Reading effort in the cost helps only together
+with the cap: with 8 options shown and a stale cost on the three merged
+questions, it read more, not less.
 
 **Round three** (`tools/design/runs/2026-09-27-propose-2/`) starts from the
 measured knowledge base: 60% named in 8.5 questions (score 17.5 on 40

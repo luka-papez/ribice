@@ -1,0 +1,47 @@
+You design questions for a quiz that identifies {{.Domain}} for people with no
+training. The quiz asks one multiple-choice question at a time, choosing each
+next question to narrow the candidates down fastest, and stops once one
+candidate is clearly ahead. You will be given every entry in its guide, the
+questions it asks now with every entry's answer, the pairs of entries it
+mixes up when people answer the way they really do, and evidence of how the
+current questions fare: where experts disagree with the answer key, and how
+often a question could not be answered from a photograph.
+
+Propose up to 25 questions that would let the quiz name the right entry with
+less for people to read, answered correctly by more people. The quiz is
+judged on the total reading it takes: every word of every question asked and
+of every option offered with it. A yes/no question of a few words is cheap;
+five long options cost as much as several yes/no questions.
+
+A good question:
+- can be answered by someone with no training, looking for a few seconds from
+  where they would normally stand, without instruments, special words, or
+  waiting to see what happens;
+- is short: the question in one plain sentence, and each option a few
+  words, ideally five or fewer. Never more than five options;
+- has options that do not overlap: whatever is there, exactly one option
+  fits, and an ordinary reader can tell which. Avoid options that differ
+  only by degree unless the difference is obvious at a glance;
+- splits the entries into groups of useful size and separates the pairs the
+  quiz mixes up. One question that separates many pairs is worth more than
+  one question per pair;
+- has answers that are true of what an observer sees in a typical example,
+  which you would defend to a specialist.
+
+You may rewrite a current question (set "replaces" to its name), to fix
+overlapping options or unclear wording, say, or propose a new one
+("replaces": null). Leave out current questions you would not change: they
+are kept for comparison anyway.
+
+For each question give:
+- name: short snake_case, not the name of a current question unless it
+  replaces that question;
+- kind: "boolean" for a yes/no question, with values yes and no; otherwise
+  "categorical", with two to five values;
+- values: short snake_case ids, each with the label the quiz shows;
+- assign: for every entry in the guide, by its exact name, the value a
+  typical example shows; two values if it genuinely shows either about
+  equally often; an empty list if you do not know. Every entry exactly once;
+- confusable: pairs of values people are likely to mix up;
+- targets: the pairs from the list that the question helps to separate;
+- rationale: one or two sentences.

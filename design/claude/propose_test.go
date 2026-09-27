@@ -65,6 +65,14 @@ func TestConvert(t *testing.T) {
 		"bad look-alike":  func(a *proposedAttr) { a.Confusable = [][]string{{"straight", "hooked"}} },
 		"boolean":         func(a *proposedAttr) { a.Kind = "boolean" },
 		"one value":       func(a *proposedAttr) { a.Values = a.Values[:1] },
+		"six values": func(a *proposedAttr) {
+			for _, v := range []string{"a", "b", "c"} {
+				a.Values = append(a.Values, struct {
+					Value string `json:"value"`
+					Label string `json:"label"`
+				}{v, v})
+			}
+		},
 	} {
 		a := streaks(k)
 		spoil(&a)
@@ -99,7 +107,7 @@ func TestProposeKeepsTheGoodProposals(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(props) != 1 || props[0].ID != "p01" || props[0].Proposer != "claude:m@propose-v1" {
+	if len(props) != 1 || props[0].ID != "p01" || props[0].Proposer != "claude:m@"+ProposeVersion {
 		t.Errorf("kept %+v, want the first proposal only", props)
 	}
 	if !strings.Contains(log.String(), "streak_colour") || !strings.Contains(log.String(), "second question named") {

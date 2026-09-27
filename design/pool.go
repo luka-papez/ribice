@@ -84,7 +84,7 @@ func BuildPool(props []Proposal, assign, perceive []Task, verdicts func(string) 
 				holders[v]++
 			}
 		}
-		e.Errors = FitErrors(p.Values, holders, byAttr(perceive, p.Name), verdicts)
+		e.Errors = FitErrors(p.Question, p.Values, holders, byAttr(perceive, p.Name), verdicts)
 
 		entities := len(p.Assign)
 		switch {

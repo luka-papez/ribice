@@ -13,12 +13,16 @@ type Score struct {
 	Games     int     `json:"games"`
 	Accuracy  float64 `json:"accuracy"` // share of games naming the right entity first
 	Questions float64 `json:"questions"`
+	Words     float64 `json:"words"`   // reading per game: every question asked and the options offered with it
 	GaveUp    float64 `json:"gave_up"` // share of games that ran out of answerable questions
-	Value     float64 `json:"score"`   // accuracy in percent minus 5 per question
+	Value     float64 `json:"score"`   // accuracy in percent less WordWeight per word read
 }
 
-// QuestionWeight is how many points of accuracy one question is worth.
-const QuestionWeight = 5
+// WordWeight is how many points of accuracy reading one word costs: 5 per
+// UnitWords, so a short yes/no question costs what any question did when the
+// score counted questions. The quiz is judged on the reading it takes, not the
+// number of questions: eight long options cost as much as several yes/nos.
+const WordWeight = 5.0 / UnitWords
 
 // Analysis is the score, and the pairs the quiz mixes up.
 type Analysis struct {
@@ -42,12 +46,16 @@ func Analyse(k *kb.KB, cfg engine.Config, seeds int) Analysis {
 	a := Analysis{Seeds: seeds}
 	mix := map[[2]string]int{}
 	missed := map[string]int{}
-	correct, asked, gaveUp := 0, 0, 0
+	correct, asked, gaveUp, words := 0, 0, 0, 0
 	for seed := 0; seed < seeds; seed++ {
 		r := engine.Simulate(k, cfg, engine.SimOptions{ErrorModel: true, Seed: int64(seed)})
 		for _, g := range r.Results {
 			a.Score.Games++
 			asked += g.Questions
+			for _, st := range g.Steps {
+				attr := k.Attr(st.Attr)
+				words += ReadingWords(attr.Title(), offeredLabels(attr, st.Offered))
+			}
 			if g.GaveUp {
 				gaveUp++
 			}
@@ -65,7 +73,8 @@ func Analyse(k *kb.KB, cfg engine.Config, seeds int) Analysis {
 	a.Score.Accuracy = float64(correct) / n
 	a.Score.Questions = float64(asked) / n
 	a.Score.GaveUp = float64(gaveUp) / n
-	a.Score.Value = 100*a.Score.Accuracy - QuestionWeight*a.Score.Questions
+	a.Score.Words = float64(words) / n
+	a.Score.Value = 100*a.Score.Accuracy - WordWeight*a.Score.Words
 
 	byName := map[string]*kb.Entity{}
 	for _, e := range k.Entities {

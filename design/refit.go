@@ -27,7 +27,7 @@ func Refit(k *kb.KB, perceive []Task, verdicts func(string) []Verdict) (map[stri
 		for _, v := range a.Domain {
 			holders[v] = a.Holders(v)
 		}
-		m := FitErrors(tasks[0].Options, holders, tasks, verdicts)
+		m := FitErrors(tasks[0].Question, tasks[0].Options, holders, tasks, verdicts)
 		if len(m.Rows) == 0 || len(m.Missing) > 0 {
 			missing[a.Name] = m.Missing
 			continue

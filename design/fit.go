@@ -34,8 +34,8 @@ const (
 	lookalikeShare = 0.20
 	minNoise       = 0.02
 	maxError       = 0.95 // noise plus confusion; the engine needs some chance of a right answer
-	minCost        = 0.7
-	maxCost        = 3.0
+	minCost        = 0.5  // a yes/no of a few words
+	maxCost        = 6.0
 )
 
 // FitErrors fits the engine's error model to the perceive verdicts on one
@@ -55,9 +55,12 @@ const (
 //     values that have look-alikes, the only ones it applies to in
 //     kb.Attribute.Report.
 //   - Noise: the share on any other wrong value, floored at 0.02.
-//   - AnswerRate: one less the abstentions; Cost is its inverse, clamped to
-//     0.7-3, so a question few can answer is asked late.
-func FitErrors(values []Option, holders map[kb.Value]int, tasks []Task, verdicts func(string) []Verdict) ErrorModel {
+//   - AnswerRate: one less the abstentions.
+//   - Cost: the question's reading Effort, over the options people are
+//     offered (the values some entity holds), divided by AnswerRate and
+//     clamped to 0.5-6. The engine ranks questions by gain over cost, so a
+//     long or hard-to-answer question is asked only when it is worth it.
+func FitErrors(question string, values []Option, holders map[kb.Value]int, tasks []Task, verdicts func(string) []Verdict) ErrorModel {
 	var held []kb.Value
 	for _, o := range values {
 		if holders[o.Value] > 0 {
@@ -69,7 +72,7 @@ func FitErrors(values []Option, holders map[kb.Value]int, tasks []Task, verdicts
 		isHeld[v] = true
 	}
 
-	m := ErrorModel{AnswerRate: 1, Cost: 1}
+	m := ErrorModel{AnswerRate: 1, Cost: CostOf(question, values, holders, 1)}
 	byTruth := map[kb.Value]Row{}
 	for _, t := range tasks {
 		truth := t.Subject.Value
@@ -116,7 +119,7 @@ func FitErrors(values []Option, holders map[kb.Value]int, tasks []Task, verdicts
 		abstain += float64(r.Weight) * r.Abstain
 	}
 	m.AnswerRate = 1 - abstain/total
-	m.Cost = clamp(1/max(m.AnswerRate, 1e-9), minCost, maxCost)
+	m.Cost = CostOf(question, values, holders, m.AnswerRate)
 
 	near := map[kb.Value][]kb.Value{}
 	if len(held) > 2 {
@@ -161,6 +164,19 @@ func FitErrors(values []Option, holders map[kb.Value]int, tasks []Task, verdicts
 		m.Confusion *= maxError / sum
 	}
 	return m
+}
+
+// CostOf is what asking a question costs: its reading Effort over the options
+// people are offered (the values some entity holds), divided by the share who
+// can answer it, clamped to 0.5-6.
+func CostOf(question string, values []Option, holders map[kb.Value]int, answerRate float64) float64 {
+	var labels []string
+	for _, o := range values {
+		if holders[o.Value] > 0 {
+			labels = append(labels, o.Label)
+		}
+	}
+	return clamp(Effort(question, labels)/max(answerRate, 1e-9), minCost, maxCost)
 }
 
 func clamp(x, lo, hi float64) float64 {

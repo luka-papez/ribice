@@ -69,10 +69,11 @@ type SelectResult struct {
 	Tried   []SelectStep      `json:"tried"` // every move confirmed, taken or not, with its confirmed score
 	Added   []string          `json:"added"`
 	Dropped []string          `json:"dropped"`
-	Guessed []string          `json:"guessed,omitempty"` // added with default error rates
-	Pending map[string]int    `json:"pending,omitempty"` // added with this many values to settle
-	Skipped map[string]string `json:"skipped,omitempty"` // proposals never tried, and why
-	File    []byte            `json:"-"`                 // the candidate knowledge base
+	Guessed []string          `json:"guessed,omitempty"`  // added with default error rates
+	Pending map[string]int    `json:"pending,omitempty"`  // added with this many values to settle
+	Skipped map[string]string `json:"skipped,omitempty"`  // proposals never tried, and why
+	TooMany map[string]int    `json:"too_many,omitempty"` // questions in the candidate offering more than MaxOptions answers
+	File    []byte            `json:"-"`                  // the candidate knowledge base
 }
 
 type candidate struct {
@@ -117,6 +118,9 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		complete := len(e.Errors.Rows) > 0 && len(e.Errors.Missing) == 0
 		pending := len(e.Disputed) + len(e.Abstained) + e.Unasked
 		switch {
+		case len(e.Proposal.Values) > MaxOptions:
+			res.Skipped[name] = fmt.Sprintf("%d options, more than %d", len(e.Proposal.Values), MaxOptions)
+			continue
 		case complete && e.Errors.AnswerRate < minAnswerRate:
 			res.Skipped[name] = fmt.Sprintf("only %.0f%% could answer", 100*e.Errors.AnswerRate)
 			continue
@@ -301,11 +305,19 @@ func Select(base *KBFile, pool []PoolEntry, cfg engine.Config, opts SelectOption
 		}
 	}
 
-	f, _, err := build(now)
+	f, kf, err := build(now)
 	if err != nil {
 		return res, err
 	}
 	res.File, res.After = f.Bytes(), best
+	for _, a := range kf.Attributes {
+		if len(a.Domain) > MaxOptions {
+			if res.TooMany == nil {
+				res.TooMany = map[string]int{}
+			}
+			res.TooMany[a.Name] = len(a.Domain)
+		}
+	}
 	res.Added = append(res.Added, now.added...)
 	for n := range now.dropped {
 		res.Dropped = append(res.Dropped, n)
@@ -334,12 +346,22 @@ func inseparable(k *kb.KB) int {
 
 // ModelFor is the error model a pool entry goes into a knowledge base with:
 // its fit, when every value has perceive answers, or else the default one,
-// reported as guessed.
+// reported as guessed. Its cost is worked out afresh from the question's
+// text, settled values and answer rate, so a pool written before the cost
+// formula last changed cannot carry a stale one.
 func ModelFor(e PoolEntry) (ErrorModel, bool) {
-	if len(e.Errors.Rows) > 0 && len(e.Errors.Missing) == 0 {
-		return e.Errors, false
+	m, guessed := e.Errors, false
+	if len(m.Rows) == 0 || len(m.Missing) > 0 {
+		m, guessed = guessedModel(e.Proposal), true
 	}
-	return guessedModel(e.Proposal), true
+	holders := map[kb.Value]int{}
+	for _, vs := range e.Proposal.Assign {
+		for _, v := range vs {
+			holders[v]++
+		}
+	}
+	m.Cost = CostOf(e.Proposal.Question, e.Proposal.Values, holders, m.AnswerRate)
+	return m, guessed
 }
 
 // guessedModel is the knowledge base's default error model, for a question
@@ -347,7 +369,7 @@ func ModelFor(e PoolEntry) (ErrorModel, bool) {
 // over the look-alikes the proposer named. A yes/no question has nothing to
 // single out, as in FitErrors, so all its error is noise.
 func guessedModel(p Proposal) ErrorModel {
-	m := ErrorModel{Noise: kb.DefaultNoise, AnswerRate: 1, Cost: 1}
+	m := ErrorModel{Noise: kb.DefaultNoise, AnswerRate: 1, Cost: 1} // cost set by ModelFor
 	if len(p.Values) <= 2 {
 		return m
 	}
@@ -366,15 +388,15 @@ func guessedModel(p Proposal) ErrorModel {
 func SelectReport(r SelectResult, pool []PoolEntry) string {
 	var b strings.Builder
 	line := func(s Score) string {
-		return fmt.Sprintf("identified %.0f%%, %.1f questions, gave up %.0f%%: score %.1f",
-			100*s.Accuracy, s.Questions, 100*s.GaveUp, s.Value)
+		return fmt.Sprintf("identified %.0f%%, %.1f questions, %.0f words read, gave up %.0f%%: score %.1f",
+			100*s.Accuracy, s.Questions, s.Words, 100*s.GaveUp, s.Value)
 	}
 	fmt.Fprintf(&b, "Before: %s  \nAfter: %s\n\n", line(r.Before), line(r.After))
-	b.WriteString("Score: percent identified minus 5 per question, in games answered with each question's error rates. Moves are screened on a few games per entity and taken only if the gain holds up on many more; the scores here are those.\n\n")
+	fmt.Fprintf(&b, "Score: percent identified, less 5 points per %d words read (a short yes/no question), in games answered with each question's error rates. Moves are screened on a few games per entity and taken only if the gain holds up on many more; the scores here are those.\n\n", UnitWords)
 	if len(r.Steps) > 0 {
-		b.WriteString("## Moves, in the order taken\n\n| move | identified | questions | score |\n| --- | --- | --- | --- |\n")
+		b.WriteString("## Moves, in the order taken\n\n| move | identified | questions | words read | score |\n| --- | --- | --- | --- | --- |\n")
 		for _, s := range r.Steps {
-			fmt.Fprintf(&b, "| %s | %.0f%% | %.1f | %.1f |\n", s.Move, 100*s.Score.Accuracy, s.Score.Questions, s.Score.Value)
+			fmt.Fprintf(&b, "| %s | %.0f%% | %.1f | %.0f | %.1f |\n", s.Move, 100*s.Score.Accuracy, s.Score.Questions, s.Score.Words, s.Score.Value)
 		}
 	} else {
 		b.WriteString("No move raised the score; the candidate is the starting point, as brought up to date if it was.\n")
@@ -391,9 +413,9 @@ func SelectReport(r SelectResult, pool []PoolEntry) string {
 		}
 	}
 	if len(rejected) > 0 {
-		b.WriteString("\n## Promising on screening, not confirmed\n\n| move | identified | questions | score |\n| --- | --- | --- | --- |\n")
+		b.WriteString("\n## Promising on screening, not confirmed\n\n| move | identified | questions | words read | score |\n| --- | --- | --- | --- | --- |\n")
 		for _, s := range rejected {
-			fmt.Fprintf(&b, "| %s | %.0f%% | %.1f | %.1f |\n", s.Move, 100*s.Score.Accuracy, s.Score.Questions, s.Score.Value)
+			fmt.Fprintf(&b, "| %s | %.0f%% | %.1f | %.0f | %.1f |\n", s.Move, 100*s.Score.Accuracy, s.Score.Questions, s.Score.Words, s.Score.Value)
 		}
 	}
 
@@ -431,6 +453,17 @@ func SelectReport(r SelectResult, pool []PoolEntry) string {
 				who = append(who, fmt.Sprintf("%s (%s)", ent, strings.Join(vs, "/")))
 			}
 			fmt.Fprintf(&b, "- **%s**: %s\n", n, strings.Join(who, "; "))
+		}
+	}
+	if len(r.TooMany) > 0 {
+		var names []string
+		for n := range r.TooMany {
+			names = append(names, n)
+		}
+		sort.Strings(names)
+		fmt.Fprintf(&b, "\n## Questions over the limit of %d answers\n\nThese stay only because nothing shorter yet does their work; the next proposals should replace them.\n\n", MaxOptions)
+		for _, n := range names {
+			fmt.Fprintf(&b, "- %s: %d answers\n", n, r.TooMany[n])
 		}
 	}
 	if len(r.Skipped) > 0 {

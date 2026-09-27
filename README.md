@@ -380,7 +380,7 @@ optional — a bare array works fine.
 | `question` | How to phrase it. Auto-generated from the attribute name otherwise.                                                                         |
 | `labels`   | Display text per value, for when the raw value is too terse.                                                                                |
 | `noise`    | P(the user gets this wrong). Defaults to 0.12. Raise it for colour and size, lower it for unmistakable features.                            |
-| `cost`     | Relative effort of asking. Questions are ranked by gain ÷ cost.                                                                             |
+| `cost`     | Relative effort of asking: how much there is to read, over how many can answer. Questions are ranked by gain ÷ cost.                       |
 | `answer_rate` | Share of people who can answer it at all. Defaults to 1. Only `-simulate -sim-model` uses it; the quiz relies on `cost` to ask hard questions late. |
 | `multi`    | The entity can hold several of these at once, so picking several answers means "all of these", not "one of these". Meaningless on booleans. |
 | `_prior`   | Relative frequency of this entity. Defaults to 1 for everything.                                                                            |
