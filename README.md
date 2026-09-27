@@ -123,21 +123,54 @@ several tell nothing apart. Tuning error rates won't fix that. That loop is
 described in [`specs/calibration-loop.md`](specs/calibration-loop.md); its
 photo tools stay, as the final check on any change.
 
-The plan now is to design better questions. Claude proposes new questions and
-every entity's answer to each, aimed at the pairs the quiz confuses. Experts
-check both, each choosing among the offered answers or saying why they can't:
-Claude, a person at the terminal, and later other models or image
-classifiers, all behind one interface. The engine then keeps whichever set of
-questions identifies things in the fewest questions, simulated with the error
-rates the experts reported (`-simulate -sim-model`). A person approves the
-diff, and the quiz still runs without a language model. The design is in
-[`specs/question-design.md`](specs/question-design.md).
+So the knowledge base itself has to get better, and that is what question
+design is for. A language model can write a plausible field guide in an
+afternoon, but plausible is not the same as answerable: nobody checked that an
+untrained person can tell "much wider than tall" from "flat or layered", or
+that the answer key says what people actually see. Question design is a loop
+that improves both, one round at a time, and keeps a round's changes only if
+they measurably help.
+
+A round goes like this:
+
+1. **Analyse.** Simulate the quiz with each question's error rates and find
+   the pairs of entities it mixes up.
+2. **Propose.** Claude invents questions aimed at those pairs, or rewrites
+   weak ones, and gives every entity's answer to each.
+3. **Consult.** Experts vet the proposals blind, each choosing among the
+   offered answers or saying why they can't: which answer an entity holds,
+   and what an untrained person would say when the truth is each answer. An
+   expert is Claude, a person at the terminal, and later other models or
+   image classifiers, all behind one interface.
+4. **Aggregate.** Settle every value the experts back, fit each question's
+   error rates from their answers, and set aside what they dispute for a
+   person.
+5. **Select.** Starting from the current questions, add, drop or replace one
+   question at a time while the simulated score improves, never losing an
+   entity the current questions could name.
+6. **Check and merge.** Replay the candidate on real photos, then a person
+   reviews the diff to `data/clouds.json`.
+
+It bootstraps because every round starts from where the last one ended and
+knows more than it did. The winning questions become the next round's
+current questions, so the next analysis finds the confusions that are left,
+not the ones already fixed. Every expert answer is kept
+(`tools/design/verdicts.jsonl`) and never asked again, so a question's error
+rates move from guessed to measured, and its answers from proposed to
+vetted, and the score each round is judged by gets more trustworthy. What
+experts disputed, and which questions lost, is evidence for the next
+proposer. A person's time goes only to the values in dispute on the
+questions that won. Nothing is kept that scores worse, so the quiz can only
+get better by its own measure, and the photo check and people keep that
+measure honest. The quiz itself still runs without a language model. The
+design is in [`specs/question-design.md`](specs/question-design.md).
 
 The first round (2026-09-27) replaced three cloud questions and dropped one.
 Answered with each question's error rates, the quiz now names 60% of clouds
 in 10.1 questions, up from 49% in 11.0; with perfect answers, it needs 6.7
 questions, down from 8.2. Some of the new answers are still to be confirmed
-by a person, and a check on real photos is still to come.
+by a person, one new question still runs on guessed error rates, and the
+check on real photos is still to come.
 
 ## How it picks questions
 

@@ -1,14 +1,16 @@
 # Question design
 
-Status: steps 0 to 3 built: `-simulate -sim-model`, the `design` package
-with the Claude and human experts, `aggregate` for the answer key, `analyse`
-and `propose`. Consulting on proposals, their error rates and Select are
-next. Replaces the aim of [calibration-loop.md](calibration-loop.md); its
+Status: every step is built, and the first round on clouds is merged
+(2026-09-27): three questions replaced and one dropped, 49% to 60% of clouds
+named in 11.0 to 10.1 questions under the error model. Its consultation is
+unfinished, its disputes unsettled and its photo check not yet run; see
+[First pass](#first-pass-claude-as-the-expert). Replaces the aim of [calibration-loop.md](calibration-loop.md); its
 photo harness stays, as one kind of expert (see [Where the photo work
 fits](#where-the-photo-work-fits)). Clouds first.
 
 - [Why the reframe](#why-the-reframe)
 - [Goal](#goal)
+- [How rounds build on each other](#how-rounds-build-on-each-other)
 - [Components](#components)
 - [Interfaces](#interfaces)
 - [The score](#the-score)
@@ -57,6 +59,44 @@ an entity in the fewest questions a layperson can answer reliably.
 **Non-goals.** No model at quiz time. No change to how the engine picks
 questions. Entities are not added, merged or removed; granularity (32 species
 or 10 genera) stays a product decision.
+
+## How rounds build on each other
+
+The knowledge bases were written by a language model in one go. Their
+questions are plausible and their answers are what a textbook would say, but
+nothing checked that people can answer those questions or that the answers
+are what an observer sees. `-simulate` could not tell, because its simulated
+user answers straight from the JSON. The loop above exists to fix that, and it
+is meant to be run again and again, each round starting from the last one's
+result:
+
+- **The baseline moves.** A round's winning questions are merged, so the next
+  `analyse` scores the improved knowledge base and targets the confusions
+  that are left, not ones already fixed.
+- **Knowledge accumulates.** Every verdict stays in
+  `tools/design/verdicts.jsonl`, keyed by what the expert was shown, and is
+  never asked for again. A question kept across rounds collects more experts
+  and kinds of evidence (`assign`, `perceive`, `observe`), so its values move
+  from proposed to vetted, and its error rates from guessed to measured.
+- **The measure improves with the knowledge base.** Select judges a round by
+  simulated games played with each question's error rates. The better those
+  rates are measured, the more a higher score means a better quiz. Running
+  `perceive` on questions that predate the loop brings them onto the same
+  footing as proposals.
+- **Evidence feeds the next proposer.** What experts disputed, which
+  questions lost in Select and why, and what photos showed all go into the
+  next `propose` call.
+- **People are spent where it matters.** A person settles only the disputed
+  values on questions that won, and reviews one diff per round.
+- **It never gets worse by its own measure.** Select keeps nothing that
+  lowers the score, lowers accuracy, or loses an entity the current questions
+  can name with perfect answers. Because that measure is partly Claude's
+  opinion, the photo check (gate 4) and people are what keep it honest; as
+  more expert kinds join, less of the measure rests on any one of them.
+
+A round is a few hundred CLI calls, most of one five-hour window, and one
+sitting for a person. Rounds can stop whenever the score stops moving; the
+quiz is usable after every one.
 
 ## Components
 
@@ -473,13 +513,26 @@ moves; until gate 4 its numbers are Claude checking Claude, not truth.
 | 1. Backends | `design`, `design/claude`, `design/human`, `ribice-design tasks` and `consult`, with tests | — | done |
 | 2. Analyse | `ribice-design analyse -kb data/clouds.json -out targets.json` | none | done: 48% identified in 11.1 questions, score −7.3; 111 pairs mixed up |
 | 3. Propose | `ribice-design propose -targets targets.json -evidence settled.md,report.md -domain clouds -out proposals.json` | 1 at effort `high` | up to 25 candidate attributes, each with 32 values |
-| 4. Consult: assign | `ribice-design tasks -proposals proposals.json -kind assign`, then `consult -tasks … -expert claude -variant all -domain clouds` | 32 (one per entity) × 3 variants | ~100 text calls |
-| 5. Consult: perceive | `ribice-design consult -tasks perceive.jsonl -expert claude -variant all -domain clouds` | 1 per candidate × 3 variants | ~90 short calls |
-| 6. Aggregate | `ribice-design aggregate` | none | `pool.json`, `disputes.json` |
-| 7. Settle disputes | `ribice-design consult -tasks disputes.json -expert human -as luka` | none | you, one sitting |
-| 8. Aggregate, select | `ribice-design aggregate && ribice-design select` | none | `candidate.json`, `report.md` |
-| 9. Photo check | `tools/calib/run.py` on `candidate.json`, then `compare.py` | ~1 per photo, new questions only | gate 4 |
-| 10. Review | you | — | the diff to `data/clouds.json` |
+| 4. Consult: assign | `ribice-design tasks -proposals proposals.json -kind assign`, then `consult -tasks … -expert claude -variant all -domain clouds` | 32 (one per entity) × 3 variants | paused at the 80% window limit: 885 of 1,440 verdicts |
+| 5. Consult: perceive | `ribice-design consult -tasks perceive.jsonl -expert claude -variant all -domain clouds` | 1 per candidate × 3 variants | paused: 17 of 171 verdicts |
+| 6. Aggregate | `ribice-design aggregate -tasks assign.jsonl -proposals proposals.json -perceive perceive.jsonl` | none | done: `pool.json`, `pool.md`; 399 of 480 values agreed |
+| 7. Select | `ribice-design select -pool pool.json -out … -allow-disputed -allow-guessed` | none | done: see below |
+| 8. Settle disputes | `ribice-design consult -tasks settle.jsonl -expert human -as luka` | none | to do: 24 values on the questions chosen |
+| 9. Photo check | `tools/calib/run.py` on `candidate.json`, then `compare.py` | ~1 per photo, new questions only | to do: gate 4 |
+| 10. Review | you | — | done: merged as the first round |
+
+Disputes were settled after Select rather than before, and only on the
+questions it chose: 24 values instead of 81.
+
+**The first round's result** (`tools/design/runs/2026-09-27-select-1/`).
+Select replaced `opacity` with `sun_view`, `shape` with `cloud_form` and
+`precipitation` with `falling_visible`, and dropped `anvil`. Over 40 seeds
+under the error model, the quiz names 60% of clouds in 10.1 questions,
+against 49% in 11.0 (score −5.9 to 9.6); with perfect answers it names all
+32 in 6.7 questions instead of 8.2. `sun_view` runs on default error rates
+until its `perceive` answers are in, and holds 17 of the 24 disputed values.
+The next round resumes steps 4 and 5, settles step 8, and selects again from
+the merged knowledge base.
 
 The three prompt variants of each task stand in for three experts: each is
 its own call and its own expert id, so they are at least not one sample
