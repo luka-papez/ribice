@@ -135,3 +135,10 @@ func TestShowsEachKind(t *testing.T) {
 		t.Errorf("opened %v, want the photo", opened)
 	}
 }
+
+func TestEndOfInputSaysSo(t *testing.T) {
+	_, out := answer(t, tasks(3), "1\n")
+	if !strings.Contains(out, "input ended with 1 of 3 answered") {
+		t.Errorf("no word about the input ending:\n%s", out)
+	}
+}

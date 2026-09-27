@@ -66,8 +66,11 @@ func (e *Expert) Answer(ctx context.Context, tasks []design.Task, emit func(desi
 		for {
 			fmt.Fprint(e.Out, "> ")
 			if !in.Scan() {
-				fmt.Fprintln(e.Out)
-				return in.Err()
+				if err := in.Err(); err != nil {
+					return err
+				}
+				fmt.Fprintf(e.Out, "\ninput ended with %d of %d answered; run this in a terminal to answer the rest.\n", i, len(tasks))
+				return nil
 			}
 			line := strings.ToLower(strings.TrimSpace(in.Text()))
 			if line == "q" || line == "quit" {
