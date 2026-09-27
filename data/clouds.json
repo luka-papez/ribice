@@ -3,20 +3,16 @@
  "attributes": {
   "element_size": {
    "question": "How big was one lump, at arm's length?",
-   "noise": 0.12,
-   "confusion": 0.4,
-   "cost": 1.8,
+   "noise": 0.269,
+   "confusion": 0.3,
+   "cost": 1.08,
    "confusable": [
     [
-     "tiny",
+     "large",
      "small"
     ],
     [
      "small",
-     "large"
-    ],
-    [
-     "none",
      "tiny"
     ]
    ],
@@ -25,25 +21,27 @@
     "tiny": "smaller than a fingertip",
     "small": "a finger or two wide",
     "large": "bigger than your fist"
-   }
+   },
+   "answer_rate": 0.926
   },
   "shading": {
    "question": "Were the lumps shaded grey underneath?",
-   "noise": 0.12,
-   "cost": 1.8
+   "noise": 0.293,
+   "cost": 1.034,
+   "answer_rate": 0.967
   },
   "colour": {
    "question": "What colour was it?",
-   "noise": 0.12,
-   "confusion": 0.4,
+   "noise": 0.02,
+   "confusion": 0.243,
    "confusable": [
     [
-     "white",
+     "dark_grey",
      "grey"
     ],
     [
      "grey",
-     "dark_grey"
+     "white"
     ]
    ],
    "labels": {
@@ -51,20 +49,16 @@
     "grey": "grey",
     "dark_grey": "dark grey, almost black"
    },
-   "cost": 0.7
+   "cost": 1
   },
   "sky_cover": {
    "question": "How much of the sky did it cover?",
-   "noise": 0.12,
-   "confusion": 0.4,
+   "noise": 0.066,
+   "confusion": 0.2,
    "confusable": [
     [
-     "isolated",
+     "most_of_sky",
      "patches"
-    ],
-    [
-     "patches",
-     "most_of_sky"
     ],
     [
      "most_of_sky",
@@ -77,20 +71,16 @@
     "most_of_sky": "most of the sky, with a few gaps",
     "whole_sky": "the whole sky, edge to edge"
    },
-   "cost": 0.7
+   "cost": 1
   },
   "base": {
    "question": "What was its underside like?",
-   "noise": 0.12,
-   "confusion": 0.35,
+   "noise": 0.2,
+   "confusion": 0.338,
    "confusable": [
     [
-     "flat",
+     "not_visible",
      "undefined"
-    ],
-    [
-     "undefined",
-     "not_visible"
     ],
     [
      "ragged",
@@ -103,36 +93,43 @@
     "undefined": "no clear bottom - it faded out",
     "not_visible": "you could not make one out"
    },
-   "cost": 1.4
+   "cost": 1.013,
+   "answer_rate": 0.988
   },
   "halo": {
    "question": "Was there a ring of light around the sun or moon?",
-   "noise": 0.06,
-   "cost": 1.6
+   "noise": 0.169,
+   "cost": 1
   },
   "turrets": {
    "question": "Did little turrets rise from its top?",
-   "noise": 0.1,
-   "cost": 2.5
+   "noise": 0.245,
+   "cost": 1.154,
+   "answer_rate": 0.867
   },
   "hooks": {
    "question": "Were the streaks hooked, like commas?",
-   "noise": 0.1,
-   "cost": 2.5
+   "noise": 0.299,
+   "cost": 1.002,
+   "answer_rate": 0.998
   },
   "mamma": {
    "question": "Did it have rounded pouches hanging underneath?",
-   "noise": 0.08,
-   "cost": 2.2
+   "noise": 0.2,
+   "cost": 1
   },
   "depth": {
    "question": "How tall was it, next to how wide?",
-   "noise": 0.12,
-   "confusion": 0.25,
+   "noise": 0.079,
+   "confusion": 0.36,
    "confusable": [
     [
      "flat",
      "square"
+    ],
+    [
+     "flat",
+     "none"
     ],
     [
      "square",
@@ -145,20 +142,25 @@
     "square": "about as tall as it was wide",
     "tall": "taller than it was wide"
    },
-   "cost": 1.8
+   "cost": 1.095,
+   "answer_rate": 0.914
   },
   "top": {
    "question": "What was the top of it like?",
-   "noise": 0.1,
-   "confusion": 0.3,
+   "noise": 0.071,
+   "confusion": 0.413,
    "confusable": [
     [
-     "cauliflower",
+     "fibrous",
      "smooth"
     ],
     [
+     "fibrous",
+     "none"
+    ],
+    [
      "smooth",
-     "fibrous"
+     "none"
     ]
    ],
    "labels": {
@@ -167,16 +169,17 @@
     "smooth": "gone soft and fuzzy at the edges",
     "fibrous": "gone streaky, spreading sideways"
    },
-   "cost": 2.0
+   "cost": 1.034,
+   "answer_rate": 0.967
   },
   "sun_view": {
    "question": "What did the sun (or moon) look like where this cloud passed in front of it?",
-   "noise": 0.12,
-   "confusion": 0.25,
+   "noise": 0.149,
+   "confusion": 0.261,
    "confusable": [
     [
      "halo_ring",
-     "sharp_disc"
+     "pale_blur"
     ],
     [
      "sharp_disc",
@@ -194,21 +197,14 @@
     "sharp_disc": "the sun's disc still sharp-edged, no ring",
     "sun_elsewhere": "the sun was nowhere near this cloud, or out of sight"
    },
-   "cost": 1
+   "cost": 1.037,
+   "answer_rate": 0.965
   },
   "cloud_form": {
    "question": "Which of these was it most like?",
-   "noise": 0.17,
-   "confusion": 0.115,
+   "noise": 0.251,
+   "confusion": 0.044,
    "confusable": [
-    [
-     "patterned_layer",
-     "tube"
-    ],
-    [
-     "separate_tufts",
-     "heap"
-    ],
     [
      "separate_tufts",
      "shreds"
@@ -224,13 +220,13 @@
     "streaks": "thin streaks or brush strokes, like combed hair",
     "tube": "one long horizontal tube or roll"
    },
-   "cost": 1.019,
-   "answer_rate": 0.982
+   "cost": 1.01,
+   "answer_rate": 0.99
   },
   "falling_visible": {
    "question": "Could you see anything falling out of it?",
-   "noise": 0.12,
-   "confusion": 0.25,
+   "noise": 0.031,
+   "confusion": 0.119,
    "confusable": [
     [
      "nothing",
@@ -239,10 +235,6 @@
     [
      "shafts_to_ground",
      "everywhere_steady"
-    ],
-    [
-     "shafts_to_ground",
-     "storm"
     ]
    ],
    "labels": {
@@ -252,7 +244,8 @@
     "storm": "lightning, thunder or hail",
     "trails_in_air": "streaks hanging below it that faded out well above the ground"
    },
-   "cost": 1
+   "cost": 1.006,
+   "answer_rate": 0.994
   }
  },
  "entities": [
@@ -264,8 +257,8 @@
    "colour": "white",
    "base": "undefined",
    "sky_cover": "patches",
-   "sun_view": "sharp_disc",
    "cloud_form": "streaks",
+   "sun_view": "sharp_disc",
    "falling_visible": "nothing",
    "_prior": 9,
    "_note": "Long straight or curved filaments -- the classic mare's tails, with no hooks or tufts.",
@@ -285,9 +278,9 @@
    "base": "undefined",
    "sky_cover": "patches",
    "hooks": true,
-   "sun_view": "sharp_disc",
    "cloud_form": "streaks",
-   "falling_visible": "trails_in_air",
+   "sun_view": "sharp_disc",
+   "falling_visible": "nothing",
    "_prior": 5,
    "_note": "Filaments drawn out into a hook or comma at one end.",
    "_image": {
@@ -305,8 +298,11 @@
    "colour": "grey",
    "base": "undefined",
    "sky_cover": "patches",
-   "sun_view": "pale_blur",
-   "cloud_form": "smooth_sheet",
+   "cloud_form": [
+    "separate_tufts",
+    "smooth_sheet"
+   ],
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 3,
    "_note": "Dense enough to look grey against the sun; often what is left of a thunderstorm anvil.",
@@ -326,11 +322,11 @@
    "base": "undefined",
    "sky_cover": "patches",
    "turrets": true,
-   "sun_view": "sharp_disc",
    "cloud_form": [
     "separate_tufts",
     "streaks"
    ],
+   "sun_view": "sharp_disc",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "Small turrets rising from a common base, a sign of instability high up.",
@@ -349,8 +345,8 @@
    "colour": "white",
    "base": "ragged",
    "sky_cover": "patches",
-   "sun_view": "sharp_disc",
    "cloud_form": "separate_tufts",
+   "sun_view": "sharp_disc",
    "falling_visible": "trails_in_air",
    "_prior": 1,
    "_note": "Rounded tufts with ragged trailing undersides.",
@@ -369,8 +365,8 @@
    "colour": "white",
    "base": "undefined",
    "sky_cover": "most_of_sky",
-   "sun_view": "sharp_disc",
    "cloud_form": "patterned_layer",
+   "sun_view": "sharp_disc",
    "falling_visible": "nothing",
    "_prior": 3,
    "_note": "A wide sheet of tiny grains -- a mackerel sky.",
@@ -389,8 +385,8 @@
    "colour": "white",
    "base": "undefined",
    "sky_cover": "patches",
-   "sun_view": "sharp_disc",
    "cloud_form": "lens",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "Smooth almond-shaped patches of very fine grain.",
@@ -409,8 +405,8 @@
    "colour": "white",
    "base": "ragged",
    "sky_cover": "patches",
-   "sun_view": "sharp_disc",
    "cloud_form": "separate_tufts",
+   "sun_view": "sun_elsewhere",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "Tiny ragged tufts, each too small to show any shading.",
@@ -430,8 +426,8 @@
    "base": "undefined",
    "sky_cover": "patches",
    "turrets": true,
-   "sun_view": "sharp_disc",
    "cloud_form": "patterned_layer",
+   "sun_view": "sun_elsewhere",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "Miniature turrets on a common base.",
@@ -451,8 +447,8 @@
    "base": "undefined",
    "sky_cover": "whole_sky",
    "halo": true,
-   "sun_view": "halo_ring",
    "cloud_form": "streaks",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 3,
    "_note": "A fibrous veil across the sky; the sun casts sharp shadows through it.",
@@ -472,8 +468,8 @@
    "base": "undefined",
    "sky_cover": "whole_sky",
    "halo": true,
-   "sun_view": "halo_ring",
    "cloud_form": "smooth_sheet",
+   "sun_view": "halo_ring",
    "falling_visible": "nothing",
    "_prior": 6,
    "_note": "A featureless milky veil, often noticed only by the halo around the sun.",
@@ -494,8 +490,8 @@
    "base": "undefined",
    "sky_cover": "most_of_sky",
    "mamma": true,
-   "sun_view": "pale_blur",
    "cloud_form": "patterned_layer",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 8,
    "_note": "Rows or patches of shaded rolls covering much of the sky.",
@@ -515,8 +511,8 @@
    "colour": "white",
    "base": "undefined",
    "sky_cover": "isolated",
-   "sun_view": "pale_blur",
    "cloud_form": "lens",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 2,
    "_note": "Smooth lens or almond shapes, usually standing still downwind of hills.",
@@ -537,8 +533,8 @@
    "base": "undefined",
    "sky_cover": "patches",
    "turrets": true,
-   "sun_view": "pale_blur",
    "cloud_form": "patterned_layer",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 3,
    "_note": "Turrets rising from a common base -- often the morning warning of afternoon storms.",
@@ -558,8 +554,8 @@
    "colour": "white",
    "base": "ragged",
    "sky_cover": "patches",
-   "sun_view": "pale_blur",
    "cloud_form": "separate_tufts",
+   "sun_view": "sharp_disc",
    "falling_visible": "trails_in_air",
    "_prior": 1,
    "_note": "Ragged tufts with trailing undersides.",
@@ -579,8 +575,8 @@
    "colour": "white",
    "base": "undefined",
    "sky_cover": "isolated",
-   "sun_view": "pale_blur",
    "cloud_form": "tube",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "A single long tube rolling about its own horizontal axis, detached from any other cloud.",
@@ -599,8 +595,8 @@
    "colour": "grey",
    "base": "not_visible",
    "sky_cover": "whole_sky",
-   "sun_view": "pale_blur",
    "cloud_form": "smooth_sheet",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 6,
    "_note": "A grey sheet through which the sun shows as a bright patch, as if through frosted glass.",
@@ -619,8 +615,8 @@
    "colour": "dark_grey",
    "base": "not_visible",
    "sky_cover": "whole_sky",
-   "sun_view": "blotted_out",
    "cloud_form": "smooth_sheet",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 4,
    "_note": "Thick enough to hide the sun completely, with no halo.",
@@ -640,8 +636,8 @@
    "colour": "grey",
    "base": "flat",
    "sky_cover": "most_of_sky",
-   "sun_view": "blotted_out",
    "cloud_form": "patterned_layer",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 10,
    "_note": "A layer of large shaded rolls or slabs with blue gaps between them.",
@@ -661,8 +657,8 @@
    "colour": "grey",
    "base": "flat",
    "sky_cover": "isolated",
-   "sun_view": "blotted_out",
    "cloud_form": "lens",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "Lens-shaped low cloud, smooth-edged and slow to change.",
@@ -683,8 +679,8 @@
    "base": "flat",
    "sky_cover": "most_of_sky",
    "turrets": true,
-   "sun_view": "blotted_out",
    "cloud_form": "patterned_layer",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 2,
    "_note": "Turrets rising from a low layer.",
@@ -704,8 +700,8 @@
    "colour": "grey",
    "base": "ragged",
    "sky_cover": "most_of_sky",
-   "sun_view": "blotted_out",
    "cloud_form": "separate_tufts",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "Isolated tufts with domed tops and ragged bases.",
@@ -725,8 +721,8 @@
    "colour": "grey",
    "base": "flat",
    "sky_cover": "isolated",
-   "sun_view": "blotted_out",
    "cloud_form": "tube",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 1,
    "_note": "A long low tube rolling along ahead of a squall.",
@@ -745,8 +741,8 @@
    "colour": "grey",
    "base": "not_visible",
    "sky_cover": "whole_sky",
-   "sun_view": "sharp_disc",
    "cloud_form": "smooth_sheet",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 7,
    "_note": "A featureless grey layer -- fog that has not reached the ground.",
@@ -765,8 +761,8 @@
    "colour": "grey",
    "base": "ragged",
    "sky_cover": "patches",
-   "sun_view": "sun_elsewhere",
    "cloud_form": "shreds",
+   "sun_view": "sun_elsewhere",
    "falling_visible": "nothing",
    "_prior": 4,
    "_note": "Torn grey shreds, usually under the base of raining cloud.",
@@ -786,8 +782,8 @@
    "sky_cover": "isolated",
    "depth": "flat",
    "top": "cauliflower",
+   "cloud_form": "separate_tufts",
    "sun_view": "blotted_out",
-   "cloud_form": "heap",
    "falling_visible": "nothing",
    "_prior": 10,
    "_note": "Fair-weather cumulus: wider than they are tall, flat-based, no growth.",
@@ -807,8 +803,8 @@
    "sky_cover": "isolated",
    "depth": "square",
    "top": "cauliflower",
-   "sun_view": "blotted_out",
    "cloud_form": "heap",
+   "sun_view": "blotted_out",
    "falling_visible": "nothing",
    "_prior": 8,
    "_note": "About as tall as they are wide, with sprouting tops.",
@@ -828,8 +824,8 @@
    "sky_cover": "isolated",
    "depth": "tall",
    "top": "cauliflower",
-   "sun_view": "blotted_out",
    "cloud_form": "heap",
+   "sun_view": "blotted_out",
    "falling_visible": "shafts_to_ground",
    "_prior": 5,
    "_note": "Distinctly taller than wide, a hard cauliflower top still sharp-edged.",
@@ -849,8 +845,8 @@
    "sky_cover": "isolated",
    "depth": "none",
    "top": "none",
-   "sun_view": "blotted_out",
    "cloud_form": "shreds",
+   "sun_view": "pale_blur",
    "falling_visible": "nothing",
    "_prior": 4,
    "_note": "Ragged shreds with no flat base, forming or breaking up.",
@@ -870,8 +866,8 @@
    "sky_cover": "isolated",
    "depth": "tall",
    "top": "smooth",
-   "sun_view": "blotted_out",
    "cloud_form": "heap",
+   "sun_view": "blotted_out",
    "falling_visible": "shafts_to_ground",
    "_prior": 2,
    "_note": "The top has lost its cauliflower edge and gone smooth, but has not spread out yet.",
@@ -892,8 +888,8 @@
    "depth": "tall",
    "top": "fibrous",
    "mamma": true,
-   "sun_view": "blotted_out",
    "cloud_form": "heap",
+   "sun_view": "blotted_out",
    "falling_visible": "storm",
    "_prior": 4,
    "_note": "The top has gone fibrous and spread into an anvil. The full thunderstorm.",
@@ -912,8 +908,8 @@
    "colour": "dark_grey",
    "base": "not_visible",
    "sky_cover": "whole_sky",
-   "sun_view": "blotted_out",
    "cloud_form": "smooth_sheet",
+   "sun_view": "blotted_out",
    "falling_visible": "everywhere_steady",
    "_prior": 5,
    "_note": "A thick dark layer raining or snowing steadily, its base lost in the murk.",

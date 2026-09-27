@@ -165,12 +165,16 @@ get better by its own measure, and the photo check and people keep that
 measure honest. The quiz itself still runs without a language model. The
 design is in [`specs/question-design.md`](specs/question-design.md).
 
-The first round (2026-09-27) replaced three cloud questions and dropped one.
-Answered with each question's error rates, the quiz now names 60% of clouds
-in 10.1 questions, up from 49% in 11.0; with perfect answers, it needs 6.7
-questions, down from 8.2. Some of the new answers are still to be confirmed
-by a person, one new question still runs on guessed error rates, and the
-check on real photos is still to come.
+The first round (2026-09-27) replaced three cloud questions and dropped one:
+the quiz went from naming 49% of clouds in 11.0 questions to 60% in 10.1, by
+its error rates of the time. The second round changed no question. It
+settled the first round's disputed answers by hand, correcting 12 of 24, and
+replaced every question's guessed error rates with measured ones. Measured,
+the quiz names 60% of clouds in 8.5 questions, and it shows a weakness the
+guesses hid: both castellanus clouds rest on "Did little turrets rise from
+its top?", which people answer nearly at random, so even with perfect answers
+they are not named. That is what the next proposals aim at. The check on real
+photos is still to come.
 
 ## How it picks questions
 

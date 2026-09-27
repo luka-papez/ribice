@@ -12,30 +12,24 @@ Before the search, the current knowledge base was brought up to date:
 - refitted **depth**: noise 0.12 → 0.08, answer rate 91%
 - refitted **element_size**: noise 0.12 → 0.27, answer rate 93%
 - refitted **halo**: noise 0.06 → 0.17, answer rate 100%
-- refitted **hooks**: noise 0.10 → 0.35, answer rate 93%
+- refitted **hooks**: noise 0.10 → 0.30, answer rate 100%
 - refitted **mamma**: noise 0.08 → 0.20, answer rate 100%
 - refitted **shading**: noise 0.12 → 0.29, answer rate 97%
 - refitted **sky_cover**: noise 0.12 → 0.07, answer rate 100%
 - refitted **top**: noise 0.10 → 0.07, answer rate 97%
-- refitted **turrets**: noise 0.10 → 0.27, answer rate 99%
+- refitted **turrets**: noise 0.10 → 0.25, answer rate 87%
 
-Before: identified 62%, 8.5 questions, gave up 1%: score 19.5  
-After: identified 66%, 8.4 questions, gave up 0%: score 23.8
+Before: identified 60%, 8.5 questions, gave up 0%: score 17.6  
+After: identified 60%, 8.5 questions, gave up 0%: score 17.6
 
-Score: percent identified minus 5 per question, in games answered with each question's error rates.
+Score: percent identified minus 5 per question, in games answered with each question's error rates. Moves are screened on a few games per entity and taken only if the gain holds up on many more; the scores here are those.
 
-## Moves, in the order taken
+No move raised the score; the candidate is the starting point, as brought up to date if it was.
+
+## Promising on screening, not confirmed
 
 | move | identified | questions | score |
 | --- | --- | --- | --- |
-| add veil_texture | 66% | 8.4 | 23.8 |
-
-## Questions added
-
-- **veil_texture**: Was the sky covered by a thin whitish veil - one you could still see blue through - and if so, did it have any texture?
-
-## Values for a person to settle
-
-These kept the proposer's value in the candidate. Settle them with `ribice-design consult -tasks settle.jsonl -expert human`.
-
-- **veil_texture**: Cirrocumulus stratiformis (not_a_veil)
+| drop mamma | 59% | 8.2 | 17.9 |
+| drop top | 59% | 8.4 | 17.1 |
+| drop shading | 60% | 8.0 | 19.7 |

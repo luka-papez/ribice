@@ -1,37 +1,57 @@
 {
   "before": {
-    "games": 320,
-    "accuracy": 0.61875,
-    "questions": 8.475,
-    "gave_up": 0.00625,
-    "score": 19.5
+    "games": 3200,
+    "accuracy": 0.6028125,
+    "questions": 8.528125,
+    "gave_up": 0.000625,
+    "score": 17.640625
   },
   "after": {
-    "games": 320,
-    "accuracy": 0.659375,
-    "questions": 8.428125,
-    "gave_up": 0,
-    "score": 23.796875
+    "games": 3200,
+    "accuracy": 0.6028125,
+    "questions": 8.528125,
+    "gave_up": 0.000625,
+    "score": 17.640625
   },
-  "steps": [
+  "steps": null,
+  "tried": [
     {
       "move": {
-        "add": "veil_texture"
+        "drop": "mamma"
       },
       "score": {
-        "games": 320,
-        "accuracy": 0.659375,
-        "questions": 8.428125,
-        "gave_up": 0,
-        "score": 23.796875
+        "games": 3200,
+        "accuracy": 0.586875,
+        "questions": 8.16625,
+        "gave_up": 0.00125,
+        "score": 17.856250000000003
+      }
+    },
+    {
+      "move": {
+        "drop": "top"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.591875,
+        "questions": 8.413125,
+        "gave_up": 0.0071875,
+        "score": 17.121875000000003
+      }
+    },
+    {
+      "move": {
+        "drop": "shading"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.5959375,
+        "questions": 7.988125,
+        "gave_up": 0.003125,
+        "score": 19.653125000000003
       }
     }
   ],
-  "added": [
-    "veil_texture"
-  ],
-  "dropped": null,
-  "pending": {
-    "veil_texture": 1
-  }
+  "added": null,
+  "dropped": null
 }

@@ -1,10 +1,11 @@
 # Question design
 
-Status: every step is built, and the first round on clouds is merged
-(2026-09-27): three questions replaced and one dropped, 49% to 60% of clouds
-named in 11.0 to 10.1 questions under the error model. Its consultation is
-unfinished, its disputes unsettled and its photo check not yet run; see
-[First pass](#first-pass-claude-as-the-expert). Replaces the aim of [calibration-loop.md](calibration-loop.md); its
+Status: every step is built, and two rounds on clouds are merged
+(2026-09-27). Round one replaced three questions and dropped one. Round two
+changed no question: it settled round one's disputes by hand and replaced
+every question's guessed error rates with measured ones, which put the quiz
+at 60% of clouds named in 8.5 questions. The photo check has not run yet;
+see [First pass](#first-pass-claude-as-the-expert). Replaces the aim of [calibration-loop.md](calibration-loop.md); its
 photo harness stays, as one kind of expert (see [Where the photo work
 fits](#where-the-photo-work-fits)). Clouds first.
 
@@ -531,8 +532,28 @@ under the error model, the quiz names 60% of clouds in 10.1 questions,
 against 49% in 11.0 (score −5.9 to 9.6); with perfect answers it names all
 32 in 6.7 questions instead of 8.2. `sun_view` runs on default error rates
 until its `perceive` answers are in, and holds 17 of the 24 disputed values.
-The next round resumes steps 4 and 5, settles step 8, and selects again from
-the merged knowledge base.
+**Round two** (`tools/design/runs/2026-09-27-select-2/`) finished the
+consultation, ran `perceive` on the questions that predate the loop, and had
+a person settle the 24 disputed values (12 corrected). Select refreshed the
+three merged questions from the pool and refitted the other eleven, which
+moved the starting point to 60% named in 8.5 questions (score 17.6, on 100
+seeds): `hooks`, `turrets`, `shading` and `element_size` proved much less
+reliable than guessed, `colour`, `sky_cover` and `top` more. Two lessons
+changed the code:
+
+- A move is screened on 10 seeds and confirmed on 100. Unconfirmed, round
+  two took adding `veil_texture` for 4.3 points; on 40 seeds it lost 1.5.
+- A move may not leave more entities indistinguishable. Confirmed but
+  unguarded, round two dropped `turrets`, which left Stratocumulus
+  stratiformis and castellanus alike.
+
+With both, no move was taken, and the refreshed knowledge base was merged
+as it stood. It names 30 of 32 clouds with perfect answers: both
+castellanus clouds rest on `turrets`, which the `perceive` experts and a
+person who knows the audience agree people answer nearly at random. The
+`perceive` prompt is v2 since, counting people who would need a word of the
+field explained as unable to answer; v1 had rated `turrets` answerable by
+almost everyone.
 
 The three prompt variants of each task stand in for three experts: each is
 its own call and its own expert id, so they are at least not one sample
