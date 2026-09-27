@@ -1,0 +1,13 @@
+{
+ "kb": "clouds",
+ "model": "claude-opus-5",
+ "effort": "low",
+ "mode": "photo",
+ "prompt": "a1ae575d",
+ "split": "all",
+ "per_cloud": null,
+ "sample": null,
+ "photos": 148,
+ "photos_not_asked": 87,
+ "answers_missing": 0
+}
