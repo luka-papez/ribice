@@ -1,0 +1,974 @@
+{
+ "name": "Clouds of the WMO classification",
+ "attributes": {
+  "element_size": {
+   "question": "How big was one lump, at arm's length?",
+   "noise": 0.269,
+   "confusion": 0.3,
+   "cost": 1.08,
+   "confusable": [
+    [
+     "large",
+     "small"
+    ],
+    [
+     "small",
+     "tiny"
+    ]
+   ],
+   "labels": {
+    "none": "there were no separate lumps",
+    "tiny": "smaller than a fingertip",
+    "small": "a finger or two wide",
+    "large": "bigger than your fist"
+   },
+   "answer_rate": 0.926
+  },
+  "shading": {
+   "question": "Were the lumps shaded grey underneath?",
+   "noise": 0.293,
+   "cost": 1.034,
+   "answer_rate": 0.967
+  },
+  "colour": {
+   "question": "What colour was it?",
+   "noise": 0.02,
+   "confusion": 0.247,
+   "confusable": [
+    [
+     "dark_grey",
+     "grey"
+    ],
+    [
+     "grey",
+     "white"
+    ]
+   ],
+   "labels": {
+    "white": "white or very pale",
+    "grey": "grey",
+    "dark_grey": "dark grey, almost black"
+   },
+   "cost": 1
+  },
+  "sky_cover": {
+   "question": "How much of the sky did it cover?",
+   "noise": 0.066,
+   "confusion": 0.2,
+   "confusable": [
+    [
+     "most_of_sky",
+     "patches"
+    ],
+    [
+     "most_of_sky",
+     "whole_sky"
+    ]
+   ],
+   "labels": {
+    "isolated": "one cloud on its own",
+    "patches": "scattered patches, with blue between",
+    "most_of_sky": "most of the sky, with a few gaps",
+    "whole_sky": "the whole sky, edge to edge"
+   },
+   "cost": 1
+  },
+  "base": {
+   "question": "What was its underside like?",
+   "noise": 0.2,
+   "confusion": 0.338,
+   "confusable": [
+    [
+     "not_visible",
+     "undefined"
+    ],
+    [
+     "ragged",
+     "undefined"
+    ]
+   ],
+   "labels": {
+    "flat": "a flat bottom, all at one level",
+    "ragged": "ragged and torn",
+    "undefined": "no clear bottom - it faded out",
+    "not_visible": "you could not make one out"
+   },
+   "cost": 1.013,
+   "answer_rate": 0.988
+  },
+  "halo": {
+   "question": "Was there a ring of light around the sun or moon?",
+   "noise": 0.169,
+   "cost": 1
+  },
+  "turrets": {
+   "question": "Did little turrets rise from its top?",
+   "noise": 0.274,
+   "cost": 1.013,
+   "answer_rate": 0.988
+  },
+  "hooks": {
+   "question": "Were the streaks hooked, like commas?",
+   "noise": 0.355,
+   "cost": 1.071,
+   "answer_rate": 0.933
+  },
+  "mamma": {
+   "question": "Did it have rounded pouches hanging underneath?",
+   "noise": 0.2,
+   "cost": 1
+  },
+  "depth": {
+   "question": "How tall was it, next to how wide?",
+   "noise": 0.079,
+   "confusion": 0.36,
+   "confusable": [
+    [
+     "flat",
+     "square"
+    ],
+    [
+     "flat",
+     "none"
+    ],
+    [
+     "square",
+     "tall"
+    ]
+   ],
+   "labels": {
+    "none": "flat or layered, not a heap",
+    "flat": "much wider than it was tall",
+    "square": "about as tall as it was wide",
+    "tall": "taller than it was wide"
+   },
+   "cost": 1.095,
+   "answer_rate": 0.914
+  },
+  "top": {
+   "question": "What was the top of it like?",
+   "noise": 0.071,
+   "confusion": 0.413,
+   "confusable": [
+    [
+     "fibrous",
+     "smooth"
+    ],
+    [
+     "fibrous",
+     "none"
+    ],
+    [
+     "smooth",
+     "none"
+    ]
+   ],
+   "labels": {
+    "none": "no distinct top - flat or wispy",
+    "cauliflower": "sharp-edged, like a cauliflower",
+    "smooth": "gone soft and fuzzy at the edges",
+    "fibrous": "gone streaky, spreading sideways"
+   },
+   "cost": 1.034,
+   "answer_rate": 0.967
+  },
+  "sun_view": {
+   "question": "What did the sun (or moon) look like where this cloud passed in front of it?",
+   "noise": 0.149,
+   "confusion": 0.261,
+   "confusable": [
+    [
+     "halo_ring",
+     "pale_blur"
+    ],
+    [
+     "sharp_disc",
+     "pale_blur"
+    ],
+    [
+     "pale_blur",
+     "blotted_out"
+    ]
+   ],
+   "labels": {
+    "blotted_out": "no sign of the sun through it at all",
+    "halo_ring": "a ring of light circling it (choose this if there was a ring, even though the sun showed too)",
+    "pale_blur": "a pale bright blur - you could tell where the sun was, but not its edge",
+    "sharp_disc": "the sun's disc still sharp-edged, no ring",
+    "sun_elsewhere": "the sun was nowhere near this cloud, or out of sight"
+   },
+   "cost": 1.037,
+   "answer_rate": 0.965
+  },
+  "cloud_form": {
+   "question": "Which of these was it most like?",
+   "noise": 0.251,
+   "confusion": 0.044,
+   "confusable": [
+    [
+     "separate_tufts",
+     "shreds"
+    ]
+   ],
+   "labels": {
+    "heap": "a puffy heap or tower, bulging on top",
+    "lens": "a single smooth almond or lens",
+    "patterned_layer": "a layer broken up into many repeated lumps, rolls or ripples",
+    "separate_tufts": "a few small separate puffs or tufts, with sky between them",
+    "shreds": "torn ragged shreds with no definite shape",
+    "smooth_sheet": "smooth and featureless - a sheet, veil or solid slab",
+    "streaks": "thin streaks or brush strokes, like combed hair",
+    "tube": "one long horizontal tube or roll"
+   },
+   "cost": 1.01,
+   "answer_rate": 0.99
+  },
+  "falling_visible": {
+   "question": "Could you see anything falling out of it?",
+   "noise": 0.031,
+   "confusion": 0.119,
+   "confusable": [
+    [
+     "nothing",
+     "trails_in_air"
+    ],
+    [
+     "shafts_to_ground",
+     "everywhere_steady"
+    ]
+   ],
+   "labels": {
+    "everywhere_steady": "rain or snow out of the whole layer, blurring the view in every direction",
+    "nothing": "nothing at all",
+    "shafts_to_ground": "grey shafts reaching the ground under part of it",
+    "storm": "lightning, thunder or hail",
+    "trails_in_air": "streaks hanging below it that faded out well above the ground"
+   },
+   "cost": 1.006,
+   "answer_rate": 0.994
+  },
+  "veil_texture": {
+   "question": "Was the sky covered by a thin whitish veil - one you could still see blue through - and if so, did it have any texture?",
+   "noise": 0.229,
+   "confusion": 0.327,
+   "confusable": [
+    [
+     "fibrous_veil",
+     "smooth_veil"
+    ]
+   ],
+   "labels": {
+    "fibrous_veil": "yes, a pale veil with streaks or fibres running through it",
+    "not_a_veil": "no pale veil - either no layer at all, or a grey sheet that hid the blue",
+    "smooth_veil": "yes, a pale veil, completely smooth and featureless"
+   },
+   "cost": 1.005,
+   "answer_rate": 0.995
+  }
+ },
+ "entities": [
+  {
+   "name": "Cirrus fibratus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "cloud_form": "streaks",
+   "sun_view": "sharp_disc",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 9,
+   "_note": "Long straight or curved filaments -- the classic mare's tails, with no hooks or tufts.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Long_Cirrus_fibratus.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ALong_Cirrus_fibratus.jpg",
+    "credit": "LivingShadow (Wikimedia Commons)",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Cirrus uncinus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "hooks": true,
+   "cloud_form": "streaks",
+   "sun_view": "sharp_disc",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 5,
+   "_note": "Filaments drawn out into a hook or comma at one end.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrus_uncinus.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrus_uncinus.jpg",
+    "credit": "1bumer",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Cirrus spissatus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "grey",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "cloud_form": [
+    "separate_tufts",
+    "smooth_sheet"
+   ],
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 3,
+   "_note": "Dense enough to look grey against the sun; often what is left of a thunderstorm anvil.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrus_spissatus_sweden.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrus_spissatus_sweden.jpg",
+    "credit": "Kr-val",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Cirrus castellanus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "turrets": true,
+   "cloud_form": [
+    "separate_tufts",
+    "streaks"
+   ],
+   "sun_view": "sharp_disc",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Small turrets rising from a common base, a sign of instability high up.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirruscastellanus.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirruscastellanus.jpg",
+    "credit": "Kr-val",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Cirrus floccus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "white",
+   "base": "ragged",
+   "sky_cover": "patches",
+   "cloud_form": "separate_tufts",
+   "sun_view": "sharp_disc",
+   "falling_visible": "trails_in_air",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Rounded tufts with ragged trailing undersides.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrus_floccus_%28Rome%2C_2014-07%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrus_floccus_%28Rome%2C_2014-07%29.jpg",
+    "credit": "Daniele.Brundu",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Cirrocumulus stratiformis",
+   "depth": "none",
+   "top": "none",
+   "element_size": "tiny",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "most_of_sky",
+   "cloud_form": "patterned_layer",
+   "sun_view": "sharp_disc",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 3,
+   "_note": "A wide sheet of tiny grains -- a mackerel sky.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrocumulus_stratiformis.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrocumulus_stratiformis.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Cirrocumulus lenticularis",
+   "depth": "none",
+   "top": "none",
+   "element_size": "tiny",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "cloud_form": "lens",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Smooth almond-shaped patches of very fine grain.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrocumulus_lenticularis_cloud_2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrocumulus_lenticularis_cloud_2.jpg",
+    "credit": "Couch-scratching-cats",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Cirrocumulus floccus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "tiny",
+   "colour": "white",
+   "base": "ragged",
+   "sky_cover": "patches",
+   "cloud_form": "separate_tufts",
+   "sun_view": "sun_elsewhere",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Tiny ragged tufts, each too small to show any shading.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrocumulus_floccus.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrocumulus_floccus.jpg",
+    "credit": "Van der Fall",
+    "license": "CC BY 4.0"
+   }
+  },
+  {
+   "name": "Cirrocumulus castellanus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "tiny",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "turrets": true,
+   "cloud_form": "patterned_layer",
+   "sun_view": "sun_elsewhere",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Miniature turrets on a common base.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrocumulus_castellanus_%2806122021%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrocumulus_castellanus_%2806122021%29.jpg",
+    "credit": "Rollcloud",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Cirrostratus fibratus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "whole_sky",
+   "halo": true,
+   "cloud_form": "streaks",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "fibrous_veil",
+   "_prior": 3,
+   "_note": "A fibrous veil across the sky; the sun casts sharp shadows through it.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cirrostratus_fibratus_mit_diffusem_22%C2%B0-Ring_II.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACirrostratus_fibratus_mit_diffusem_22%C2%B0-Ring_II.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Cirrostratus nebulosus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "whole_sky",
+   "halo": true,
+   "cloud_form": "smooth_sheet",
+   "sun_view": "halo_ring",
+   "falling_visible": "nothing",
+   "veil_texture": "smooth_veil",
+   "_prior": 6,
+   "_note": "A featureless milky veil, often noticed only by the halo around the sun.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/ThinCirrostratusNebulosusUndulatus001.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AThinCirrostratusNebulosusUndulatus001.jpg",
+    "credit": "Rollcloud",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Altocumulus stratiformis",
+   "depth": "none",
+   "top": "none",
+   "element_size": "small",
+   "shading": true,
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "most_of_sky",
+   "mamma": true,
+   "cloud_form": "patterned_layer",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 8,
+   "_note": "Rows or patches of shaded rolls covering much of the sky.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altocumulus_stratiformis_01.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltocumulus_stratiformis_01.jpg",
+    "credit": "Saperaud~commonswiki (Wikimedia Commons)",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Altocumulus lenticularis",
+   "depth": "none",
+   "top": "none",
+   "element_size": "small",
+   "shading": true,
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "isolated",
+   "cloud_form": "lens",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 2,
+   "_note": "Smooth lens or almond shapes, usually standing still downwind of hills.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altocumulus-lenticularis.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltocumulus-lenticularis.jpg",
+    "credit": "Pkrul at Dutch Wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Altocumulus castellanus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "small",
+   "shading": true,
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "patches",
+   "turrets": true,
+   "cloud_form": "patterned_layer",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 3,
+   "_note": "Turrets rising from a common base -- often the morning warning of afternoon storms.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altocumulus-Castellanus.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltocumulus-Castellanus.jpg",
+    "credit": "Bidgee",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Altocumulus floccus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "small",
+   "shading": true,
+   "colour": "white",
+   "base": "ragged",
+   "sky_cover": "patches",
+   "cloud_form": "separate_tufts",
+   "sun_view": "sharp_disc",
+   "falling_visible": "trails_in_air",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Ragged tufts with trailing undersides.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altocumulus_floccus_erzeugt_Anticrepuscularstrahlen.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltocumulus_floccus_erzeugt_Anticrepuscularstrahlen.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Altocumulus volutus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "small",
+   "shading": true,
+   "colour": "white",
+   "base": "undefined",
+   "sky_cover": "isolated",
+   "cloud_form": "tube",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "A single long tube rolling about its own horizontal axis, detached from any other cloud.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altocumulus_volutus_%2822112021%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltocumulus_volutus_%2822112021%29.jpg",
+    "credit": "Rollcloud",
+    "license": "CC BY 3.0"
+   }
+  },
+  {
+   "name": "Altostratus translucidus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "grey",
+   "base": "not_visible",
+   "sky_cover": "whole_sky",
+   "cloud_form": "smooth_sheet",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 6,
+   "_note": "A grey sheet through which the sun shows as a bright patch, as if through frosted glass.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altostratus_translucidus.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltostratus_translucidus.JPG",
+    "credit": "Janne Naukkarinen",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Altostratus opacus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "dark_grey",
+   "base": "not_visible",
+   "sky_cover": "whole_sky",
+   "cloud_form": "smooth_sheet",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 4,
+   "_note": "Thick enough to hide the sun completely, with no halo.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Altostratus_mit_scharfer_Kante_bei_Limburg%2C_gesehen_am_11._Januar_2023.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AAltostratus_mit_scharfer_Kante_bei_Limburg%2C_gesehen_am_11._Januar_2023.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Stratocumulus stratiformis",
+   "depth": "none",
+   "top": "none",
+   "element_size": "large",
+   "shading": true,
+   "colour": "grey",
+   "base": "flat",
+   "sky_cover": "most_of_sky",
+   "cloud_form": "patterned_layer",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 10,
+   "_note": "A layer of large shaded rolls or slabs with blue gaps between them.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Stratocumulus_stratiformis_asperitas_14.06.2020_LM_V.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStratocumulus_stratiformis_asperitas_14.06.2020_LM_V.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Stratocumulus lenticularis",
+   "depth": "none",
+   "top": "none",
+   "element_size": "large",
+   "shading": true,
+   "colour": "grey",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "cloud_form": "lens",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Lens-shaped low cloud, smooth-edged and slow to change.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Stratocumulus_lenticularis.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStratocumulus_lenticularis.jpg",
+    "credit": "Simon Eugster -- Simon",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Stratocumulus castellanus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "large",
+   "shading": true,
+   "colour": "grey",
+   "base": "flat",
+   "sky_cover": "most_of_sky",
+   "turrets": true,
+   "cloud_form": "patterned_layer",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 2,
+   "_note": "Turrets rising from a low layer.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Stratocumulus_castellanus_2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStratocumulus_castellanus_2.jpg",
+    "credit": "Merikanto at fi.wikipedia",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Stratocumulus floccus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "large",
+   "shading": true,
+   "colour": "grey",
+   "base": "ragged",
+   "sky_cover": "most_of_sky",
+   "cloud_form": "separate_tufts",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "Isolated tufts with domed tops and ragged bases.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Stratocumulus_floccus_am_Abend.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStratocumulus_floccus_am_Abend.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Stratocumulus volutus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "large",
+   "shading": true,
+   "colour": "grey",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "cloud_form": "tube",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 1,
+   "_note": "A long low tube rolling along ahead of a squall.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Stratocumulus_volutus_1_%2818112021%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStratocumulus_volutus_1_%2818112021%29.jpg",
+    "credit": "Rollcloud",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Stratus nebulosus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "grey",
+   "base": "not_visible",
+   "sky_cover": "whole_sky",
+   "cloud_form": "smooth_sheet",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 7,
+   "_note": "A featureless grey layer -- fog that has not reached the ground.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Stratus_nebulosus_%C3%BCber_Limburg%2C_26.11.2020.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3AStratus_nebulosus_%C3%BCber_Limburg%2C_26.11.2020.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Stratus fractus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "grey",
+   "base": "ragged",
+   "sky_cover": "patches",
+   "cloud_form": "shreds",
+   "sun_view": "sun_elsewhere",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 4,
+   "_note": "Torn grey shreds, usually under the base of raining cloud.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/2026-09-03_08_35_44_Stratus_fractus_in_front_of_other_clouds_viewed_from_Mercer_County_Route_611_%28Scotch_Road%29_in_Ewing_Township%2C_Mercer_County%2C_New_Jersey.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A2026-09-03_08_35_44_Stratus_fractus_in_front_of_other_clouds_viewed_from_Mercer_County_Route_611_%28Scotch_Road%29_in_Ewing_Township%2C_Mercer_County%2C_New_Jersey.jpg",
+    "credit": "Famartin",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Cumulus humilis",
+   "element_size": "none",
+   "shading": true,
+   "colour": "white",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "depth": "flat",
+   "top": "cauliflower",
+   "cloud_form": "separate_tufts",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 10,
+   "_note": "Fair-weather cumulus: wider than they are tall, flat-based, no growth.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cumulus_humilis.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACumulus_humilis.jpg",
+    "credit": "Rasbak",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Cumulus mediocris",
+   "element_size": "none",
+   "shading": true,
+   "colour": "white",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "depth": "square",
+   "top": "cauliflower",
+   "cloud_form": "heap",
+   "sun_view": "blotted_out",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 8,
+   "_note": "About as tall as they are wide, with sprouting tops.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cumulus_mediocris_bei_Limburg_II.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACumulus_mediocris_bei_Limburg_II.jpg",
+    "credit": "GerritR",
+    "license": "CC BY-SA 4.0"
+   }
+  },
+  {
+   "name": "Cumulus congestus",
+   "element_size": "none",
+   "shading": true,
+   "colour": "grey",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "depth": "tall",
+   "top": "cauliflower",
+   "cloud_form": "heap",
+   "sun_view": "blotted_out",
+   "falling_visible": "shafts_to_ground",
+   "veil_texture": "not_a_veil",
+   "_prior": 5,
+   "_note": "Distinctly taller than wide, a hard cauliflower top still sharp-edged.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cumulus_congestus_cloud.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACumulus_congestus_cloud.jpg",
+    "credit": "Bidgee",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Cumulus fractus",
+   "element_size": "none",
+   "shading": true,
+   "colour": "grey",
+   "base": "ragged",
+   "sky_cover": "isolated",
+   "depth": "none",
+   "top": "none",
+   "cloud_form": "shreds",
+   "sun_view": "pale_blur",
+   "falling_visible": "nothing",
+   "veil_texture": "not_a_veil",
+   "_prior": 4,
+   "_note": "Ragged shreds with no flat base, forming or breaking up.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cumulus_fractus.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACumulus_fractus.JPG",
+    "credit": "Janne Naukkarinen",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Cumulonimbus calvus",
+   "element_size": "none",
+   "shading": true,
+   "colour": "dark_grey",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "depth": "tall",
+   "top": "smooth",
+   "cloud_form": "heap",
+   "sun_view": "blotted_out",
+   "falling_visible": "shafts_to_ground",
+   "veil_texture": "not_a_veil",
+   "_prior": 2,
+   "_note": "The top has lost its cauliflower edge and gone smooth, but has not spread out yet.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cumulonimbus_calvus_a2.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACumulonimbus_calvus_a2.JPG",
+    "credit": "Janne Naukkarinen",
+    "license": "Public domain"
+   }
+  },
+  {
+   "name": "Cumulonimbus capillatus",
+   "element_size": "none",
+   "shading": true,
+   "colour": "dark_grey",
+   "base": "flat",
+   "sky_cover": "isolated",
+   "depth": "tall",
+   "top": "fibrous",
+   "mamma": true,
+   "cloud_form": "heap",
+   "sun_view": "blotted_out",
+   "falling_visible": "storm",
+   "veil_texture": "not_a_veil",
+   "_prior": 4,
+   "_note": "The top has gone fibrous and spread into an anvil. The full thunderstorm.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Cumulonimbus_capillatus_1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3ACumulonimbus_capillatus_1.jpg",
+    "credit": "Bidgee",
+    "license": "CC BY-SA 3.0"
+   }
+  },
+  {
+   "name": "Nimbostratus",
+   "depth": "none",
+   "top": "none",
+   "element_size": "none",
+   "colour": "dark_grey",
+   "base": "not_visible",
+   "sky_cover": "whole_sky",
+   "cloud_form": "smooth_sheet",
+   "sun_view": "blotted_out",
+   "falling_visible": "everywhere_steady",
+   "veil_texture": "not_a_veil",
+   "_prior": 5,
+   "_note": "A thick dark layer raining or snowing steadily, its base lost in the murk.",
+   "_image": {
+    "url": "https://commons.wikimedia.org/wiki/Special:FilePath/%D0%94%D0%BE%D0%B6%D0%B4%D0%BE%D0%B2%D0%B5%D0%BD_%D0%9E%D0%B1%D0%BB%D0%B0%D0%BA_%28Nimbostratus%29.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File%3A%D0%94%D0%BE%D0%B6%D0%B4%D0%BE%D0%B2%D0%B5%D0%BD_%D0%9E%D0%B1%D0%BB%D0%B0%D0%BA_%28Nimbostratus%29.jpg",
+    "credit": "DavidGjorgiev",
+    "license": "CC BY 4.0"
+   }
+  }
+ ]
+}

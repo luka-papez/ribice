@@ -1,7 +1,9 @@
 package design
 
 import (
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/lpapez/ribice/kb"
@@ -12,6 +14,7 @@ type Status string
 
 const (
 	Agreed    Status = "agreed"    // the experts back the proposed value
+	Corrected Status = "corrected" // a person answered, and not with the proposed value
 	Disputed  Status = "disputed"  // they lean elsewhere; a person decides
 	Abstained Status = "abstained" // most of them could not answer at all
 	Unasked   Status = "unasked"   // no verdict yet
@@ -41,9 +44,13 @@ type Settlement struct {
 // the combined answer and one of them is its top option; an even split backs
 // nothing. When the proposer did not know, the experts' top option is agreed
 // if it holds more than half the answer on its own. It is abstained when at
-// least half the mass is abstention, and disputed otherwise. A person's
-// verdict outweighs any model's: once one exists, only people count. That is
-// how a dispute is settled, by asking a person the same task, blind.
+// least half the mass is abstention, and disputed otherwise.
+//
+// A person's verdict outweighs any model's: once one exists, only people
+// count, and what they answered is the value. That is how a dispute is
+// settled, by asking a person the same task, blind. When they name another
+// value than the proposer's, it is Corrected rather than Agreed, so reports
+// show how often people overrule the proposer.
 func Settle(tasks []Task, proposed func(Task) []kb.Value, verdicts func(task string) []Verdict) []Settlement {
 	var out []Settlement
 	for _, t := range tasks {
@@ -67,6 +74,16 @@ func Settle(tasks []Task, proposed func(Task) []kb.Value, verdicts func(task str
 		switch {
 		case s.Abstain >= 0.5:
 			s.Status = Abstained
+		case s.ByPerson:
+			picks, mass := s.tops()
+			switch {
+			case mass <= 0.5:
+				s.Status = Disputed
+			case sameValues(picks, s.Proposed):
+				s.Status, s.Value = Agreed, s.Proposed
+			default:
+				s.Status, s.Value = Corrected, picks
+			}
 		case len(s.Proposed) == 0 && s.Combined[top] > 0.5:
 			s.Status, s.Value = Agreed, []kb.Value{top}
 		case held > 0.5 && contains(s.Proposed, top):
@@ -89,10 +106,12 @@ type Combined struct {
 }
 
 // Combine averages verdicts on t, one vote per expert. A person's verdict
-// outweighs any model's: once one exists, only people count. It reports
-// false when there is no verdict at all.
+// outweighs any model's: once one exists, only people count. An expert that
+// answered under several versions of its instructions counts once, with its
+// latest (see Latest). It reports false when there is no verdict at all.
 func Combine(t Task, vs []Verdict) (Combined, bool) {
 	c := Combined{P: map[kb.Value]float64{}, Reasons: map[Reason]int{}}
+	vs = Latest(vs)
 	var people []Verdict
 	for _, v := range vs {
 		if strings.HasPrefix(v.Expert, "human:") {
@@ -116,6 +135,65 @@ func Combine(t Task, vs []Verdict) (Combined, bool) {
 		}
 	}
 	return c, true
+}
+
+// versioned reads an expert id of the form "backend:model@v<N><wording>",
+// such as "claude:claude-opus-5@v2a", into the expert apart from its version
+// ("claude:claude-opus-5@a") and the version (2). Other ids, such as a
+// person's, have no version.
+var versioned = regexp.MustCompile(`^(.*@)v(\d+)([a-z]*)$`)
+
+// Latest keeps, of verdicts by the same expert under different versions of
+// its instructions, only the latest version's: a revised prompt is a
+// correction of the old one, not a second opinion. Verdicts are returned in
+// the order given.
+func Latest(vs []Verdict) []Verdict {
+	newest := map[string]int{}
+	for _, v := range vs {
+		if m := versioned.FindStringSubmatch(v.Expert); m != nil {
+			n, _ := strconv.Atoi(m[2])
+			if key := m[1] + m[3]; n > newest[key] {
+				newest[key] = n
+			}
+		}
+	}
+	var out []Verdict
+	for _, v := range vs {
+		if m := versioned.FindStringSubmatch(v.Expert); m != nil {
+			if n, _ := strconv.Atoi(m[2]); n < newest[m[1]+m[3]] {
+				continue
+			}
+		}
+		out = append(out, v)
+	}
+	return out
+}
+
+// tops is every option tied for the most weight, and their weight together:
+// both of a person's two picks, say.
+func (s Settlement) tops() ([]kb.Value, float64) {
+	best := s.Combined[s.Top()]
+	var picks []kb.Value
+	mass := 0.0
+	for _, o := range s.Task.Options {
+		if p := s.Combined[o.Value]; p > 0 && best-p < 1e-9 {
+			picks = append(picks, o.Value)
+			mass += p
+		}
+	}
+	return picks, mass
+}
+
+func sameValues(a, b []kb.Value) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for _, v := range a {
+		if !contains(b, v) {
+			return false
+		}
+	}
+	return true
 }
 
 // Top is the option the experts gave most weight, first in the task's order

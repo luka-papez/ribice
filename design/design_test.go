@@ -276,13 +276,20 @@ func TestSettle(t *testing.T) {
 		{"two of three", []Verdict{v("a", curled, 0, ""), v("b", curled, 0, ""), v("c", straight, 0, "")}, Agreed},
 		{"one of three", []Verdict{v("a", curled, 0, ""), v("b", straight, 0, ""), v("c", straight, 0, "")}, Disputed},
 		{"most abstain", []Verdict{v("a", nil, 1, NotObservable), v("b", curled, 0, "")}, Abstained},
-		{"a person settles it", []Verdict{v("a", straight, 0, ""), v("b", straight, 0, ""), v("human:luka", curled, 0, "")}, Agreed},
-		{"a person disputes it", []Verdict{v("a", curled, 0, ""), v("human:luka", straight, 0, "")}, Disputed},
+		{"a person agrees", []Verdict{v("a", straight, 0, ""), v("b", straight, 0, ""), v("human:luka", curled, 0, "")}, Agreed},
+		{"a person corrects it", []Verdict{v("a", curled, 0, ""), v("human:luka", straight, 0, "")}, Corrected},
+		{"a person cannot say", []Verdict{v("a", curled, 0, ""), v("human:luka", nil, 1, NotObservable)}, Abstained},
 	} {
 		got := Settle([]Task{task}, proposed, func(string) []Verdict { return c.verdicts })
 		if len(got) != 1 || got[0].Status != c.want {
 			t.Errorf("%s: %+v, want %s", c.name, got, c.want)
 		}
+	}
+
+	both := map[kb.Value]float64{"curled": 0.5, "straight": 0.5}
+	got := Settle([]Task{task}, proposed, func(string) []Verdict { return []Verdict{v("human:luka", both, 0, "")} })
+	if got[0].Status != Corrected || !sameValues(got[0].Value, []kb.Value{"curled", "straight"}) {
+		t.Errorf("a person picking two: %s %v, want both values", got[0].Status, got[0].Value)
 	}
 
 	unknown := func(Task) []kb.Value { return nil }
@@ -335,5 +342,30 @@ func TestAnalyse(t *testing.T) {
 	fib, unc := k.Entities[0], k.Entities[1]
 	if got := separatedBy(k, fib, unc); !reflect.DeepEqual(got, []string{"hooks", "precipitation"}) {
 		t.Errorf("%s and %s separated by %v", fib.Name, unc.Name, got)
+	}
+}
+
+func TestLatestKeepsAnExpertsNewestInstructions(t *testing.T) {
+	vs := []Verdict{
+		{Expert: "claude:m@v1a"}, {Expert: "claude:m@v2a"}, {Expert: "claude:m@v1b"},
+		{Expert: "claude:n@v1a"}, {Expert: "human:luka"}, {Expert: "claude:m@v10a"},
+	}
+	var got []string
+	for _, v := range Latest(vs) {
+		got = append(got, v.Expert)
+	}
+	want := []string{"claude:m@v1b", "claude:n@v1a", "human:luka", "claude:m@v10a"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("kept %v, want %v", got, want)
+	}
+
+	// Combined, the old wording's answer no longer counts.
+	task := hooksTask()
+	c, _ := Combine(task, []Verdict{
+		{Task: task.ID, Expert: "claude:m@v1a", P: map[kb.Value]float64{"curled": 1}},
+		{Task: task.ID, Expert: "claude:m@v2a", P: map[kb.Value]float64{"straight": 1}},
+	})
+	if c.P["straight"] != 1 || len(c.Experts) != 1 {
+		t.Errorf("combined %+v, want only v2a", c)
 	}
 }

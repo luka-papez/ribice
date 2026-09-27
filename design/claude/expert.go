@@ -21,8 +21,13 @@ import (
 
 // PromptVersion names this set of prompts. Changing any prompt must change
 // it: it is part of every expert's id, so old verdicts are not taken for
-// answers to the new wording.
-const PromptVersion = "v1"
+// answers to the new wording, and design.Combine counts only an expert's
+// latest version where it answered a task under several.
+//
+// v2 (2026-09-27): perceive's ten people know no words of the field, and a
+// question with such a word counts them as unable to answer. Under v1,
+// Claude rated "Did little turrets rise from its top?" answerable by 99%.
+const PromptVersion = "v2"
 
 //go:embed prompts/*.txt
 var promptFiles embed.FS

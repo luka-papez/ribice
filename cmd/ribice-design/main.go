@@ -252,8 +252,8 @@ func aggregate(args []string) error {
 	for _, s := range settled {
 		counts[s.Status]++
 	}
-	fmt.Printf("%d values: %d agreed, %d disputed, %d abstained, %d not asked yet\n",
-		len(settled), counts[design.Agreed], counts[design.Disputed], counts[design.Abstained], counts[design.Unasked])
+	fmt.Printf("%d values: %d agreed, %d corrected by a person, %d disputed, %d abstained, %d not asked yet\n",
+		len(settled), counts[design.Agreed], counts[design.Corrected], counts[design.Disputed], counts[design.Abstained], counts[design.Unasked])
 	fmt.Printf("wrote %s and %s\n", filepath.Join(dir, "settled.md"), filepath.Join(dir, "disputes.jsonl"))
 
 	if *perceive == "" {
@@ -289,9 +289,10 @@ func settledReport(k *kb.KB, settled []design.Settlement) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "# %s: the answer key against the experts\n\n", k.Name)
 	b.WriteString("Agreed: the experts' combined answer backs the knowledge base's value. ")
+	b.WriteString("Corrected: a person answered, with another value. ")
 	b.WriteString("Disputed: it leans elsewhere. Abstained: most experts could not answer.\n\n")
-	b.WriteString("| attribute | agreed | disputed | abstained | not asked |\n| --- | --- | --- | --- | --- |\n")
-	type row struct{ agreed, disputed, abstained, unasked int }
+	b.WriteString("| attribute | agreed | corrected | disputed | abstained | not asked |\n| --- | --- | --- | --- | --- | --- |\n")
+	type row struct{ agreed, corrected, disputed, abstained, unasked int }
 	rows := map[string]*row{}
 	for _, s := range settled {
 		r := rows[s.Task.Attribute]
@@ -302,6 +303,8 @@ func settledReport(k *kb.KB, settled []design.Settlement) string {
 		switch s.Status {
 		case design.Agreed:
 			r.agreed++
+		case design.Corrected:
+			r.corrected++
 		case design.Disputed:
 			r.disputed++
 		case design.Abstained:
@@ -312,13 +315,13 @@ func settledReport(k *kb.KB, settled []design.Settlement) string {
 	}
 	for _, a := range k.Attributes {
 		if r := rows[a.Name]; r != nil {
-			fmt.Fprintf(&b, "| %s | %d | %d | %d | %d |\n", a.Name, r.agreed, r.disputed, r.abstained, r.unasked)
+			fmt.Fprintf(&b, "| %s | %d | %d | %d | %d | %d |\n", a.Name, r.agreed, r.corrected, r.disputed, r.abstained, r.unasked)
 		}
 	}
 
-	b.WriteString("\n## Not agreed\n\n| entity | attribute | knowledge base | experts | abstain |\n| --- | --- | --- | --- | --- |\n")
+	b.WriteString("\n## Not as proposed\n\n| entity | attribute | knowledge base | experts | abstain |\n| --- | --- | --- | --- | --- |\n")
 	for _, s := range settled {
-		if s.Status != design.Disputed && s.Status != design.Abstained {
+		if s.Status != design.Disputed && s.Status != design.Abstained && s.Status != design.Corrected {
 			continue
 		}
 		var kbv []string

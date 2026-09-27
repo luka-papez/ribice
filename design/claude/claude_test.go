@@ -186,7 +186,7 @@ func TestAssignEndToEnd(t *testing.T) {
 		}
 	}
 
-	v, ok := st.Get(tasks[0].ID, "claude:claude-opus-5@v1b")
+	v, ok := st.Get(tasks[0].ID, "claude:claude-opus-5@"+PromptVersion+"b")
 	if !ok || v.P[tasks[0].Options[0].Value] != 1 {
 		t.Errorf("first task's verdict is %+v, %v", v, ok)
 	}
@@ -286,7 +286,7 @@ func TestAcceptsByVariantAndSubject(t *testing.T) {
 }
 
 // Every prompt renders, names the domain, and a new wording needs a new
-// PromptVersion; this lists what v1 is, so a change shows up here.
+// PromptVersion.
 func TestPromptsRender(t *testing.T) {
 	for kind, variants := range Variants {
 		for _, v := range variants {

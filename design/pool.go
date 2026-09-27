@@ -13,7 +13,8 @@ type PoolEntry struct {
 	Proposal Proposal `json:"proposal"` // Assign holds the settled values
 
 	Agreed        int        `json:"agreed"`
-	Disputed      []string   `json:"disputed,omitempty"` // entities whose value the experts dispute
+	Corrected     []string   `json:"corrected,omitempty"` // entities a person gave another value than the proposer's
+	Disputed      []string   `json:"disputed,omitempty"`  // entities whose value the experts dispute
 	Abstained     []string   `json:"abstained,omitempty"`
 	Unasked       int        `json:"unasked,omitempty"`
 	NotObservable int        `json:"not_observable"` // entities most experts abstained on as not observable
@@ -62,6 +63,9 @@ func BuildPool(props []Proposal, assign, perceive []Task, verdicts func(string) 
 			case Agreed:
 				e.Agreed++
 				e.Proposal.Assign[name] = s.Value
+			case Corrected:
+				e.Corrected = append(e.Corrected, name)
+				e.Proposal.Assign[name] = s.Value
 			case Disputed:
 				e.Disputed = append(e.Disputed, name)
 			case Abstained:
@@ -109,8 +113,8 @@ func BuildPool(props []Proposal, assign, perceive []Task, verdicts func(string) 
 // PoolReport is the pool as a markdown table, one row per question.
 func PoolReport(pool []PoolEntry) string {
 	var b strings.Builder
-	b.WriteString("| question | agreed | to settle | answer rate | noise | confusion | look-alikes | ready |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| question | agreed | corrected | to settle | answer rate | noise | confusion | look-alikes | ready |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n")
 	for _, e := range pool {
 		var pairs []string
 		for _, c := range e.Errors.Confusable {
@@ -120,8 +124,8 @@ func PoolReport(pool []PoolEntry) string {
 		if !e.Ready {
 			ready = "no: " + strings.Join(e.Why, "; ")
 		}
-		fmt.Fprintf(&b, "| %s %s | %d | %d | %.0f%% | %.2f | %.2f | %s | %s |\n",
-			e.Proposal.ID, e.Proposal.Name, e.Agreed, len(e.Disputed)+len(e.Abstained),
+		fmt.Fprintf(&b, "| %s %s | %d | %d | %d | %.0f%% | %.2f | %.2f | %s | %s |\n",
+			e.Proposal.ID, e.Proposal.Name, e.Agreed, len(e.Corrected), len(e.Disputed)+len(e.Abstained),
 			100*e.Errors.AnswerRate, e.Errors.Noise, e.Errors.Confusion, strings.Join(pairs, ", "), ready)
 	}
 	return b.String()

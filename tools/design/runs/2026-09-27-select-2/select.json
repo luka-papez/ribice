@@ -1,0 +1,37 @@
+{
+  "before": {
+    "games": 320,
+    "accuracy": 0.61875,
+    "questions": 8.475,
+    "gave_up": 0.00625,
+    "score": 19.5
+  },
+  "after": {
+    "games": 320,
+    "accuracy": 0.659375,
+    "questions": 8.428125,
+    "gave_up": 0,
+    "score": 23.796875
+  },
+  "steps": [
+    {
+      "move": {
+        "add": "veil_texture"
+      },
+      "score": {
+        "games": 320,
+        "accuracy": 0.659375,
+        "questions": 8.428125,
+        "gave_up": 0,
+        "score": 23.796875
+      }
+    }
+  ],
+  "added": [
+    "veil_texture"
+  ],
+  "dropped": null,
+  "pending": {
+    "veil_texture": 1
+  }
+}

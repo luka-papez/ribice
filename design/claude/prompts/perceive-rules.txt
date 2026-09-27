@@ -1,9 +1,22 @@
+Who the ten are: ordinary adults who have never read about the subject.
+They know everyday words (cloud, sky, rain, grey, fluffy, big) and nothing
+more. They have never learnt what words mean in this field, and they do not
+look anything up.
+
 How to answer:
+- First read the question and each option as they would, word by word. Any
+  word used in a special sense for this subject, or any everyday word used
+  in a way they would have to have explained to them (the way a sailor says
+  "veer" or a doctor says "lesion"), is one they do not understand. Count
+  everyone who would need it explained as unable to answer, with the reason
+  unclear_question, unless the rest of the sentence makes its meaning
+  plain.
 - For each case, say how many of the ten would pick each option, and how
   many could not answer at all. The counts add up to ten.
 - Count people as they are: some misread the question, some mix up options
   that sound alike, some pick the first one that roughly fits, some are sure
-  and wrong. Do not count what an expert would say.
+  and wrong. Do not count what an expert would say, and do not credit them
+  with knowing what you know.
 - If anyone could not answer, give the main reason:
   not_observable: they could not see or know it from where they stand;
   ambiguous: they could not choose between the options;

@@ -153,6 +153,7 @@
           "separate_tufts"
         ],
         "Cirrus spissatus": [
+          "separate_tufts",
           "smooth_sheet"
         ],
         "Cirrus uncinus": [
@@ -171,7 +172,7 @@
           "shreds"
         ],
         "Cumulus humilis": [
-          "heap"
+          "separate_tufts"
         ],
         "Cumulus mediocris": [
           "heap"
@@ -203,47 +204,41 @@
       }
     },
     "agreed": 30,
-    "disputed": [
+    "corrected": [
       "Cirrus spissatus",
       "Cumulus humilis"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0.16975308641975306,
-      "confusion": 0.11500000000000002,
+      "noise": 0.25148514851485143,
+      "confusion": 0.044444444444444446,
       "confusable": [
-        [
-          "patterned_layer",
-          "tube"
-        ],
-        [
-          "separate_tufts",
-          "heap"
-        ],
         [
           "separate_tufts",
           "shreds"
         ]
       ],
-      "answer_rate": 0.9818181818181818,
-      "cost": 1.0185185185185186,
+      "answer_rate": 0.9901960784313726,
+      "cost": 1.00990099009901,
       "rows": [
         {
           "truth": "streaks",
           "answers": {
             "heap": 0,
             "lens": 0,
-            "patterned_layer": 0.1,
-            "separate_tufts": 0,
+            "patterned_layer": 0.06666666666666668,
+            "separate_tufts": 0.03333333333333334,
             "shreds": 0,
-            "smooth_sheet": 0.1,
+            "smooth_sheet": 0.10000000000000002,
             "streaks": 0.8,
             "tube": 0
           },
           "abstain": 0,
           "weight": 4,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
@@ -251,8 +246,8 @@
           "answers": {
             "heap": 0,
             "lens": 0,
-            "patterned_layer": 0.7000000000000001,
-            "separate_tufts": 0.10000000000000002,
+            "patterned_layer": 0.6666666666666667,
+            "separate_tufts": 0.13333333333333336,
             "shreds": 0,
             "smooth_sheet": 0.10000000000000002,
             "streaks": 0.10000000000000002,
@@ -261,25 +256,29 @@
           "abstain": 0,
           "weight": 6,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "separate_tufts",
           "answers": {
-            "heap": 0.2,
+            "heap": 0.13333333333333333,
             "lens": 0,
-            "patterned_layer": 0.1,
-            "separate_tufts": 0.7,
+            "patterned_layer": 0.13333333333333333,
+            "separate_tufts": 0.7333333333333333,
             "shreds": 0,
             "smooth_sheet": 0,
             "streaks": 0,
             "tube": 0
           },
           "abstain": 0,
-          "weight": 5,
+          "weight": 7,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
@@ -287,81 +286,89 @@
           "answers": {
             "heap": 0,
             "lens": 0,
-            "patterned_layer": 0,
+            "patterned_layer": 0.03448275862068966,
             "separate_tufts": 0,
-            "shreds": 0,
-            "smooth_sheet": 0.888888888888889,
-            "streaks": 0.11111111111111112,
+            "shreds": 0.03448275862068966,
+            "smooth_sheet": 0.8275862068965517,
+            "streaks": 0.10344827586206898,
             "tube": 0
           },
-          "abstain": 0.1,
+          "abstain": 0.03333333333333333,
           "weight": 6,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "lens",
           "answers": {
-            "heap": 0.1,
+            "heap": 0.13333333333333333,
             "lens": 0.6,
             "patterned_layer": 0,
             "separate_tufts": 0.1,
             "shreds": 0,
-            "smooth_sheet": 0.1,
+            "smooth_sheet": 0.06666666666666667,
             "streaks": 0,
             "tube": 0.1
           },
           "abstain": 0,
           "weight": 3,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "tube",
           "answers": {
-            "heap": 0,
-            "lens": 0.10000000000000002,
-            "patterned_layer": 0.20000000000000004,
+            "heap": 0.03571428571428572,
+            "lens": 0.10714285714285716,
+            "patterned_layer": 0.17857142857142858,
             "separate_tufts": 0,
-            "shreds": 0.10000000000000002,
-            "smooth_sheet": 0,
+            "shreds": 0.03571428571428572,
+            "smooth_sheet": 0.03571428571428572,
             "streaks": 0,
-            "tube": 0.6000000000000001
+            "tube": 0.6071428571428572
           },
-          "abstain": 0,
+          "abstain": 0.06666666666666667,
           "weight": 2,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "heap",
           "answers": {
-            "heap": 0.9,
+            "heap": 0.8666666666666667,
             "lens": 0,
             "patterned_layer": 0,
             "separate_tufts": 0.1,
-            "shreds": 0,
+            "shreds": 0.03333333333333333,
             "smooth_sheet": 0,
             "streaks": 0,
             "tube": 0
           },
           "abstain": 0,
-          "weight": 5,
+          "weight": 4,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "shreds",
           "answers": {
-            "heap": 0,
+            "heap": 0.03333333333333333,
             "lens": 0,
-            "patterned_layer": 0,
+            "patterned_layer": 0.03333333333333333,
             "separate_tufts": 0.2,
-            "shreds": 0.7,
+            "shreds": 0.6333333333333333,
             "smooth_sheet": 0,
             "streaks": 0.1,
             "tube": 0
@@ -369,15 +376,14 @@
           "abstain": 0,
           "weight": 2,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         }
       ]
     },
-    "ready": false,
-    "why": [
-      "2 values for a person to settle"
-    ]
+    "ready": true
   },
   {
     "proposal": {
@@ -553,8 +559,8 @@
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0.07395498392282951,
-      "confusion": 0.2926045016077171,
+      "noise": 0.09860664523043938,
+      "confusion": 0.2775991425509111,
       "confusable": [
         [
           "no_pattern",
@@ -579,57 +585,65 @@
         {
           "truth": "no_pattern",
           "answers": {
-            "finger": 0.10000000000000002,
-            "fist": 0.10000000000000002,
+            "finger": 0.13333333333333336,
+            "fist": 0.06666666666666668,
             "grain": 0.10000000000000002,
             "no_pattern": 0.7000000000000001
           },
           "abstain": 0,
           "weight": 20,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "grain",
           "answers": {
-            "finger": 0.22222222222222227,
+            "finger": 0.2592592592592593,
             "fist": 0,
-            "grain": 0.5555555555555556,
-            "no_pattern": 0.22222222222222227
+            "grain": 0.4814814814814815,
+            "no_pattern": 0.2592592592592593
           },
           "abstain": 0.1,
           "weight": 6,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "finger",
           "answers": {
-            "finger": 0.5,
+            "finger": 0.5333333333333333,
             "fist": 0.1,
-            "grain": 0.3,
-            "no_pattern": 0.1
+            "grain": 0.23333333333333334,
+            "no_pattern": 0.13333333333333333
           },
           "abstain": 0,
           "weight": 3,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "fist",
           "answers": {
-            "finger": 0.33333333333333326,
-            "fist": 0.4444444444444444,
+            "finger": 0.33333333333333337,
+            "fist": 0.4444444444444445,
             "grain": 0,
-            "no_pattern": 0.2222222222222222
+            "no_pattern": 0.22222222222222227
           },
           "abstain": 0.1,
           "weight": 3,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         }
       ]
@@ -789,17 +803,16 @@
         ]
       }
     },
-    "agreed": 28,
+    "agreed": 29,
     "disputed": [
       "Cirrus castellanus",
-      "Altocumulus lenticularis",
       "Stratocumulus floccus",
       "Cumulus fractus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0.10645161290322572,
-      "confusion": 0.20645161290322586,
+      "noise": 0.10633727175080558,
+      "confusion": 0.19334049409237386,
       "confusable": [
         [
           "not_a_heap",
@@ -814,35 +827,55 @@
           "taller"
         ]
       ],
-      "answer_rate": 1,
-      "cost": 1,
+      "answer_rate": 0.9697916666666667,
+      "cost": 1.0311493018259934,
       "rows": [
         {
           "truth": "not_a_heap",
           "answers": {
-            "even": 0.10000000000000002,
-            "not_a_heap": 0.7000000000000001,
+            "even": 0.10344827586206896,
+            "not_a_heap": 0.7241379310344828,
             "taller": 0,
-            "wider": 0.20000000000000004
+            "wider": 0.1724137931034483
           },
-          "abstain": 0,
+          "abstain": 0.03333333333333333,
           "weight": 27,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
           "truth": "wider",
           "answers": {
-            "even": 0.2,
-            "not_a_heap": 0.2,
+            "even": 0.20689655172413793,
+            "not_a_heap": 0.20689655172413793,
             "taller": 0,
-            "wider": 0.6
+            "wider": 0.5862068965517241
           },
-          "abstain": 0,
+          "abstain": 0.03333333333333333,
           "weight": 1,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "even",
+          "answers": {
+            "even": 0.3793103448275863,
+            "not_a_heap": 0.10344827586206898,
+            "taller": 0.1724137931034483,
+            "wider": 0.3448275862068966
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 1,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
@@ -850,24 +883,22 @@
           "answers": {
             "even": 0.2,
             "not_a_heap": 0.1,
-            "taller": 0.6,
-            "wider": 0.1
+            "taller": 0.6333333333333333,
+            "wider": 0.06666666666666667
           },
           "abstain": 0,
           "weight": 3,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         }
-      ],
-      "missing": [
-        "even"
       ]
     },
     "ready": false,
     "why": [
-      "4 values for a person to settle",
-      "not every value has perceive answers"
+      "3 values for a person to settle"
     ]
   },
   {
@@ -1028,20 +1059,23 @@
         ]
       }
     },
-    "agreed": 26,
+    "agreed": 27,
     "disputed": [
       "Cirrus spissatus",
       "Altocumulus stratiformis",
       "Stratocumulus lenticularis",
       "Stratocumulus volutus",
-      "Cumulus congestus",
-      "Cumulonimbus calvus"
+      "Cumulus congestus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0.08695652173913042,
-      "confusion": 0.3,
+      "noise": 0.02,
+      "confusion": 0.19375000000000003,
       "confusable": [
+        [
+          "white",
+          "grey"
+        ],
         [
           "grey",
           "dark"
@@ -1054,13 +1088,30 @@
           "truth": "white",
           "answers": {
             "dark": 0,
-            "grey": 0.1,
+            "grey": 0.10000000000000002,
             "white": 0.9
           },
           "abstain": 0,
           "weight": 20,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "grey",
+          "answers": {
+            "dark": 0.13333333333333333,
+            "grey": 0.6333333333333333,
+            "white": 0.23333333333333334
+          },
+          "abstain": 0,
+          "weight": 9,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         },
         {
@@ -1073,18 +1124,16 @@
           "abstain": 0,
           "weight": 3,
           "experts": [
-            "claude:claude-opus-5@v1a"
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
           ]
         }
-      ],
-      "missing": [
-        "grey"
       ]
     },
     "ready": false,
     "why": [
-      "6 values for a person to settle",
-      "not every value has perceive answers"
+      "5 values for a person to settle"
     ]
   },
   {
@@ -1163,7 +1212,7 @@
           "pale_blur"
         ],
         "Altocumulus floccus": [
-          "pale_blur"
+          "sharp_disc"
         ],
         "Altocumulus lenticularis": [
           "pale_blur"
@@ -1181,19 +1230,19 @@
           "pale_blur"
         ],
         "Cirrocumulus castellanus": [
-          "sharp_disc"
+          "sun_elsewhere"
         ],
         "Cirrocumulus floccus": [
-          "sharp_disc"
+          "sun_elsewhere"
         ],
         "Cirrocumulus lenticularis": [
-          "sharp_disc"
+          "pale_blur"
         ],
         "Cirrocumulus stratiformis": [
           "sharp_disc"
         ],
         "Cirrostratus fibratus": [
-          "halo_ring"
+          "pale_blur"
         ],
         "Cirrostratus nebulosus": [
           "halo_ring"
@@ -1208,7 +1257,7 @@
           "sharp_disc"
         ],
         "Cirrus spissatus": [
-          "pale_blur"
+          "blotted_out"
         ],
         "Cirrus uncinus": [
           "sharp_disc"
@@ -1223,7 +1272,7 @@
           "blotted_out"
         ],
         "Cumulus fractus": [
-          "blotted_out"
+          "pale_blur"
         ],
         "Cumulus humilis": [
           "blotted_out"
@@ -1238,7 +1287,7 @@
           "blotted_out"
         ],
         "Stratocumulus floccus": [
-          "blotted_out"
+          "pale_blur"
         ],
         "Stratocumulus lenticularis": [
           "blotted_out"
@@ -1253,49 +1302,136 @@
           "sun_elsewhere"
         ],
         "Stratus nebulosus": [
-          "sharp_disc"
+          "blotted_out"
         ]
       }
     },
-    "agreed": 15,
-    "disputed": [
+    "agreed": 22,
+    "corrected": [
       "Cirrus spissatus",
       "Cirrocumulus lenticularis",
       "Cirrocumulus floccus",
       "Cirrocumulus castellanus",
       "Cirrostratus fibratus",
-      "Altocumulus lenticularis",
-      "Altocumulus castellanus",
       "Altocumulus floccus",
-      "Altocumulus volutus",
-      "Stratocumulus lenticularis",
-      "Stratocumulus castellanus",
       "Stratocumulus floccus",
-      "Stratocumulus volutus",
       "Stratus nebulosus",
-      "Cumulus humilis",
-      "Cumulus mediocris",
       "Cumulus fractus"
     ],
-    "not_observable": 0,
+    "abstained": [
+      "Altocumulus volutus"
+    ],
+    "not_observable": 1,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "halo_ring",
-        "sharp_disc",
-        "pale_blur",
-        "blotted_out",
-        "sun_elsewhere"
+      "noise": 0.14902807775377966,
+      "confusion": 0.26128266033254155,
+      "confusable": [
+        [
+          "halo_ring",
+          "pale_blur"
+        ],
+        [
+          "sharp_disc",
+          "pale_blur"
+        ],
+        [
+          "pale_blur",
+          "blotted_out"
+        ]
+      ],
+      "answer_rate": 0.9645833333333333,
+      "cost": 1.036717062634989,
+      "rows": [
+        {
+          "truth": "halo_ring",
+          "answers": {
+            "blotted_out": 0,
+            "halo_ring": 0.6000000000000001,
+            "pale_blur": 0.23333333333333336,
+            "sharp_disc": 0.06666666666666668,
+            "sun_elsewhere": 0.10000000000000002
+          },
+          "abstain": 0,
+          "weight": 1,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "sharp_disc",
+          "answers": {
+            "blotted_out": 0,
+            "halo_ring": 0.10344827586206896,
+            "pale_blur": 0.20689655172413793,
+            "sharp_disc": 0.5517241379310345,
+            "sun_elsewhere": 0.13793103448275862
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 6,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "pale_blur",
+          "answers": {
+            "blotted_out": 0.10344827586206896,
+            "halo_ring": 0.1724137931034483,
+            "pale_blur": 0.5862068965517241,
+            "sharp_disc": 0.10344827586206896,
+            "sun_elsewhere": 0.034482758620689655
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 9,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "blotted_out",
+          "answers": {
+            "blotted_out": 0.6551724137931035,
+            "halo_ring": 0,
+            "pale_blur": 0.20689655172413796,
+            "sharp_disc": 0,
+            "sun_elsewhere": 0.13793103448275865
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 13,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "sun_elsewhere",
+          "answers": {
+            "blotted_out": 0.1785714285714286,
+            "halo_ring": 0,
+            "pale_blur": 0.07142857142857144,
+            "sharp_disc": 0.10714285714285716,
+            "sun_elsewhere": 0.6428571428571429
+          },
+          "abstain": 0.06666666666666667,
+          "weight": 3,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "17 values for a person to settle",
-      "not every value has perceive answers"
+      "1 values for a person to settle"
     ]
   },
   {
@@ -1456,28 +1592,77 @@
         ]
       }
     },
-    "agreed": 30,
+    "agreed": 31,
     "disputed": [
-      "Cirrostratus fibratus",
-      "Cumulonimbus capillatus"
+      "Cirrostratus fibratus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "blue_sky",
-        "higher_cloud",
-        "filled_sky"
+      "noise": 0.0759493670886076,
+      "confusion": 0.19409282700421943,
+      "confusable": [
+        [
+          "blue_sky",
+          "higher_cloud"
+        ],
+        [
+          "higher_cloud",
+          "filled_sky"
+        ]
+      ],
+      "answer_rate": 0.9875,
+      "cost": 1.0126582278481011,
+      "rows": [
+        {
+          "truth": "blue_sky",
+          "answers": {
+            "blue_sky": 0.7666666666666666,
+            "filled_sky": 0.06666666666666667,
+            "higher_cloud": 0.16666666666666669
+          },
+          "abstain": 0,
+          "weight": 24,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "higher_cloud",
+          "answers": {
+            "blue_sky": 0.2592592592592593,
+            "filled_sky": 0.14814814814814817,
+            "higher_cloud": 0.5925925925925927
+          },
+          "abstain": 0.1,
+          "weight": 2,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "filled_sky",
+          "answers": {
+            "blue_sky": 0.13793103448275865,
+            "filled_sky": 0.6206896551724138,
+            "higher_cloud": 0.24137931034482762
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 6,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "2 values for a person to settle",
-      "not every value has perceive answers"
+      "1 values for a person to settle"
     ]
   },
   {
@@ -1632,29 +1817,79 @@
     },
     "agreed": 27,
     "disputed": [
-      "Altocumulus castellanus",
       "Stratocumulus lenticularis",
       "Stratocumulus volutus",
+      "Stratus fractus",
       "Cumulus fractus",
       "Cumulonimbus capillatus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "flat_level",
-        "ragged_bumpy",
-        "fades_out"
+      "noise": 0.1059602649006622,
+      "confusion": 0.26931567328918327,
+      "confusable": [
+        [
+          "flat_level",
+          "ragged_bumpy"
+        ],
+        [
+          "ragged_bumpy",
+          "fades_out"
+        ]
+      ],
+      "answer_rate": 0.94375,
+      "cost": 1.0596026490066226,
+      "rows": [
+        {
+          "truth": "flat_level",
+          "answers": {
+            "fades_out": 0.10000000000000002,
+            "flat_level": 0.7333333333333334,
+            "ragged_bumpy": 0.1666666666666667
+          },
+          "abstain": 0,
+          "weight": 8,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "ragged_bumpy",
+          "answers": {
+            "fades_out": 0.23333333333333334,
+            "flat_level": 0.3,
+            "ragged_bumpy": 0.4666666666666667
+          },
+          "abstain": 0,
+          "weight": 6,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "fades_out",
+          "answers": {
+            "fades_out": 0.6296296296296297,
+            "flat_level": 0.14814814814814814,
+            "ragged_bumpy": 0.22222222222222224
+          },
+          "abstain": 0.1,
+          "weight": 18,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "5 values for a person to settle",
-      "not every value has perceive answers"
+      "5 values for a person to settle"
     ]
   },
   {
@@ -1811,10 +2046,9 @@
         ]
       }
     },
-    "agreed": 25,
+    "agreed": 26,
     "disputed": [
       "Altocumulus lenticularis",
-      "Stratocumulus floccus",
       "Cumulus humilis",
       "Cumulus mediocris",
       "Cumulus fractus",
@@ -1823,21 +2057,67 @@
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
+      "noise": 0.18437500000000004,
+      "confusion": 0.2807017543859649,
+      "confusable": [
+        [
+          "all_white",
+          "grey_undersides"
+        ]
+      ],
       "answer_rate": 1,
       "cost": 1,
-      "rows": null,
-      "missing": [
-        "no_lumps",
-        "all_white",
-        "grey_undersides"
+      "rows": [
+        {
+          "truth": "no_lumps",
+          "answers": {
+            "all_white": 0.16666666666666669,
+            "grey_undersides": 0.1,
+            "no_lumps": 0.7333333333333333
+          },
+          "abstain": 0,
+          "weight": 13,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "all_white",
+          "answers": {
+            "all_white": 0.5333333333333333,
+            "grey_undersides": 0.3,
+            "no_lumps": 0.16666666666666669
+          },
+          "abstain": 0,
+          "weight": 8,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "grey_undersides",
+          "answers": {
+            "all_white": 0.26666666666666666,
+            "grey_undersides": 0.6333333333333333,
+            "no_lumps": 0.1
+          },
+          "abstain": 0,
+          "weight": 11,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "7 values for a person to settle",
-      "not every value has perceive answers"
+      "6 values for a person to settle"
     ]
   },
   {
@@ -1956,7 +2236,7 @@
           "nothing"
         ],
         "Cirrus uncinus": [
-          "trails_in_air"
+          "nothing"
         ],
         "Cumulonimbus calvus": [
           "shafts_to_ground"
@@ -2002,34 +2282,115 @@
         ]
       }
     },
-    "agreed": 27,
-    "disputed": [
-      "Cirrus uncinus",
-      "Cirrus spissatus",
-      "Cirrus castellanus",
-      "Stratocumulus floccus",
-      "Cumulus congestus"
+    "agreed": 31,
+    "corrected": [
+      "Cirrus uncinus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "nothing",
-        "trails_in_air",
-        "shafts_to_ground",
-        "everywhere_steady",
-        "storm"
+      "noise": 0.03144654088050312,
+      "confusion": 0.11904761904761907,
+      "confusable": [
+        [
+          "nothing",
+          "trails_in_air"
+        ],
+        [
+          "shafts_to_ground",
+          "everywhere_steady"
+        ]
+      ],
+      "answer_rate": 0.99375,
+      "cost": 1.0062893081761006,
+      "rows": [
+        {
+          "truth": "nothing",
+          "answers": {
+            "everywhere_steady": 0,
+            "nothing": 0.9,
+            "shafts_to_ground": 0,
+            "storm": 0,
+            "trails_in_air": 0.10000000000000002
+          },
+          "abstain": 0,
+          "weight": 26,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "trails_in_air",
+          "answers": {
+            "everywhere_steady": 0,
+            "nothing": 0.2962962962962963,
+            "shafts_to_ground": 0.11111111111111112,
+            "storm": 0,
+            "trails_in_air": 0.5925925925925926
+          },
+          "abstain": 0.1,
+          "weight": 2,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "shafts_to_ground",
+          "answers": {
+            "everywhere_steady": 0.16666666666666669,
+            "nothing": 0.03333333333333333,
+            "shafts_to_ground": 0.6333333333333333,
+            "storm": 0,
+            "trails_in_air": 0.16666666666666669
+          },
+          "abstain": 0,
+          "weight": 2,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "everywhere_steady",
+          "answers": {
+            "everywhere_steady": 0.7,
+            "nothing": 0,
+            "shafts_to_ground": 0.2,
+            "storm": 0,
+            "trails_in_air": 0.1
+          },
+          "abstain": 0,
+          "weight": 1,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "storm",
+          "answers": {
+            "everywhere_steady": 0.16666666666666669,
+            "nothing": 0,
+            "shafts_to_ground": 0.13333333333333333,
+            "storm": 0.7,
+            "trails_in_air": 0
+          },
+          "abstain": 0,
+          "weight": 1,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
-    "ready": false,
-    "why": [
-      "5 values for a person to settle",
-      "not every value has perceive answers"
-    ]
+    "ready": true
   },
   {
     "proposal": {
@@ -2185,32 +2546,53 @@
         ]
       }
     },
-    "agreed": 25,
+    "agreed": 28,
     "disputed": [
       "Cirrocumulus floccus",
-      "Cirrocumulus castellanus",
-      "Altocumulus castellanus",
       "Stratocumulus floccus",
       "Stratus fractus",
-      "Cumulus fractus",
-      "Nimbostratus"
+      "Cumulus fractus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
+      "noise": 0.2051282051282051,
       "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "yes",
-        "no"
+      "answer_rate": 0.975,
+      "cost": 1.0256410256410258,
+      "rows": [
+        {
+          "truth": "yes",
+          "answers": {
+            "no": 0.2,
+            "yes": 0.8
+          },
+          "abstain": 0,
+          "weight": 8,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "no",
+          "answers": {
+            "no": 0.7931034482758621,
+            "yes": 0.20689655172413796
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 24,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "7 values for a person to settle",
-      "not every value has perceive answers"
+      "4 values for a person to settle"
     ]
   },
   {
@@ -2375,10 +2757,11 @@
         ]
       }
     },
-    "agreed": 23,
+    "agreed": 22,
     "disputed": [
       "Cirrus spissatus",
       "Cirrocumulus lenticularis",
+      "Cirrocumulus castellanus",
       "Altocumulus lenticularis",
       "Altocumulus castellanus",
       "Stratocumulus lenticularis",
@@ -2389,22 +2772,90 @@
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
+      "noise": 0.07187499999999998,
+      "confusion": 0.1948717948717949,
+      "confusable": [
+        [
+          "few_clouds",
+          "broken_layer"
+        ],
+        [
+          "broken_layer",
+          "total"
+        ]
+      ],
       "answer_rate": 1,
       "cost": 1,
-      "rows": null,
-      "missing": [
-        "one_cloud",
-        "few_clouds",
-        "broken_layer",
-        "total"
+      "rows": [
+        {
+          "truth": "one_cloud",
+          "answers": {
+            "broken_layer": 0,
+            "few_clouds": 0.13333333333333333,
+            "one_cloud": 0.8666666666666667,
+            "total": 0
+          },
+          "abstain": 0,
+          "weight": 6,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "few_clouds",
+          "answers": {
+            "broken_layer": 0.13333333333333336,
+            "few_clouds": 0.7666666666666667,
+            "one_cloud": 0.10000000000000002,
+            "total": 0
+          },
+          "abstain": 0,
+          "weight": 15,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "broken_layer",
+          "answers": {
+            "broken_layer": 0.6666666666666666,
+            "few_clouds": 0.23333333333333334,
+            "one_cloud": 0,
+            "total": 0.1
+          },
+          "abstain": 0,
+          "weight": 5,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "total",
+          "answers": {
+            "broken_layer": 0.23333333333333334,
+            "few_clouds": 0,
+            "one_cloud": 0,
+            "total": 0.7666666666666666
+          },
+          "abstain": 0,
+          "weight": 6,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "9 values for a person to settle",
-      "not every value has perceive answers"
+      "10 values for a person to settle"
     ]
   },
   {
@@ -2582,23 +3033,115 @@
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "not_one_cloud",
-        "almond_lens",
-        "long_tube",
-        "rounded_heap",
-        "torn_shred"
+      "noise": 0.15667718191377494,
+      "confusion": 0.12302839116719244,
+      "confusable": [
+        [
+          "not_one_cloud",
+          "long_tube"
+        ],
+        [
+          "not_one_cloud",
+          "torn_shred"
+        ],
+        [
+          "almond_lens",
+          "rounded_heap"
+        ]
+      ],
+      "answer_rate": 0.990625,
+      "cost": 1.0094637223974763,
+      "rows": [
+        {
+          "truth": "not_one_cloud",
+          "answers": {
+            "almond_lens": 0,
+            "long_tube": 0.03333333333333334,
+            "not_one_cloud": 0.7666666666666667,
+            "rounded_heap": 0.13333333333333336,
+            "torn_shred": 0.06666666666666668
+          },
+          "abstain": 0,
+          "weight": 20,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "almond_lens",
+          "answers": {
+            "almond_lens": 0.5862068965517241,
+            "long_tube": 0.06896551724137931,
+            "not_one_cloud": 0.10344827586206896,
+            "rounded_heap": 0.20689655172413793,
+            "torn_shred": 0.034482758620689655
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 3,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "long_tube",
+          "answers": {
+            "almond_lens": 0.10344827586206896,
+            "long_tube": 0.4827586206896552,
+            "not_one_cloud": 0.20689655172413793,
+            "rounded_heap": 0.13793103448275862,
+            "torn_shred": 0.06896551724137931
+          },
+          "abstain": 0.03333333333333333,
+          "weight": 2,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "rounded_heap",
+          "answers": {
+            "almond_lens": 0.1,
+            "long_tube": 0,
+            "not_one_cloud": 0.1,
+            "rounded_heap": 0.7333333333333333,
+            "torn_shred": 0.06666666666666667
+          },
+          "abstain": 0,
+          "weight": 5,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "torn_shred",
+          "answers": {
+            "almond_lens": 0,
+            "long_tube": 0,
+            "not_one_cloud": 0.2142857142857143,
+            "rounded_heap": 0.14285714285714285,
+            "torn_shred": 0.6428571428571428
+          },
+          "abstain": 0.06666666666666667,
+          "weight": 2,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "1 values for a person to settle",
-      "not every value has perceive answers"
+      "1 values for a person to settle"
     ]
   },
   {
@@ -2752,21 +3295,67 @@
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
-      "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "fibrous_veil",
-        "smooth_veil",
-        "not_a_veil"
+      "noise": 0.22931937172774874,
+      "confusion": 0.32727272727272727,
+      "confusable": [
+        [
+          "fibrous_veil",
+          "smooth_veil"
+        ]
+      ],
+      "answer_rate": 0.9947916666666666,
+      "cost": 1.0052356020942408,
+      "rows": [
+        {
+          "truth": "fibrous_veil",
+          "answers": {
+            "fibrous_veil": 0.5357142857142857,
+            "not_a_veil": 0.17857142857142858,
+            "smooth_veil": 0.2857142857142857
+          },
+          "abstain": 0.06666666666666667,
+          "weight": 1,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "smooth_veil",
+          "answers": {
+            "fibrous_veil": 0.3703703703703704,
+            "not_a_veil": 0.14814814814814817,
+            "smooth_veil": 0.48148148148148157
+          },
+          "abstain": 0.1,
+          "weight": 1,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "not_a_veil",
+          "answers": {
+            "fibrous_veil": 0.1,
+            "not_a_veil": 0.7666666666666666,
+            "smooth_veil": 0.13333333333333333
+          },
+          "abstain": 0,
+          "weight": 30,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "1 values for a person to settle",
-      "not every value has perceive answers"
+      "1 values for a person to settle"
     ]
   },
   {
@@ -2931,28 +3520,51 @@
         ]
       }
     },
-    "agreed": 29,
+    "agreed": 30,
     "disputed": [
       "Stratocumulus volutus",
-      "Cumulus fractus",
-      "Nimbostratus"
+      "Cumulus fractus"
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
+      "noise": 0.11431870669745961,
       "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "yes",
-        "no"
+      "answer_rate": 0.8747474747474747,
+      "cost": 1.1431870669745958,
+      "rows": [
+        {
+          "truth": "yes",
+          "answers": {
+            "no": 0.10714285714285716,
+            "yes": 0.8928571428571429
+          },
+          "abstain": 0.06666666666666667,
+          "weight": 4,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "no",
+          "answers": {
+            "no": 0.8846153846153846,
+            "yes": 0.1153846153846154
+          },
+          "abstain": 0.13333333333333333,
+          "weight": 29,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "3 values for a person to settle",
-      "not every value has perceive answers"
+      "2 values for a person to settle"
     ]
   },
   {
@@ -3104,13 +3716,12 @@
         ]
       }
     },
-    "agreed": 23,
+    "agreed": 24,
     "disputed": [
       "Cirrocumulus stratiformis",
       "Cirrocumulus lenticularis",
       "Cirrocumulus floccus",
       "Cirrocumulus castellanus",
-      "Altocumulus stratiformis",
       "Altocumulus castellanus",
       "Altocumulus floccus",
       "Stratus fractus",
@@ -3118,20 +3729,44 @@
     ],
     "not_observable": 0,
     "errors": {
-      "noise": 0,
+      "noise": 0.23628691983122369,
       "confusion": 0,
-      "answer_rate": 1,
-      "cost": 1,
-      "rows": null,
-      "missing": [
-        "yes",
-        "no"
+      "answer_rate": 0.9875,
+      "cost": 1.0126582278481011,
+      "rows": [
+        {
+          "truth": "yes",
+          "answers": {
+            "no": 0.25,
+            "yes": 0.7499999999999999
+          },
+          "abstain": 0.06666666666666667,
+          "weight": 6,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        },
+        {
+          "truth": "no",
+          "answers": {
+            "no": 0.7666666666666666,
+            "yes": 0.23333333333333334
+          },
+          "abstain": 0,
+          "weight": 26,
+          "experts": [
+            "claude:claude-opus-5@v1a",
+            "claude:claude-opus-5@v1b",
+            "claude:claude-opus-5@v1c"
+          ]
+        }
       ]
     },
     "ready": false,
     "why": [
-      "9 values for a person to settle",
-      "not every value has perceive answers"
+      "8 values for a person to settle"
     ]
   }
 ]
