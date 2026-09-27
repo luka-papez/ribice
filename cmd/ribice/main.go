@@ -28,6 +28,7 @@ func main() {
 		doStats  = flag.Bool("stats", false, "summarise the knowledge base and exit")
 		doSim    = flag.Bool("simulate", false, "self-test: play one game per entity and report, then exit")
 		simNoise = flag.Float64("sim-noise", 0, "probability the simulated user answers wrongly")
+		simModel = flag.Bool("sim-model", false, "with -simulate: err and skip as each question's own noise, confusion and answer_rate say (overrides -sim-noise)")
 		seed     = flag.Int64("seed", 1, "random seed for -simulate")
 		replayF  = flag.String("replay", "", "play one game per recorded sighting in this JSON Lines file (- for stdin), report, then exit")
 		asJSON   = flag.Bool("json", false, "with -simulate or -replay: print one JSON object per game instead of a summary")
@@ -60,7 +61,7 @@ func main() {
 	case *doStats:
 		stats(k)
 	case *doSim:
-		simulate(k, cfg, engine.SimOptions{Noise: *simNoise, Seed: *seed}, *asJSON)
+		simulate(k, cfg, engine.SimOptions{Noise: *simNoise, ErrorModel: *simModel, Seed: *seed}, *asJSON)
 	case *replayF != "":
 		if err := replay(k, cfg, *replayF, *asJSON); err != nil {
 			fmt.Fprintln(os.Stderr, "error:", err)
@@ -300,8 +301,15 @@ func simulate(k *kb.KB, cfg engine.Config, opts engine.SimOptions, asJSON bool) 
 		writeGames(r, nil)
 		return
 	}
-	fmt.Printf("self-test: %d entities, answer error rate %.0f%%\n\n", len(r.Results), opts.Noise*100)
+	if opts.ErrorModel {
+		fmt.Printf("self-test: %d entities, answering as each question's error model says\n\n", len(r.Results))
+	} else {
+		fmt.Printf("self-test: %d entities, answer error rate %.0f%%\n\n", len(r.Results), opts.Noise*100)
+	}
 	summary(k, r)
+	if opts.ErrorModel {
+		skips(r)
+	}
 	if len(r.Worst) == 0 {
 		fmt.Println("\nEvery entity was identified.")
 		return
@@ -339,22 +347,14 @@ func replay(k *kb.KB, cfg engine.Config, path string, asJSON bool) error {
 
 	fmt.Printf("replay: %d sightings from %s\n\n", len(sightings), path)
 	summary(k, r)
-	skipped, gaps, gaveUp := 0, 0, 0
+	skips(r)
+	gaps := 0
 	for _, res := range r.Results {
-		skipped += res.Skipped
-		if res.GaveUp {
-			gaveUp++
-		}
 		for _, st := range res.Steps {
 			if st.Gap {
 				gaps++
 			}
 		}
-	}
-	n := float64(len(r.Results))
-	fmt.Printf("not sure        %.1f per game\n", float64(skipped)/n)
-	if gaveUp > 0 {
-		fmt.Printf("gave up         %d (only unanswerable questions were left)\n", gaveUp)
 	}
 	if gaps > 0 {
 		fmt.Printf("gaps            %d questions had no recorded answer -- ask them before trusting this\n", gaps)
@@ -426,6 +426,22 @@ func summary(k *kb.KB, r engine.SimReport) {
 	fmt.Printf("questions       %.1f average, %d worst\n", r.MeanAsked, r.MaxAsked)
 	fmt.Printf("uncertainty     %.2f bits to resolve (%.2f if priors were flat)\n",
 		k.Stats().PriorEntropy, math.Log2(float64(len(k.Entities))))
+}
+
+// skips prints how often games were answered "not sure" and given up, for the
+// modes where the answerer can fail to answer.
+func skips(r engine.SimReport) {
+	skipped, gaveUp := 0, 0
+	for _, res := range r.Results {
+		skipped += res.Skipped
+		if res.GaveUp {
+			gaveUp++
+		}
+	}
+	fmt.Printf("not sure        %.1f per game\n", float64(skipped)/float64(len(r.Results)))
+	if gaveUp > 0 {
+		fmt.Printf("gave up         %d (only unanswerable questions were left)\n", gaveUp)
+	}
 }
 
 type gameJSON struct {

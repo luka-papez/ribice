@@ -95,6 +95,9 @@ func (k *KB) Lint() []Issue {
 		if a.Noise <= 0 || a.Noise >= 0.5 {
 			add(Warning, "attribute %q has noise %.2f; useful values are between 0 and 0.5", a.Name, a.Noise)
 		}
+		if a.AnswerRate < 0.5 {
+			add(Warning, "attribute %q has answer_rate %.2f; most people could not answer it", a.Name, a.AnswerRate)
+		}
 	}
 
 	// Attribute names that look like typos of one another ("color"/"colour").

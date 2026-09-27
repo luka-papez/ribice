@@ -10,7 +10,15 @@ import (
 // SimOptions controls a self-test run.
 type SimOptions struct {
 	Noise float64 // probability the simulated user answers wrongly
-	Seed  int64
+
+	// ErrorModel makes the simulated user answer the way each attribute's own
+	// error model says people do: wrongly as often as Attribute.Report gives,
+	// and not at all for a share 1 - AnswerRate of games. Noise is ignored.
+	// This is what makes a question's measured error rates count when
+	// comparing one knowledge base with another.
+	ErrorModel bool
+
+	Seed int64
 }
 
 // SimResult is one game played against a known entity, by the simulator or by
@@ -61,9 +69,13 @@ func Simulate(k *kb.KB, cfg Config, opts SimOptions) SimReport {
 	rng := rand.New(rand.NewSource(opts.Seed))
 	var results []SimResult
 	for _, target := range k.Entities {
-		results = append(results, play(k, cfg, target, func(_ *Session, q *Question) reply {
+		answer := func(_ *Session, q *Question) reply {
 			return reply{options: []int{answerAs(target, q, opts.Noise, rng)}}
-		}))
+		}
+		if opts.ErrorModel {
+			answer = modelAnswerer(target, rng)
+		}
+		results = append(results, play(k, cfg, target, answer))
 	}
 	return summarise(results)
 }
@@ -191,6 +203,44 @@ func answerAs(target *kb.Entity, q *Question, noise float64, rng *rand.Rand) int
 		wrong++
 	}
 	return wrong
+}
+
+// modelAnswerer answers as target, making the mistakes each attribute's error
+// model predicts. Whether a question can be answered at all is settled the
+// first time it is asked and holds for the rest of the game: someone who could
+// not see the sun the first time cannot see it the second time either. As in
+// Replay, the game ends once only such questions are left.
+func modelAnswerer(target *kb.Entity, rng *rand.Rand) func(*Session, *Question) reply {
+	answerable := map[string]bool{}
+	return func(s *Session, q *Question) reply {
+		a := q.Attr
+		can, decided := answerable[a.Name]
+		if !decided {
+			can = rng.Float64() < a.AnswerRate
+			answerable[a.Name] = can
+		}
+		if !can {
+			if stuck(s, a.Name) {
+				return reply{giveUp: true}
+			}
+			return reply{}
+		}
+		said := sampleReport(a, pickValue(target.Values(a.Name), rng), rng)
+		return reply{options: optionsFor(q, []kb.Value{said})}
+	}
+}
+
+// sampleReport draws the value a person names when the truth is actual, with
+// the probabilities Attribute.Report gives.
+func sampleReport(a *kb.Attribute, actual kb.Value, rng *rand.Rand) kb.Value {
+	x := rng.Float64()
+	for _, v := range a.Domain {
+		x -= a.Report(v, actual)
+		if x < 0 {
+			return v
+		}
+	}
+	return actual // rounding left a sliver past the last value
 }
 
 func contains(vs []kb.Value, want kb.Value) bool {

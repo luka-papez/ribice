@@ -335,6 +335,7 @@ optional — a bare array works fine.
 | `labels`   | Display text per value, for when the raw value is too terse.                                                                                |
 | `noise`    | P(the user gets this wrong). Defaults to 0.12. Raise it for colour and size, lower it for unmistakable features.                            |
 | `cost`     | Relative effort of asking. Questions are ranked by gain ÷ cost.                                                                             |
+| `answer_rate` | Share of people who can answer it at all. Defaults to 1. Only `-simulate -sim-model` uses it; the quiz relies on `cost` to ask hard questions late. |
 | `multi`    | The entity can hold several of these at once, so picking several answers means "all of these", not "one of these". Meaningless on booleans. |
 | `_prior`   | Relative frequency of this entity. Defaults to 1 for everything.                                                                            |
 | `_note`    | Free text shown with the result.                                                                                                            |
@@ -379,6 +380,7 @@ go run ./cmd/ribice -lint                # check a knowledge base for problems
 go run ./cmd/ribice -stats               # attributes, domains, uncertainty
 go run ./cmd/ribice -simulate            # self-test: play one game per entity
 go run ./cmd/ribice -simulate -sim-noise 0.25
+go run ./cmd/ribice -simulate -sim-model # err and skip as each question's own fields say
 go run ./cmd/ribice -replay answers.jsonl   # play one game per recorded sighting
 go run ./cmd/ribice -replay answers.jsonl -json  # one JSON line per game, steps included
 ```
@@ -391,8 +393,11 @@ attributes that can never discriminate, entities no question can tell apart, and
 `-simulate` plays the whole quiz once per entity, answering truthfully, and
 reports what fraction were identified and how many questions it took. With
 `-sim-noise` it gets answers wrong at that rate, preferring a declared
-look-alike over a random value, since that is how people actually err. Run it
-after every edit to the knowledge base:
+look-alike over a random value, since that is how people actually err. With
+`-sim-model` each question errs at its own `noise` and `confusion` instead, and
+goes unanswered in a share `1 − answer_rate` of games; a game where only
+unanswerable questions are left ends there, given up. Run it after every edit
+to the knowledge base:
 
 ```
 $ go run ./cmd/ribice -simulate

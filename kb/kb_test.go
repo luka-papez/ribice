@@ -95,6 +95,34 @@ func TestMetadataAndPriors(t *testing.T) {
 	}
 }
 
+func TestAnswerRate(t *testing.T) {
+	k := load(t, `{
+	  "attributes": {"halo": {"answer_rate": 0.25}},
+	  "entities": [{"name": "a", "halo": true, "size": "big"}, {"name": "b", "size": "small"}]
+	}`)
+	if got := k.Attr("halo").AnswerRate; got != 0.25 {
+		t.Errorf("halo answer_rate = %v, want 0.25", got)
+	}
+	if got := k.Attr("size").AnswerRate; got != 1 {
+		t.Errorf("size answer_rate = %v, want 1 when not declared", got)
+	}
+	found := false
+	for _, is := range k.Lint() {
+		found = found || strings.Contains(is.Message, "answer_rate 0.25")
+	}
+	if !found {
+		t.Errorf("Lint did not warn about an answer_rate of 0.25")
+	}
+
+	for _, bad := range []string{"0", "-0.5", "1.5"} {
+		_, err := Load([]byte(`{"attributes": {"halo": {"answer_rate": ` + bad + `}},
+		  "entities": [{"name": "a", "halo": true}, {"name": "b"}]}`))
+		if err == nil {
+			t.Errorf("answer_rate %s loaded without an error", bad)
+		}
+	}
+}
+
 func TestAutoQuestionText(t *testing.T) {
 	k := load(t, `[{"name": "a", "big_eyes": true}, {"name": "b"}]`)
 	if got := k.Attr("big_eyes").Title(); got != "Big eyes?" {

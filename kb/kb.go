@@ -64,6 +64,12 @@ type Attribute struct {
 	NoiseSet bool    // true when the KB declared Noise explicitly
 	Cost     float64 // relative effort of asking; questions are ranked by gain/cost
 
+	// AnswerRate is the share of people who can answer the question at all;
+	// the rest would say "not sure". The quiz does not use it (Cost is how a
+	// hard question gets asked late); the simulator does, to skip the way
+	// people would.
+	AnswerRate float64
+
 	// Multi marks an attribute an entity can genuinely hold several of at once
 	// -- where a fish lives, say, as opposed to what shape it is. It changes
 	// what picking several answers means: see engine.Session.answerLikelihood.
@@ -225,6 +231,7 @@ type rawAttr struct {
 	Labels     map[string]string `json:"labels"`
 	Noise      *float64          `json:"noise"`
 	Cost       *float64          `json:"cost"`
+	AnswerRate *float64          `json:"answer_rate"`
 	Multi      bool              `json:"multi"`
 	Confusion  *float64          `json:"confusion"`
 	Confusable [][]string        `json:"confusable"`
@@ -338,7 +345,7 @@ func Load(data []byte) (*KB, error) {
 
 	// Pass 2: decide each attribute's kind and domain.
 	for name, o := range obs {
-		a := &Attribute{Name: name, Noise: DefaultNoise, Cost: 1, labels: map[Value]string{}, holders: map[Value]int{}}
+		a := &Attribute{Name: name, Noise: DefaultNoise, Cost: 1, AnswerRate: 1, labels: map[Value]string{}, holders: map[Value]int{}}
 		if o.boolish > 0 && onlyBoolish(o.values) {
 			a.Kind = Boolean
 			a.Domain = []Value{Yes, No}
@@ -403,6 +410,12 @@ func Load(data []byte) (*KB, error) {
 		}
 		if meta.Cost != nil && *meta.Cost > 0 {
 			a.Cost = *meta.Cost
+		}
+		if r := meta.AnswerRate; r != nil {
+			if *r <= 0 || *r > 1 {
+				return nil, fmt.Errorf("attribute %q: answer_rate %v is not above 0 and at most 1", a.Name, *r)
+			}
+			a.AnswerRate = *r
 		}
 		a.Multi = meta.Multi
 		if err := a.setConfusable(meta); err != nil {
