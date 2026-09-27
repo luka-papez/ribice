@@ -113,22 +113,25 @@ person looking up at a cloud does. Asked "were the lumps shaded grey
 underneath?", a layperson mostly guesses, and every `noise` and `cost` value in
 the knowledge base is a guess about how often.
 
-The plan is to measure it instead. Claude plays the part of the layperson: it
+The first step was to measure. Claude plays the part of the layperson: it
 sees a labelled photograph, never the label, and answers each question as
-someone with no training would, including "I can't tell from this". Its
-answers are cached, and the engine replays one game per photo from them. That
-gives accuracy on photos the knowledge base was never tuned on, which
-questions people can't judge, and which answers they mix up. The measured
-error rates replace the guessed ones, and a second Claude proposes rewordings
-and merges. A change is kept only if it scores better on held-out photos and a
-person approves the diff. The language model does the offline work; the quiz
-still runs without one.
+someone with no training would, including "I can't tell from this". The engine
+replays one game per photo from those answers (`-replay`, see
+[Commands](#commands)). On 148 cloud photos the quiz named 22% right, in 13.5
+questions: several questions can't be answered from where people stand, and
+several tell nothing apart. Tuning error rates won't fix that. That loop is
+described in [`specs/calibration-loop.md`](specs/calibration-loop.md); its
+photo tools stay, as the final check on any change.
 
-The first piece is built: `-replay` plays one game per recorded sighting (see
-[Commands](#commands)). The photos, the answerer and the report come next.
-Clouds come first, since that quiz asks the most questions (8.2 on average,
-where 5 would do). The design, including the answerer's prompt and the costs,
-is in [`specs/calibration-loop.md`](specs/calibration-loop.md).
+The plan now is to design better questions. Claude proposes new questions and
+every entity's answer to each, aimed at the pairs the quiz confuses. Experts
+check both, each choosing among the offered answers or saying why they can't:
+Claude, a person at the terminal, and later other models or image
+classifiers, all behind one interface. The engine then keeps whichever set of
+questions identifies things in the fewest questions, simulated with the error
+rates the experts reported (`-simulate -sim-model`). A person approves the
+diff, and the quiz still runs without a language model. The design is in
+[`specs/question-design.md`](specs/question-design.md).
 
 ## How it picks questions
 
@@ -419,7 +422,8 @@ question from the record instead of from the knowledge base. A sighting is what
 someone answered about one thing they saw. A value the knowledge base can't
 take is an error, a recorded "can't tell" is a skip, and a question with no
 answer at all is a skip reported as a gap. It is the measuring end of the
-[calibration loop](specs/calibration-loop.md):
+[calibration loop](specs/calibration-loop.md), and the final check on photos in
+[question design](specs/question-design.md):
 
 ```json
 {"photo": "c3f9a1", "target": "Cumulus mediocris", "split": "tune",

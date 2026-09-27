@@ -76,7 +76,8 @@ override that matches no candidate is reported rather than used, which caught a
 filename typed from memory.
 
 `calib/` is the calibration loop that measures the cloud quiz on photos; see
-its own README.
+its own README. Its photo answerer and replay are the final check in
+[question design](../specs/question-design.md), whose code is Go, in `design/`.
 
 ## Where the values come from
 

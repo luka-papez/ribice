@@ -8,6 +8,19 @@ We will measure how a layperson actually answers the cloud quiz, using Claude
 as a stand-in, then tune the knowledge base against those measurements instead
 of against guesses.
 
+**How this differs from [question design](question-design.md).** This loop
+takes the questions as given and measures them: how often each is answered
+wrongly or not at all, from photos, so its error rates can be set from data.
+Question design changes the questions themselves: Claude proposes new ones
+and every entity's answer to them, experts vet both, and a scorer keeps the
+set that identifies an entity in the fewest questions. The baseline here (22%
+right in 13.5 questions) showed that tuning error rates cannot reach the
+targets below, so question design is now the main line of work. This loop's
+parts live on inside it: the photo answerer becomes its `observe` expert,
+calibration of `noise` and `confusion` becomes part of its Aggregate step,
+and `-replay` with `compare.py` is its final check of a candidate on photos.
+The phases below are paused where they stand, not abandoned.
+
 - [Problem and goals](#problem-and-goals)
 - [Overview](#overview)
 - [Data](#data)
