@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -12,17 +13,21 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/lpapez/ribice/design"
 	"github.com/lpapez/ribice/design/claude"
 	"github.com/lpapez/ribice/design/human"
+	"github.com/lpapez/ribice/engine"
 	"github.com/lpapez/ribice/kb"
 )
 
 const usage = `usage: ribice-design <command> [flags]
 
 commands:
-  tasks     make tasks for a knowledge base's current questions
+  analyse   score a knowledge base and find the pairs it mixes up
+  propose   ask Claude for new questions aimed at those pairs
+  tasks     make tasks for current or proposed questions
   consult   put tasks to an expert, storing each verdict as it comes
   aggregate settle each value against the verdicts; write the disputes as tasks
 
@@ -39,6 +44,10 @@ func main() {
 
 	var err error
 	switch cmd, args := os.Args[1], os.Args[2:]; cmd {
+	case "analyse":
+		err = analyse(args)
+	case "propose":
+		err = propose(ctx, args)
 	case "tasks":
 		err = tasks(args)
 	case "consult":
@@ -61,6 +70,7 @@ func tasks(args []string) error {
 	fs := flag.NewFlagSet("tasks", flag.ExitOnError)
 	var (
 		path   = fs.String("kb", "data/clouds.json", "knowledge base")
+		props  = fs.String("proposals", "", "make tasks for these proposed questions instead of the current ones")
 		kind   = fs.String("kind", "assign", "assign or perceive")
 		entity = fs.String("entity", "", "only tasks about this entity")
 		attr   = fs.String("attr", "", "only tasks about this attribute")
@@ -70,7 +80,16 @@ func tasks(args []string) error {
 	if err != nil {
 		return err
 	}
-	all, err := design.FromKB(k, design.Kind(*kind))
+	var all []design.Task
+	if *props != "" {
+		set, err := readProposals(*props)
+		if err != nil {
+			return err
+		}
+		all, err = design.FromProposals(k, set.Attributes, design.Kind(*kind))
+	} else {
+		all, err = design.FromKB(k, design.Kind(*kind))
+	}
 	if err != nil {
 		return err
 	}
@@ -159,6 +178,7 @@ func aggregate(args []string) error {
 	var (
 		path      = fs.String("kb", "data/clouds.json", "knowledge base whose values are settled")
 		tasksPath = fs.String("tasks", "", "assign tasks, as written by the tasks command")
+		props     = fs.String("proposals", "", "settle against these proposals' values instead of the knowledge base's")
 		storePath = fs.String("store", "tools/design/verdicts.jsonl", "verdict store")
 		outDir    = fs.String("out", "", "directory for settled.md and disputes.jsonl; default: next to -tasks")
 	)
@@ -183,7 +203,15 @@ func aggregate(args []string) error {
 		dir = filepath.Dir(*tasksPath)
 	}
 
-	settled := design.Settle(ts, design.KBValues(k), st.Verdicts)
+	proposed := design.KBValues(k)
+	if *props != "" {
+		set, err := readProposals(*props)
+		if err != nil {
+			return err
+		}
+		proposed = design.ProposedValues(set.Attributes)
+	}
+	settled := design.Settle(ts, proposed, st.Verdicts)
 	var disputes []design.Task
 	for _, s := range settled {
 		if s.Status == design.Disputed {
@@ -269,6 +297,134 @@ func settledReport(k *kb.KB, settled []design.Settlement) string {
 			strings.Join(kbv, ", "), experts, who, abstain)
 	}
 	return b.String()
+}
+
+func analyse(args []string) error {
+	fs := flag.NewFlagSet("analyse", flag.ExitOnError)
+	var (
+		path  = fs.String("kb", "data/clouds.json", "knowledge base")
+		seeds = fs.Int("seeds", 20, "games per entity, each with its own seed")
+		out   = fs.String("out", "", "where to write targets.json (required)")
+	)
+	fs.Parse(args)
+	if *out == "" {
+		return fmt.Errorf("-out is required")
+	}
+	k, err := kb.LoadFile(*path)
+	if err != nil {
+		return err
+	}
+	a := design.Analyse(k, engine.DefaultConfig(), *seeds)
+	a.KB = *path
+	if err := writeJSON(*out, a); err != nil {
+		return err
+	}
+	sc := a.Score
+	fmt.Printf("%s, answered with its own error model, %d games:\n", *path, sc.Games)
+	fmt.Printf("  identified %.0f%%, %.1f questions, gave up %.0f%%: score %.1f\n",
+		100*sc.Accuracy, sc.Questions, 100*sc.GaveUp, sc.Value)
+	fmt.Printf("  %d pairs mixed up; the most:\n", len(a.Pairs))
+	for i, p := range a.Pairs {
+		if i == 10 {
+			break
+		}
+		fmt.Printf("  %4d  %s / %s  (never overlap on: %s)\n", p.Mixups, p.A, p.B, strings.Join(p.SeparatedBy, ", "))
+	}
+	fmt.Printf("wrote %s\n", *out)
+	return nil
+}
+
+func propose(ctx context.Context, args []string) error {
+	fs := flag.NewFlagSet("propose", flag.ExitOnError)
+	var (
+		path     = fs.String("kb", "data/clouds.json", "knowledge base")
+		targets  = fs.String("targets", "", "targets.json from analyse (required)")
+		evidence = fs.String("evidence", "", "comma-separated files of evidence on the current questions, such as settled.md")
+		maxPairs = fs.Int("max-pairs", 40, "most mixed-up pairs to show the proposer")
+		domain   = fs.String("domain", "", "what the knowledge base is about, plural, e.g. clouds (required)")
+		model    = fs.String("model", "claude-opus-5", "model")
+		effort   = fs.String("effort", "high", "effort")
+		out      = fs.String("out", "", "where to write proposals.json (required)")
+	)
+	fs.Parse(args)
+	if *targets == "" || *domain == "" || *out == "" {
+		return fmt.Errorf("-targets, -domain and -out are required")
+	}
+	k, err := kb.LoadFile(*path)
+	if err != nil {
+		return err
+	}
+	var a design.Analysis
+	if err := readJSON(*targets, &a); err != nil {
+		return err
+	}
+	pairs := a.Pairs
+	if len(pairs) > *maxPairs {
+		pairs = pairs[:*maxPairs]
+	}
+	var ev strings.Builder
+	if *evidence != "" {
+		for _, f := range strings.Split(*evidence, ",") {
+			b, err := os.ReadFile(strings.TrimSpace(f))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(&ev, "## From %s\n\n%s\n\n", filepath.Base(f), b)
+		}
+	}
+
+	client := &claude.Client{Timeout: 30 * time.Minute, Progress: func(pr claude.Progress) {
+		fmt.Fprintf(os.Stderr, "\r  %s: thinking %d characters, answer %d characters so far   ",
+			pr.Elapsed.Round(time.Second), pr.Thinking, pr.Writing)
+	}}
+	p := &claude.Proposer{Client: client, Model: *model, Effort: *effort, Domain: *domain, Log: os.Stderr}
+	fmt.Fprintf(os.Stderr, "asking %s for questions (one call at effort %s; this takes a while)\n", p.ID(), *effort)
+	props, err := p.Propose(ctx, design.Brief{KB: k, Targets: pairs, Evidence: ev.String()})
+	fmt.Fprintln(os.Stderr)
+	if err != nil {
+		return err
+	}
+	if err := writeJSON(*out, design.ProposalSet{Proposer: p.ID(), KB: *path, Attributes: props}); err != nil {
+		return err
+	}
+	st := p.Client.Status()
+	fmt.Printf("%d questions proposed, about $%.2f at API prices; wrote %s\n", len(props), st.Cost, *out)
+	for _, pr := range props {
+		re := ""
+		if pr.Replaces != "" {
+			re = " (replaces " + pr.Replaces + ")"
+		}
+		fmt.Printf("  %s %s%s: %s\n", pr.ID, pr.Name, re, pr.Question)
+	}
+	return nil
+}
+
+func readProposals(path string) (design.ProposalSet, error) {
+	var set design.ProposalSet
+	err := readJSON(path, &set)
+	return set, err
+}
+
+func readJSON(path string, v any) error {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(b, v); err != nil {
+		return fmt.Errorf("%s: %w", path, err)
+	}
+	return nil
+}
+
+func writeJSON(path string, v any) error {
+	b, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+	return os.WriteFile(path, append(b, '\n'), 0o644)
 }
 
 func readTasks(path string) ([]design.Task, error) {

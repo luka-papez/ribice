@@ -30,7 +30,18 @@ type call struct {
 	turn string
 }
 
-func (f *fake) run(_ context.Context, dir string, args []string, stdin []byte) ([]byte, error) {
+func (f *fake) run(ctx context.Context, dir string, args []string, stdin []byte, line func([]byte)) error {
+	out, err := f.output(ctx, dir, args, stdin)
+	if err != nil {
+		return err
+	}
+	for _, l := range bytes.Split(out, []byte("\n")) {
+		line(l)
+	}
+	return nil
+}
+
+func (f *fake) output(_ context.Context, dir string, args []string, stdin []byte) ([]byte, error) {
 	var msg struct {
 		Message struct {
 			Content []Block `json:"content"`
@@ -165,8 +176,14 @@ func TestAssignEndToEnd(t *testing.T) {
 	if schema, _ := arg(c.args, "--json-schema"); !json.Valid([]byte(schema)) {
 		t.Errorf("--json-schema is not JSON: %s", schema)
 	}
-	if !strings.HasPrefix(c.turn, k.Entities[0].Name+"\n") {
-		t.Errorf("first call is not about %s:\n%s", k.Entities[0].Name, c.turn)
+	about := map[string]int{}
+	for _, c := range f.calls {
+		about[strings.SplitN(c.turn, "\n", 2)[0]]++
+	}
+	for _, ent := range k.Entities {
+		if about[ent.Name] != 1 {
+			t.Errorf("%d calls about %s, want 1", about[ent.Name], ent.Name)
+		}
 	}
 
 	v, ok := st.Get(tasks[0].ID, "claude:claude-opus-5@v1b")
@@ -284,6 +301,55 @@ func TestPromptsRender(t *testing.T) {
 			if !strings.Contains(s, "unclear_question") {
 				t.Errorf("%s-%s does not explain the abstain reasons", kind, v)
 			}
+		}
+	}
+}
+
+func TestProgressCountsWhatStreamsIn(t *testing.T) {
+	stream := `{"type":"stream_event","event":{"type":"content_block_start","index":0,"content_block":{"type":"thinking"}}}
+{"type":"stream_event","event":{"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"Cirrus first."}}}
+{"type":"stream_event","event":{"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"Then the rest."}}}
+{"type":"stream_event","event":{"type":"content_block_start","index":1,"content_block":{"type":"tool_use"}}}
+{"type":"stream_event","event":{"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"answers\":"}}}
+{"type":"stream_event","event":{"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"[]}"}}}
+{"type":"result","subtype":"success","is_error":false,"total_cost_usd":0.02,"structured_output":{"answers":[]}}`
+	var reports []Progress
+	c := &Client{
+		Progress: func(p Progress) { reports = append(reports, p) },
+		Run: func(_ context.Context, _ string, args []string, _ []byte, line func([]byte)) error {
+			if _, ok := arg(append(args, ""), "--include-partial-messages"); !ok {
+				t.Errorf("partial messages not asked for: %v", args)
+			}
+			for _, l := range strings.Split(stream, "\n") {
+				line([]byte(l))
+			}
+			return nil
+		},
+	}
+	if _, err := c.Call(context.Background(), Request{Model: "m", Schema: pickSchema}); err != nil {
+		t.Fatal(err)
+	}
+	if len(reports) != 1 || reports[0].Thinking != len("Cirrus first.") {
+		t.Errorf("reports %+v: want one, at the first delta, since they come at most once a second", reports)
+	}
+
+	e := &events{structured: true}
+	for _, l := range strings.Split(stream, "\n") {
+		e.feed([]byte(l))
+	}
+	if want := (Progress{Thinking: 27, Writing: 14}); e.now != want {
+		t.Errorf("counted %+v, want %+v", e.now, want)
+	}
+}
+
+func TestNoPartialMessagesWithoutProgress(t *testing.T) {
+	f := &fake{reply: func(int, string) string { return `{"answers":[]}` }}
+	if _, err := f.client().Call(context.Background(), Request{Model: "m", Schema: pickSchema}); err != nil {
+		t.Fatal(err)
+	}
+	for _, a := range f.calls[0].args {
+		if a == "--include-partial-messages" {
+			t.Errorf("partial messages asked for with nobody to tell")
 		}
 	}
 }

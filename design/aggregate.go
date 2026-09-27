@@ -20,8 +20,9 @@ const (
 // Settlement is what the experts made of one entity's proposed value.
 type Settlement struct {
 	Task     Task
-	Proposed []kb.Value
+	Proposed []kb.Value // empty when the proposer did not know
 	Status   Status
+	Value    []kb.Value // what the entity is settled to hold, when Agreed
 
 	// Combined is the experts' p averaged, one vote per expert; Abstain is
 	// their abstentions averaged the same way. When a person has answered,
@@ -36,9 +37,11 @@ type Settlement struct {
 // Settle compares each assign task's verdicts with the value proposed for its
 // entity.
 //
-// A value is agreed when the proposed values together hold at least half of
-// the combined answer and one of them is its top option. It is abstained when
-// at least half the mass is abstention, and disputed otherwise. A person's
+// A value is agreed when the proposed values together hold more than half of
+// the combined answer and one of them is its top option; an even split backs
+// nothing. When the proposer did not know, the experts' top option is agreed
+// if it holds more than half the answer on its own. It is abstained when at
+// least half the mass is abstention, and disputed otherwise. A person's
 // verdict outweighs any model's: once one exists, only people count. That is
 // how a dispute is settled, by asking a person the same task, blind.
 func Settle(tasks []Task, proposed func(Task) []kb.Value, verdicts func(task string) []Verdict) []Settlement {
@@ -84,8 +87,10 @@ func Settle(tasks []Task, proposed func(Task) []kb.Value, verdicts func(task str
 		switch {
 		case s.Abstain >= 0.5:
 			s.Status = Abstained
-		case held >= 0.5 && contains(s.Proposed, top):
-			s.Status = Agreed
+		case len(s.Proposed) == 0 && s.Combined[top] > 0.5:
+			s.Status, s.Value = Agreed, []kb.Value{top}
+		case held > 0.5 && contains(s.Proposed, top):
+			s.Status, s.Value = Agreed, s.Proposed
 		default:
 			s.Status = Disputed
 		}

@@ -1,0 +1,1423 @@
+{
+  "kb": "data/clouds.json",
+  "seeds": 20,
+  "score": {
+    "games": 640,
+    "accuracy": 0.4796875,
+    "questions": 11.05625,
+    "gave_up": 0,
+    "score": -7.3125
+  },
+  "pairs": [
+    {
+      "a": "Cirrostratus fibratus",
+      "b": "Cirrostratus nebulosus",
+      "mixups": 13,
+      "separated_by": [
+        "shape"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Altocumulus volutus",
+      "mixups": 11,
+      "separated_by": [
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrocumulus castellanus",
+      "b": "Cirrus castellanus",
+      "mixups": 9,
+      "separated_by": [
+        "element_size"
+      ]
+    },
+    {
+      "a": "Cirrus floccus",
+      "b": "Stratus fractus",
+      "mixups": 9,
+      "separated_by": [
+        "colour",
+        "opacity",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cumulonimbus calvus",
+      "b": "Cumulus congestus",
+      "mixups": 9,
+      "separated_by": [
+        "colour",
+        "top"
+      ]
+    },
+    {
+      "a": "Cumulus humilis",
+      "b": "Cumulus mediocris",
+      "mixups": 9,
+      "separated_by": [
+        "depth"
+      ]
+    },
+    {
+      "a": "Stratocumulus lenticularis",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 9,
+      "separated_by": [
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Altostratus translucidus",
+      "mixups": 7,
+      "separated_by": [
+        "colour",
+        "opacity"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Stratus nebulosus",
+      "mixups": 7,
+      "separated_by": [
+        "colour"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Stratus nebulosus",
+      "mixups": 7,
+      "separated_by": [
+        "opacity"
+      ]
+    },
+    {
+      "a": "Stratocumulus floccus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 7,
+      "separated_by": [
+        "base",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Stratocumulus stratiformis",
+      "b": "Stratocumulus volutus",
+      "mixups": 7,
+      "separated_by": [
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus volutus",
+      "b": "Stratocumulus volutus",
+      "mixups": 6,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Cirrocumulus stratiformis",
+      "mixups": 6,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Stratocumulus castellanus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 6,
+      "separated_by": [
+        "shape",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrocumulus floccus",
+      "b": "Stratus fractus",
+      "mixups": 5,
+      "separated_by": [
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Altocumulus floccus",
+      "mixups": 4,
+      "separated_by": [
+        "base",
+        "precipitation",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrocumulus lenticularis",
+      "b": "Cirrus fibratus",
+      "mixups": 4,
+      "separated_by": [
+        "element_size",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cumulonimbus calvus",
+      "b": "Cumulus mediocris",
+      "mixups": 4,
+      "separated_by": [
+        "colour",
+        "depth",
+        "precipitation",
+        "shape",
+        "top"
+      ]
+    },
+    {
+      "a": "Cumulus fractus",
+      "b": "Stratus fractus",
+      "mixups": 4,
+      "separated_by": [
+        "shading",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Cumulus fractus",
+      "mixups": 3,
+      "separated_by": [
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 3,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Altocumulus stratiformis",
+      "mixups": 3,
+      "separated_by": [
+        "mamma",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus stratiformis",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 3,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "mamma",
+        "opacity"
+      ]
+    },
+    {
+      "a": "Altocumulus volutus",
+      "b": "Cirrus fibratus",
+      "mixups": 3,
+      "separated_by": [
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Nimbostratus",
+      "mixups": 3,
+      "separated_by": [
+        "precipitation"
+      ]
+    },
+    {
+      "a": "Cirrocumulus lenticularis",
+      "b": "Cirrus spissatus",
+      "mixups": 3,
+      "separated_by": [
+        "colour",
+        "element_size",
+        "opacity",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Cirrus fibratus",
+      "mixups": 3,
+      "separated_by": [
+        "element_size",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus castellanus",
+      "b": "Stratus fractus",
+      "mixups": 3,
+      "separated_by": [
+        "base",
+        "colour",
+        "opacity",
+        "shape",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrus fibratus",
+      "b": "Cirrus uncinus",
+      "mixups": 3,
+      "separated_by": [
+        "hooks",
+        "precipitation"
+      ]
+    },
+    {
+      "a": "Cirrus fibratus",
+      "b": "Stratus nebulosus",
+      "mixups": 3,
+      "separated_by": [
+        "base",
+        "colour",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Stratocumulus lenticularis",
+      "b": "Stratocumulus volutus",
+      "mixups": 3,
+      "separated_by": [
+        "shape"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Stratocumulus castellanus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Altocumulus stratiformis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "mamma",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Cirrus spissatus",
+      "mixups": 2,
+      "separated_by": [
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Stratocumulus volutus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape"
+      ]
+    },
+    {
+      "a": "Altocumulus volutus",
+      "b": "Stratocumulus lenticularis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Cirrostratus nebulosus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "halo",
+        "opacity"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Cirrus fibratus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus castellanus",
+      "b": "Cirrocumulus floccus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "precipitation",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrocumulus castellanus",
+      "b": "Stratus fractus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrocumulus floccus",
+      "b": "Cirrus fibratus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "element_size",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrocumulus floccus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus lenticularis",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrostratus fibratus",
+      "b": "Cirrus fibratus",
+      "mixups": 2,
+      "separated_by": [
+        "halo",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrostratus nebulosus",
+      "b": "Cirrus fibratus",
+      "mixups": 2,
+      "separated_by": [
+        "halo",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus floccus",
+      "b": "Cumulus fractus",
+      "mixups": 2,
+      "separated_by": [
+        "colour",
+        "opacity",
+        "precipitation",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus spissatus",
+      "b": "Nimbostratus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cumulus congestus",
+      "b": "Cumulus mediocris",
+      "mixups": 2,
+      "separated_by": [
+        "colour",
+        "depth",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cumulus fractus",
+      "b": "Cumulus mediocris",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "colour",
+        "depth",
+        "shape",
+        "top"
+      ]
+    },
+    {
+      "a": "Cumulus fractus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "element_size",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Stratus fractus",
+      "b": "Stratus nebulosus",
+      "mixups": 2,
+      "separated_by": [
+        "base",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Altocumulus lenticularis",
+      "mixups": 1,
+      "separated_by": [
+        "shape",
+        "sky_cover",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Cirrocumulus castellanus",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "opacity",
+        "shading"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Cirrocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shading",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Altocumulus castellanus",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "sky_cover",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Cirrocumulus castellanus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shading",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Cirrocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Stratocumulus lenticularis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus floccus",
+      "b": "Stratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Altostratus translucidus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Cirrocumulus lenticularis",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "opacity",
+        "shading",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Cirrus uncinus",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "hooks",
+        "opacity",
+        "precipitation",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Cumulus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Cumulus humilis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "depth",
+        "element_size",
+        "opacity",
+        "shape",
+        "top"
+      ]
+    },
+    {
+      "a": "Altocumulus lenticularis",
+      "b": "Cumulus mediocris",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "depth",
+        "element_size",
+        "opacity",
+        "shape",
+        "top"
+      ]
+    },
+    {
+      "a": "Altocumulus stratiformis",
+      "b": "Cirrocumulus lenticularis",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "mamma",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus stratiformis",
+      "b": "Cirrus castellanus",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "mamma",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Altocumulus stratiformis",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "mamma",
+        "opacity",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Altocumulus stratiformis",
+      "b": "Stratocumulus lenticularis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "mamma",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altocumulus volutus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Cirrus fibratus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Cirrus spissatus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus opacus",
+      "b": "Cumulus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Cirrostratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "halo",
+        "opacity"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Cirrus spissatus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Cirrus uncinus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "hooks",
+        "opacity",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Altostratus translucidus",
+      "b": "Stratus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus castellanus",
+      "b": "Stratocumulus castellanus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus castellanus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrocumulus floccus",
+      "b": "Cirrocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus floccus",
+      "b": "Cirrus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "element_size"
+      ]
+    },
+    {
+      "a": "Cirrocumulus lenticularis",
+      "b": "Cirrostratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "halo",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Cirrus spissatus",
+      "mixups": 1,
+      "separated_by": [
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Cumulus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "precipitation",
+        "shading",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shading"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Stratus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrocumulus stratiformis",
+      "b": "Stratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrostratus fibratus",
+      "b": "Nimbostratus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "halo",
+        "opacity",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrostratus nebulosus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "halo",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus castellanus",
+      "b": "Cirrus fibratus",
+      "mixups": 1,
+      "separated_by": [
+        "shape",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Cirrus fibratus",
+      "b": "Cirrus spissatus",
+      "mixups": 1,
+      "separated_by": [
+        "colour",
+        "opacity",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrus fibratus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus fibratus",
+      "b": "Stratus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "opacity",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrus floccus",
+      "b": "Cirrus spissatus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "opacity",
+        "precipitation",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrus floccus",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "colour",
+        "element_size",
+        "opacity",
+        "shading",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus spissatus",
+      "b": "Stratocumulus stratiformis",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "element_size",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus spissatus",
+      "b": "Stratus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "shape"
+      ]
+    },
+    {
+      "a": "Cirrus spissatus",
+      "b": "Stratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cirrus uncinus",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "element_size",
+        "hooks",
+        "opacity",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Cumulonimbus calvus",
+      "b": "Cumulonimbus capillatus",
+      "mixups": 1,
+      "separated_by": [
+        "anvil",
+        "mamma",
+        "precipitation",
+        "top"
+      ]
+    },
+    {
+      "a": "Cumulonimbus capillatus",
+      "b": "Cumulus congestus",
+      "mixups": 1,
+      "separated_by": [
+        "anvil",
+        "colour",
+        "mamma",
+        "precipitation",
+        "top"
+      ]
+    },
+    {
+      "a": "Cumulus fractus",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "element_size",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Nimbostratus",
+      "b": "Stratus fractus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "colour",
+        "precipitation",
+        "shape",
+        "sky_cover"
+      ]
+    },
+    {
+      "a": "Nimbostratus",
+      "b": "Stratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "colour",
+        "precipitation"
+      ]
+    },
+    {
+      "a": "Stratocumulus castellanus",
+      "b": "Stratocumulus floccus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "precipitation",
+        "turrets"
+      ]
+    },
+    {
+      "a": "Stratocumulus stratiformis",
+      "b": "Stratus nebulosus",
+      "mixups": 1,
+      "separated_by": [
+        "base",
+        "element_size",
+        "shading",
+        "shape",
+        "sky_cover"
+      ]
+    }
+  ],
+  "missed": [
+    {
+      "entity": "Cirrus floccus",
+      "rate": 0.9
+    },
+    {
+      "entity": "Altocumulus volutus",
+      "rate": 0.9
+    },
+    {
+      "entity": "Altostratus opacus",
+      "rate": 0.9
+    },
+    {
+      "entity": "Altocumulus floccus",
+      "rate": 0.8
+    },
+    {
+      "entity": "Stratus nebulosus",
+      "rate": 0.8
+    },
+    {
+      "entity": "Cirrus castellanus",
+      "rate": 0.75
+    },
+    {
+      "entity": "Stratocumulus lenticularis",
+      "rate": 0.75
+    },
+    {
+      "entity": "Cirrus spissatus",
+      "rate": 0.7
+    },
+    {
+      "entity": "Stratocumulus volutus",
+      "rate": 0.7
+    },
+    {
+      "entity": "Cumulonimbus calvus",
+      "rate": 0.7
+    },
+    {
+      "entity": "Cirrocumulus lenticularis",
+      "rate": 0.65
+    },
+    {
+      "entity": "Stratocumulus floccus",
+      "rate": 0.65
+    },
+    {
+      "entity": "Cirrocumulus floccus",
+      "rate": 0.6
+    },
+    {
+      "entity": "Cirrostratus fibratus",
+      "rate": 0.6
+    },
+    {
+      "entity": "Stratus fractus",
+      "rate": 0.6
+    },
+    {
+      "entity": "Altocumulus lenticularis",
+      "rate": 0.55
+    },
+    {
+      "entity": "Altostratus translucidus",
+      "rate": 0.55
+    },
+    {
+      "entity": "Stratocumulus castellanus",
+      "rate": 0.55
+    },
+    {
+      "entity": "Cirrocumulus stratiformis",
+      "rate": 0.5
+    },
+    {
+      "entity": "Cirrocumulus castellanus",
+      "rate": 0.4
+    },
+    {
+      "entity": "Stratocumulus stratiformis",
+      "rate": 0.4
+    },
+    {
+      "entity": "Cumulus mediocris",
+      "rate": 0.4
+    },
+    {
+      "entity": "Cirrus fibratus",
+      "rate": 0.35
+    },
+    {
+      "entity": "Cirrostratus nebulosus",
+      "rate": 0.35
+    },
+    {
+      "entity": "Altocumulus castellanus",
+      "rate": 0.35
+    },
+    {
+      "entity": "Cumulus fractus",
+      "rate": 0.3
+    },
+    {
+      "entity": "Altocumulus stratiformis",
+      "rate": 0.25
+    },
+    {
+      "entity": "Cumulus humilis",
+      "rate": 0.25
+    },
+    {
+      "entity": "Cirrus uncinus",
+      "rate": 0.15
+    },
+    {
+      "entity": "Cumulus congestus",
+      "rate": 0.15
+    },
+    {
+      "entity": "Nimbostratus",
+      "rate": 0.1
+    },
+    {
+      "entity": "Cumulonimbus capillatus",
+      "rate": 0.05
+    }
+  ]
+}

@@ -5,9 +5,11 @@ import (
 	"context"
 	"math"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
+	"github.com/lpapez/ribice/engine"
 	"github.com/lpapez/ribice/kb"
 )
 
@@ -282,6 +284,17 @@ func TestSettle(t *testing.T) {
 			t.Errorf("%s: %+v, want %s", c.name, got, c.want)
 		}
 	}
+
+	unknown := func(Task) []kb.Value { return nil }
+	sure := []Verdict{v("a", straight, 0, ""), v("b", straight, 0, "")}
+	if got := Settle([]Task{task}, unknown, func(string) []Verdict { return sure }); got[0].Status != Agreed ||
+		len(got[0].Value) != 1 || got[0].Value[0] != "straight" {
+		t.Errorf("experts agreeing where the proposer did not know: %+v", got[0])
+	}
+	split := []Verdict{v("a", straight, 0, ""), v("b", curled, 0, "")}
+	if got := Settle([]Task{task}, unknown, func(string) []Verdict { return split }); got[0].Status != Disputed {
+		t.Errorf("experts split where the proposer did not know: %s, want disputed", got[0].Status)
+	}
 }
 
 func TestKBValuesAreTheCurrentAnswerKey(t *testing.T) {
@@ -297,4 +310,30 @@ func TestKBValuesAreTheCurrentAnswerKey(t *testing.T) {
 		}
 	}
 	t.Fatal("no task for Cirrus uncinus hooks")
+}
+
+func TestAnalyse(t *testing.T) {
+	k := cloudKB(t)
+	a := Analyse(k, engine.DefaultConfig(), 3)
+	if a.Score.Games != 3*len(k.Entities) {
+		t.Errorf("%d games, want %d", a.Score.Games, 3*len(k.Entities))
+	}
+	if a.Score.Accuracy <= 0 || a.Score.Accuracy >= 1 || len(a.Pairs) == 0 {
+		t.Errorf("score %+v with %d pairs: the error model should cost some games", a.Score, len(a.Pairs))
+	}
+	for i, p := range a.Pairs {
+		if p.A >= p.B || p.Mixups < 1 || (i > 0 && p.Mixups > a.Pairs[i-1].Mixups) {
+			t.Errorf("pair %d is %+v", i, p)
+		}
+	}
+	if again := Analyse(k, engine.DefaultConfig(), 3); !reflect.DeepEqual(a, again) {
+		t.Errorf("a second analysis differs from the first")
+	}
+
+	// Cirrus fibratus and uncinus differ in their hooks, and in the virga
+	// the knowledge base gives uncinus.
+	fib, unc := k.Entities[0], k.Entities[1]
+	if got := separatedBy(k, fib, unc); !reflect.DeepEqual(got, []string{"hooks", "precipitation"}) {
+		t.Errorf("%s and %s separated by %v", fib.Name, unc.Name, got)
+	}
 }

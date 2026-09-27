@@ -1,0 +1,2403 @@
+{
+  "proposer": "claude:claude-opus-5@propose-v1",
+  "kb": "data/clouds.json",
+  "attributes": [
+    {
+      "id": "p01",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "cloud_form",
+      "replaces": "shape",
+      "kind": "categorical",
+      "question": "Which of these was it most like?",
+      "values": [
+        {
+          "value": "streaks",
+          "label": "thin streaks or brush strokes, like combed hair"
+        },
+        {
+          "value": "patterned_layer",
+          "label": "a layer broken up into many repeated lumps, rolls or ripples"
+        },
+        {
+          "value": "separate_tufts",
+          "label": "a few small separate puffs or tufts, with sky between them"
+        },
+        {
+          "value": "smooth_sheet",
+          "label": "smooth and featureless - a sheet, veil or solid slab"
+        },
+        {
+          "value": "lens",
+          "label": "a single smooth almond or lens"
+        },
+        {
+          "value": "tube",
+          "label": "one long horizontal tube or roll"
+        },
+        {
+          "value": "heap",
+          "label": "a puffy heap or tower, bulging on top"
+        },
+        {
+          "value": "shreds",
+          "label": "torn ragged shreds with no definite shape"
+        }
+      ],
+      "confusable": [
+        [
+          "patterned_layer",
+          "separate_tufts"
+        ],
+        [
+          "streaks",
+          "separate_tufts"
+        ],
+        [
+          "lens",
+          "tube"
+        ],
+        [
+          "lens",
+          "heap"
+        ],
+        [
+          "smooth_sheet",
+          "streaks"
+        ],
+        [
+          "shreds",
+          "separate_tufts"
+        ]
+      ],
+      "targets": [
+        [
+          "Cirrostratus fibratus",
+          "Cirrostratus nebulosus"
+        ],
+        [
+          "Altocumulus lenticularis",
+          "Altocumulus volutus"
+        ],
+        [
+          "Stratocumulus lenticularis",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Stratocumulus floccus",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Stratocumulus stratiformis",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Altocumulus castellanus",
+          "Altocumulus floccus"
+        ],
+        [
+          "Cirrocumulus lenticularis",
+          "Cirrus fibratus"
+        ],
+        [
+          "Cirrus floccus",
+          "Stratus fractus"
+        ]
+      ],
+      "rationale": "Drops the overlapping tufts/rolls/flat_patches split that caused most shape errors: castellanus clouds go to patterned_layer (as 80-93% of experts answered) and floccus to separate_tufts, so the two are cleanly told apart.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "patterned_layer"
+        ],
+        "Altocumulus floccus": [
+          "separate_tufts"
+        ],
+        "Altocumulus lenticularis": [
+          "lens"
+        ],
+        "Altocumulus stratiformis": [
+          "patterned_layer"
+        ],
+        "Altocumulus volutus": [
+          "tube"
+        ],
+        "Altostratus opacus": [
+          "smooth_sheet"
+        ],
+        "Altostratus translucidus": [
+          "smooth_sheet"
+        ],
+        "Cirrocumulus castellanus": [
+          "patterned_layer"
+        ],
+        "Cirrocumulus floccus": [
+          "separate_tufts"
+        ],
+        "Cirrocumulus lenticularis": [
+          "lens"
+        ],
+        "Cirrocumulus stratiformis": [
+          "patterned_layer"
+        ],
+        "Cirrostratus fibratus": [
+          "streaks"
+        ],
+        "Cirrostratus nebulosus": [
+          "smooth_sheet"
+        ],
+        "Cirrus castellanus": [
+          "separate_tufts",
+          "streaks"
+        ],
+        "Cirrus fibratus": [
+          "streaks"
+        ],
+        "Cirrus floccus": [
+          "separate_tufts"
+        ],
+        "Cirrus spissatus": [
+          "smooth_sheet"
+        ],
+        "Cirrus uncinus": [
+          "streaks"
+        ],
+        "Cumulonimbus calvus": [
+          "heap"
+        ],
+        "Cumulonimbus capillatus": [
+          "heap"
+        ],
+        "Cumulus congestus": [
+          "heap"
+        ],
+        "Cumulus fractus": [
+          "shreds"
+        ],
+        "Cumulus humilis": [
+          "heap"
+        ],
+        "Cumulus mediocris": [
+          "heap"
+        ],
+        "Nimbostratus": [
+          "smooth_sheet"
+        ],
+        "Stratocumulus castellanus": [
+          "patterned_layer"
+        ],
+        "Stratocumulus floccus": [
+          "separate_tufts"
+        ],
+        "Stratocumulus lenticularis": [
+          "lens"
+        ],
+        "Stratocumulus stratiformis": [
+          "patterned_layer"
+        ],
+        "Stratocumulus volutus": [
+          "tube"
+        ],
+        "Stratus fractus": [
+          "shreds"
+        ],
+        "Stratus nebulosus": [
+          "smooth_sheet"
+        ]
+      }
+    },
+    {
+      "id": "p02",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "lump_size",
+      "replaces": "element_size",
+      "kind": "categorical",
+      "question": "If it was patterned with repeated lumps or ripples, how wide was one of them, measured against your hand held at arm's length?",
+      "values": [
+        {
+          "value": "no_pattern",
+          "label": "no repeated pattern - it was smooth, streaky, or one single cloud"
+        },
+        {
+          "value": "grain",
+          "label": "smaller than your little fingernail - grains or fine ripples"
+        },
+        {
+          "value": "finger",
+          "label": "about one to three fingers wide"
+        },
+        {
+          "value": "fist",
+          "label": "wider than your whole fist"
+        }
+      ],
+      "confusable": [
+        [
+          "grain",
+          "finger"
+        ],
+        [
+          "finger",
+          "fist"
+        ],
+        [
+          "no_pattern",
+          "fist"
+        ]
+      ],
+      "targets": [
+        [
+          "Cirrocumulus castellanus",
+          "Cirrus castellanus"
+        ],
+        [
+          "Altocumulus castellanus",
+          "Stratocumulus castellanus"
+        ],
+        [
+          "Altocumulus stratiformis",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Cirrocumulus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Altostratus translucidus",
+          "Cirrocumulus stratiformis"
+        ],
+        [
+          "Altocumulus floccus",
+          "Stratocumulus stratiformis"
+        ]
+      ],
+      "rationale": "The size of a repeated element is the one height cue an untrained eye can measure, but the old version invited people to call a whole cumulus a 'large lump'; restricting it to repeated patterns kills the none/large confusion while keeping the cirrocumulus/altocumulus/stratocumulus ladder.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "finger"
+        ],
+        "Altocumulus floccus": [
+          "finger"
+        ],
+        "Altocumulus lenticularis": [
+          "no_pattern"
+        ],
+        "Altocumulus stratiformis": [
+          "finger"
+        ],
+        "Altocumulus volutus": [
+          "no_pattern"
+        ],
+        "Altostratus opacus": [
+          "no_pattern"
+        ],
+        "Altostratus translucidus": [
+          "no_pattern"
+        ],
+        "Cirrocumulus castellanus": [
+          "grain"
+        ],
+        "Cirrocumulus floccus": [
+          "grain"
+        ],
+        "Cirrocumulus lenticularis": [
+          "grain"
+        ],
+        "Cirrocumulus stratiformis": [
+          "grain"
+        ],
+        "Cirrostratus fibratus": [
+          "no_pattern"
+        ],
+        "Cirrostratus nebulosus": [
+          "no_pattern"
+        ],
+        "Cirrus castellanus": [
+          "grain"
+        ],
+        "Cirrus fibratus": [
+          "no_pattern"
+        ],
+        "Cirrus floccus": [
+          "grain"
+        ],
+        "Cirrus spissatus": [
+          "no_pattern"
+        ],
+        "Cirrus uncinus": [
+          "no_pattern"
+        ],
+        "Cumulonimbus calvus": [
+          "no_pattern"
+        ],
+        "Cumulonimbus capillatus": [
+          "no_pattern"
+        ],
+        "Cumulus congestus": [
+          "no_pattern"
+        ],
+        "Cumulus fractus": [
+          "no_pattern"
+        ],
+        "Cumulus humilis": [
+          "no_pattern"
+        ],
+        "Cumulus mediocris": [
+          "no_pattern"
+        ],
+        "Nimbostratus": [
+          "no_pattern"
+        ],
+        "Stratocumulus castellanus": [
+          "fist"
+        ],
+        "Stratocumulus floccus": [
+          "fist"
+        ],
+        "Stratocumulus lenticularis": [
+          "no_pattern"
+        ],
+        "Stratocumulus stratiformis": [
+          "fist"
+        ],
+        "Stratocumulus volutus": [
+          "no_pattern"
+        ],
+        "Stratus fractus": [
+          "no_pattern"
+        ],
+        "Stratus nebulosus": [
+          "no_pattern"
+        ]
+      }
+    },
+    {
+      "id": "p03",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "heap_proportions",
+      "replaces": "depth",
+      "kind": "categorical",
+      "question": "If it stood up as a heap or tower on its own, how tall was it compared with how wide?",
+      "values": [
+        {
+          "value": "not_a_heap",
+          "label": "it was not a heap or tower at all - a layer, sheet, streaks or a pattern of lumps"
+        },
+        {
+          "value": "wider",
+          "label": "clearly wider than tall - a low bun"
+        },
+        {
+          "value": "even",
+          "label": "about as tall as it was wide"
+        },
+        {
+          "value": "taller",
+          "label": "clearly taller than wide - a tower"
+        }
+      ],
+      "confusable": [
+        [
+          "wider",
+          "even"
+        ],
+        [
+          "even",
+          "taller"
+        ],
+        [
+          "not_a_heap",
+          "wider"
+        ]
+      ],
+      "targets": [
+        [
+          "Cumulus humilis",
+          "Cumulus mediocris"
+        ],
+        [
+          "Cumulonimbus calvus",
+          "Cumulus mediocris"
+        ]
+      ],
+      "rationale": "The old 'none' option lost to 'flat' 46 times because a layer really is much wider than tall; naming the escape option 'not a heap at all' removes the overlap and leaves a clean three-step scale for the cumulus family.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "not_a_heap"
+        ],
+        "Altocumulus floccus": [
+          "not_a_heap"
+        ],
+        "Altocumulus lenticularis": [
+          "not_a_heap"
+        ],
+        "Altocumulus stratiformis": [
+          "not_a_heap"
+        ],
+        "Altocumulus volutus": [
+          "not_a_heap"
+        ],
+        "Altostratus opacus": [
+          "not_a_heap"
+        ],
+        "Altostratus translucidus": [
+          "not_a_heap"
+        ],
+        "Cirrocumulus castellanus": [
+          "not_a_heap"
+        ],
+        "Cirrocumulus floccus": [
+          "not_a_heap"
+        ],
+        "Cirrocumulus lenticularis": [
+          "not_a_heap"
+        ],
+        "Cirrocumulus stratiformis": [
+          "not_a_heap"
+        ],
+        "Cirrostratus fibratus": [
+          "not_a_heap"
+        ],
+        "Cirrostratus nebulosus": [
+          "not_a_heap"
+        ],
+        "Cirrus castellanus": [
+          "not_a_heap"
+        ],
+        "Cirrus fibratus": [
+          "not_a_heap"
+        ],
+        "Cirrus floccus": [
+          "not_a_heap"
+        ],
+        "Cirrus spissatus": [
+          "not_a_heap"
+        ],
+        "Cirrus uncinus": [
+          "not_a_heap"
+        ],
+        "Cumulonimbus calvus": [
+          "taller"
+        ],
+        "Cumulonimbus capillatus": [
+          "taller"
+        ],
+        "Cumulus congestus": [
+          "taller"
+        ],
+        "Cumulus fractus": [
+          "not_a_heap"
+        ],
+        "Cumulus humilis": [
+          "wider"
+        ],
+        "Cumulus mediocris": [
+          "even"
+        ],
+        "Nimbostratus": [
+          "not_a_heap"
+        ],
+        "Stratocumulus castellanus": [
+          "not_a_heap"
+        ],
+        "Stratocumulus floccus": [
+          "not_a_heap"
+        ],
+        "Stratocumulus lenticularis": [
+          "not_a_heap"
+        ],
+        "Stratocumulus stratiformis": [
+          "not_a_heap"
+        ],
+        "Stratocumulus volutus": [
+          "not_a_heap"
+        ],
+        "Stratus fractus": [
+          "not_a_heap"
+        ],
+        "Stratus nebulosus": [
+          "not_a_heap"
+        ]
+      }
+    },
+    {
+      "id": "p04",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "brightness",
+      "replaces": "colour",
+      "kind": "categorical",
+      "question": "How bright or dark did it look?",
+      "values": [
+        {
+          "value": "white",
+          "label": "white or pale - no part of it really dark"
+        },
+        {
+          "value": "grey",
+          "label": "plainly grey, like wet pavement"
+        },
+        {
+          "value": "dark",
+          "label": "dark grey to nearly black, making the day gloomy"
+        }
+      ],
+      "confusable": [
+        [
+          "white",
+          "grey"
+        ],
+        [
+          "grey",
+          "dark"
+        ]
+      ],
+      "targets": [
+        [
+          "Altostratus opacus",
+          "Nimbostratus"
+        ],
+        [
+          "Altocumulus volutus",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Cirrus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Altocumulus castellanus",
+          "Stratocumulus castellanus"
+        ],
+        [
+          "Altocumulus lenticularis",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Cirrocumulus lenticularis",
+          "Cirrus spissatus"
+        ]
+      ],
+      "rationale": "Same three steps, but with the assignments the experts actually gave: congestus, cumulus fractus and stratocumulus floccus read white, altostratus opacus reads plain grey, so only the genuinely gloomy clouds sit in 'dark'.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "white"
+        ],
+        "Altocumulus floccus": [
+          "white"
+        ],
+        "Altocumulus lenticularis": [
+          "white"
+        ],
+        "Altocumulus stratiformis": [
+          "white"
+        ],
+        "Altocumulus volutus": [
+          "white"
+        ],
+        "Altostratus opacus": [
+          "grey"
+        ],
+        "Altostratus translucidus": [
+          "grey"
+        ],
+        "Cirrocumulus castellanus": [
+          "white"
+        ],
+        "Cirrocumulus floccus": [
+          "white"
+        ],
+        "Cirrocumulus lenticularis": [
+          "white"
+        ],
+        "Cirrocumulus stratiformis": [
+          "white"
+        ],
+        "Cirrostratus fibratus": [
+          "white"
+        ],
+        "Cirrostratus nebulosus": [
+          "white"
+        ],
+        "Cirrus castellanus": [
+          "white"
+        ],
+        "Cirrus fibratus": [
+          "white"
+        ],
+        "Cirrus floccus": [
+          "white"
+        ],
+        "Cirrus spissatus": [
+          "grey"
+        ],
+        "Cirrus uncinus": [
+          "white"
+        ],
+        "Cumulonimbus calvus": [
+          "dark"
+        ],
+        "Cumulonimbus capillatus": [
+          "dark"
+        ],
+        "Cumulus congestus": [
+          "white"
+        ],
+        "Cumulus fractus": [
+          "white"
+        ],
+        "Cumulus humilis": [
+          "white"
+        ],
+        "Cumulus mediocris": [
+          "white"
+        ],
+        "Nimbostratus": [
+          "dark"
+        ],
+        "Stratocumulus castellanus": [
+          "grey"
+        ],
+        "Stratocumulus floccus": [
+          "white"
+        ],
+        "Stratocumulus lenticularis": [
+          "grey"
+        ],
+        "Stratocumulus stratiformis": [
+          "grey"
+        ],
+        "Stratocumulus volutus": [
+          "grey"
+        ],
+        "Stratus fractus": [
+          "grey"
+        ],
+        "Stratus nebulosus": [
+          "grey"
+        ]
+      }
+    },
+    {
+      "id": "p05",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "sun_view",
+      "replaces": "opacity",
+      "kind": "categorical",
+      "question": "What did the sun (or moon) look like where this cloud passed in front of it?",
+      "values": [
+        {
+          "value": "halo_ring",
+          "label": "a ring of light circling it (choose this if there was a ring, even though the sun showed too)"
+        },
+        {
+          "value": "sharp_disc",
+          "label": "the sun's disc still sharp-edged, no ring"
+        },
+        {
+          "value": "pale_blur",
+          "label": "a pale bright blur - you could tell where the sun was, but not its edge"
+        },
+        {
+          "value": "blotted_out",
+          "label": "no sign of the sun through it at all"
+        },
+        {
+          "value": "sun_elsewhere",
+          "label": "the sun was nowhere near this cloud, or out of sight"
+        }
+      ],
+      "confusable": [
+        [
+          "halo_ring",
+          "sharp_disc"
+        ],
+        [
+          "sharp_disc",
+          "pale_blur"
+        ],
+        [
+          "pale_blur",
+          "blotted_out"
+        ]
+      ],
+      "targets": [
+        [
+          "Altostratus opacus",
+          "Altostratus translucidus"
+        ],
+        [
+          "Altostratus translucidus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Altostratus opacus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Altostratus opacus",
+          "Cirrostratus nebulosus"
+        ],
+        [
+          "Altostratus translucidus",
+          "Cirrocumulus stratiformis"
+        ],
+        [
+          "Cirrocumulus lenticularis",
+          "Cirrus spissatus"
+        ]
+      ],
+      "rationale": "Folds the halo question into the sun question and adds an explicit 'sun not in view' option, so the 74%/80% skip rates become usable answers; it also carries the classic distinction that the sun's outline shows through stratus but only as ground glass through altostratus.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "pale_blur"
+        ],
+        "Altocumulus floccus": [
+          "pale_blur"
+        ],
+        "Altocumulus lenticularis": [
+          "pale_blur"
+        ],
+        "Altocumulus stratiformis": [
+          "pale_blur"
+        ],
+        "Altocumulus volutus": [
+          "pale_blur"
+        ],
+        "Altostratus opacus": [
+          "blotted_out"
+        ],
+        "Altostratus translucidus": [
+          "pale_blur"
+        ],
+        "Cirrocumulus castellanus": [
+          "sharp_disc"
+        ],
+        "Cirrocumulus floccus": [
+          "sharp_disc"
+        ],
+        "Cirrocumulus lenticularis": [
+          "sharp_disc"
+        ],
+        "Cirrocumulus stratiformis": [
+          "sharp_disc"
+        ],
+        "Cirrostratus fibratus": [
+          "halo_ring"
+        ],
+        "Cirrostratus nebulosus": [
+          "halo_ring"
+        ],
+        "Cirrus castellanus": [
+          "sharp_disc"
+        ],
+        "Cirrus fibratus": [
+          "sharp_disc"
+        ],
+        "Cirrus floccus": [
+          "sharp_disc"
+        ],
+        "Cirrus spissatus": [
+          "pale_blur"
+        ],
+        "Cirrus uncinus": [
+          "sharp_disc"
+        ],
+        "Cumulonimbus calvus": [
+          "blotted_out"
+        ],
+        "Cumulonimbus capillatus": [
+          "blotted_out"
+        ],
+        "Cumulus congestus": [
+          "blotted_out"
+        ],
+        "Cumulus fractus": [
+          "blotted_out"
+        ],
+        "Cumulus humilis": [
+          "blotted_out"
+        ],
+        "Cumulus mediocris": [
+          "blotted_out"
+        ],
+        "Nimbostratus": [
+          "blotted_out"
+        ],
+        "Stratocumulus castellanus": [
+          "blotted_out"
+        ],
+        "Stratocumulus floccus": [
+          "blotted_out"
+        ],
+        "Stratocumulus lenticularis": [
+          "blotted_out"
+        ],
+        "Stratocumulus stratiformis": [
+          "blotted_out"
+        ],
+        "Stratocumulus volutus": [
+          "blotted_out"
+        ],
+        "Stratus fractus": [
+          "sun_elsewhere"
+        ],
+        "Stratus nebulosus": [
+          "sharp_disc"
+        ]
+      }
+    },
+    {
+      "id": "p06",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "sky_behind",
+      "replaces": "halo",
+      "kind": "categorical",
+      "question": "What was behind and above it?",
+      "values": [
+        {
+          "value": "blue_sky",
+          "label": "open blue sky (or stars) behind it"
+        },
+        {
+          "value": "higher_cloud",
+          "label": "another, bigger cloud mass behind or above it"
+        },
+        {
+          "value": "filled_sky",
+          "label": "nothing behind it - this cloud covered the whole sky itself"
+        }
+      ],
+      "confusable": [
+        [
+          "blue_sky",
+          "higher_cloud"
+        ],
+        [
+          "higher_cloud",
+          "filled_sky"
+        ]
+      ],
+      "targets": [
+        [
+          "Cirrus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Cirrocumulus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Cumulus fractus",
+          "Stratus fractus"
+        ],
+        [
+          "Altocumulus volutus",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Cirrus fibratus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Cirrus castellanus",
+          "Stratus fractus"
+        ]
+      ],
+      "rationale": "Replaces the near-unanswerable halo question with something visible in every photo, and it is the one cue that pins down scud (stratus fractus, always under a bigger deck) and the squall roll cloud, which is backed by its storm.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "blue_sky"
+        ],
+        "Altocumulus floccus": [
+          "blue_sky"
+        ],
+        "Altocumulus lenticularis": [
+          "blue_sky"
+        ],
+        "Altocumulus stratiformis": [
+          "blue_sky"
+        ],
+        "Altocumulus volutus": [
+          "blue_sky"
+        ],
+        "Altostratus opacus": [
+          "filled_sky"
+        ],
+        "Altostratus translucidus": [
+          "filled_sky"
+        ],
+        "Cirrocumulus castellanus": [
+          "blue_sky"
+        ],
+        "Cirrocumulus floccus": [
+          "blue_sky"
+        ],
+        "Cirrocumulus lenticularis": [
+          "blue_sky"
+        ],
+        "Cirrocumulus stratiformis": [
+          "blue_sky"
+        ],
+        "Cirrostratus fibratus": [
+          "filled_sky"
+        ],
+        "Cirrostratus nebulosus": [
+          "filled_sky"
+        ],
+        "Cirrus castellanus": [
+          "blue_sky"
+        ],
+        "Cirrus fibratus": [
+          "blue_sky"
+        ],
+        "Cirrus floccus": [
+          "blue_sky"
+        ],
+        "Cirrus spissatus": [
+          "blue_sky"
+        ],
+        "Cirrus uncinus": [
+          "blue_sky"
+        ],
+        "Cumulonimbus calvus": [
+          "blue_sky"
+        ],
+        "Cumulonimbus capillatus": [
+          "blue_sky"
+        ],
+        "Cumulus congestus": [
+          "blue_sky"
+        ],
+        "Cumulus fractus": [
+          "blue_sky"
+        ],
+        "Cumulus humilis": [
+          "blue_sky"
+        ],
+        "Cumulus mediocris": [
+          "blue_sky"
+        ],
+        "Nimbostratus": [
+          "filled_sky"
+        ],
+        "Stratocumulus castellanus": [
+          "blue_sky"
+        ],
+        "Stratocumulus floccus": [
+          "blue_sky"
+        ],
+        "Stratocumulus lenticularis": [
+          "blue_sky"
+        ],
+        "Stratocumulus stratiformis": [
+          "blue_sky"
+        ],
+        "Stratocumulus volutus": [
+          "higher_cloud"
+        ],
+        "Stratus fractus": [
+          "higher_cloud"
+        ],
+        "Stratus nebulosus": [
+          "filled_sky"
+        ]
+      }
+    },
+    {
+      "id": "p07",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "underside_edge",
+      "replaces": "base",
+      "kind": "categorical",
+      "question": "What was the bottom of it like?",
+      "values": [
+        {
+          "value": "flat_level",
+          "label": "a definite bottom, flat and level, like a lid"
+        },
+        {
+          "value": "ragged_bumpy",
+          "label": "a definite bottom, but torn, tattered or hanging in wisps"
+        },
+        {
+          "value": "fades_out",
+          "label": "no bottom edge to see - it faded away or you simply could not make one out"
+        }
+      ],
+      "confusable": [
+        [
+          "flat_level",
+          "fades_out"
+        ],
+        [
+          "ragged_bumpy",
+          "fades_out"
+        ]
+      ],
+      "targets": [
+        [
+          "Altocumulus castellanus",
+          "Altocumulus floccus"
+        ],
+        [
+          "Stratocumulus floccus",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Altocumulus floccus",
+          "Altocumulus stratiformis"
+        ],
+        [
+          "Altocumulus stratiformis",
+          "Stratocumulus stratiformis"
+        ]
+      ],
+      "rationale": "Merges the old 'undefined' and 'not visible' options, which people could not tell apart (67 of 148 answers landed on 'undefined' regardless of truth), leaving three states an ordinary observer can actually distinguish.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "flat_level"
+        ],
+        "Altocumulus floccus": [
+          "ragged_bumpy"
+        ],
+        "Altocumulus lenticularis": [
+          "fades_out"
+        ],
+        "Altocumulus stratiformis": [
+          "fades_out"
+        ],
+        "Altocumulus volutus": [
+          "fades_out"
+        ],
+        "Altostratus opacus": [
+          "fades_out"
+        ],
+        "Altostratus translucidus": [
+          "fades_out"
+        ],
+        "Cirrocumulus castellanus": [
+          "fades_out"
+        ],
+        "Cirrocumulus floccus": [
+          "fades_out"
+        ],
+        "Cirrocumulus lenticularis": [
+          "fades_out"
+        ],
+        "Cirrocumulus stratiformis": [
+          "fades_out"
+        ],
+        "Cirrostratus fibratus": [
+          "fades_out"
+        ],
+        "Cirrostratus nebulosus": [
+          "fades_out"
+        ],
+        "Cirrus castellanus": [
+          "fades_out"
+        ],
+        "Cirrus fibratus": [
+          "fades_out"
+        ],
+        "Cirrus floccus": [
+          "ragged_bumpy"
+        ],
+        "Cirrus spissatus": [
+          "fades_out"
+        ],
+        "Cirrus uncinus": [
+          "fades_out"
+        ],
+        "Cumulonimbus calvus": [
+          "flat_level"
+        ],
+        "Cumulonimbus capillatus": [
+          "ragged_bumpy"
+        ],
+        "Cumulus congestus": [
+          "flat_level"
+        ],
+        "Cumulus fractus": [
+          "ragged_bumpy"
+        ],
+        "Cumulus humilis": [
+          "flat_level"
+        ],
+        "Cumulus mediocris": [
+          "flat_level"
+        ],
+        "Nimbostratus": [
+          "fades_out"
+        ],
+        "Stratocumulus castellanus": [
+          "flat_level"
+        ],
+        "Stratocumulus floccus": [
+          "ragged_bumpy"
+        ],
+        "Stratocumulus lenticularis": [
+          "flat_level"
+        ],
+        "Stratocumulus stratiformis": [
+          "flat_level"
+        ],
+        "Stratocumulus volutus": [
+          "fades_out"
+        ],
+        "Stratus fractus": [
+          "ragged_bumpy"
+        ],
+        "Stratus nebulosus": [
+          "fades_out"
+        ]
+      }
+    },
+    {
+      "id": "p08",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "lump_shading",
+      "replaces": "shading",
+      "kind": "categorical",
+      "question": "Did its lumps have grey shaded undersides?",
+      "values": [
+        {
+          "value": "no_lumps",
+          "label": "there were no lumps - it was smooth, streaky or one plain cloud"
+        },
+        {
+          "value": "all_white",
+          "label": "lumpy, and the lumps were white all over with no grey undersides"
+        },
+        {
+          "value": "grey_undersides",
+          "label": "lumpy, and the lumps were clearly darker underneath"
+        }
+      ],
+      "confusable": [
+        [
+          "all_white",
+          "grey_undersides"
+        ],
+        [
+          "no_lumps",
+          "all_white"
+        ]
+      ],
+      "targets": [
+        [
+          "Altocumulus lenticularis",
+          "Altocumulus stratiformis"
+        ],
+        [
+          "Cumulus fractus",
+          "Stratus fractus"
+        ],
+        [
+          "Altocumulus floccus",
+          "Cumulus fractus"
+        ],
+        [
+          "Stratocumulus lenticularis",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Cirrocumulus floccus",
+          "Stratus fractus"
+        ]
+      ],
+      "rationale": "As a yes/no it forced an answer about lumps on clouds that have none, which is why 20 of 53 'yes' clouds were answered 'no'; a third option for lumpless cloud makes the remaining split (cirrocumulus white versus altocumulus and stratocumulus shaded) a reliable height cue.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "grey_undersides"
+        ],
+        "Altocumulus floccus": [
+          "grey_undersides"
+        ],
+        "Altocumulus lenticularis": [
+          "all_white"
+        ],
+        "Altocumulus stratiformis": [
+          "grey_undersides"
+        ],
+        "Altocumulus volutus": [
+          "no_lumps"
+        ],
+        "Altostratus opacus": [
+          "no_lumps"
+        ],
+        "Altostratus translucidus": [
+          "no_lumps"
+        ],
+        "Cirrocumulus castellanus": [
+          "all_white"
+        ],
+        "Cirrocumulus floccus": [
+          "all_white"
+        ],
+        "Cirrocumulus lenticularis": [
+          "all_white"
+        ],
+        "Cirrocumulus stratiformis": [
+          "all_white"
+        ],
+        "Cirrostratus fibratus": [
+          "no_lumps"
+        ],
+        "Cirrostratus nebulosus": [
+          "no_lumps"
+        ],
+        "Cirrus castellanus": [
+          "all_white"
+        ],
+        "Cirrus fibratus": [
+          "no_lumps"
+        ],
+        "Cirrus floccus": [
+          "all_white"
+        ],
+        "Cirrus spissatus": [
+          "no_lumps"
+        ],
+        "Cirrus uncinus": [
+          "no_lumps"
+        ],
+        "Cumulonimbus calvus": [
+          "grey_undersides"
+        ],
+        "Cumulonimbus capillatus": [
+          "grey_undersides"
+        ],
+        "Cumulus congestus": [
+          "grey_undersides"
+        ],
+        "Cumulus fractus": [
+          "all_white"
+        ],
+        "Cumulus humilis": [
+          "grey_undersides"
+        ],
+        "Cumulus mediocris": [
+          "grey_undersides"
+        ],
+        "Nimbostratus": [
+          "no_lumps"
+        ],
+        "Stratocumulus castellanus": [
+          "grey_undersides"
+        ],
+        "Stratocumulus floccus": [
+          "grey_undersides"
+        ],
+        "Stratocumulus lenticularis": [
+          "no_lumps"
+        ],
+        "Stratocumulus stratiformis": [
+          "grey_undersides"
+        ],
+        "Stratocumulus volutus": [
+          "no_lumps"
+        ],
+        "Stratus fractus": [
+          "no_lumps"
+        ],
+        "Stratus nebulosus": [
+          "no_lumps"
+        ]
+      }
+    },
+    {
+      "id": "p09",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "falling_visible",
+      "replaces": "precipitation",
+      "kind": "categorical",
+      "question": "Could you see anything falling out of it?",
+      "values": [
+        {
+          "value": "nothing",
+          "label": "nothing at all"
+        },
+        {
+          "value": "trails_in_air",
+          "label": "streaks hanging below it that faded out well above the ground"
+        },
+        {
+          "value": "shafts_to_ground",
+          "label": "grey shafts reaching the ground under part of it"
+        },
+        {
+          "value": "everywhere_steady",
+          "label": "rain or snow out of the whole layer, blurring the view in every direction"
+        },
+        {
+          "value": "storm",
+          "label": "lightning, thunder or hail"
+        }
+      ],
+      "confusable": [
+        [
+          "nothing",
+          "trails_in_air"
+        ],
+        [
+          "shafts_to_ground",
+          "everywhere_steady"
+        ],
+        [
+          "shafts_to_ground",
+          "storm"
+        ]
+      ],
+      "targets": [
+        [
+          "Altostratus opacus",
+          "Nimbostratus"
+        ],
+        [
+          "Cumulonimbus calvus",
+          "Cumulus mediocris"
+        ],
+        [
+          "Cirrus fibratus",
+          "Cirrus uncinus"
+        ],
+        [
+          "Altocumulus castellanus",
+          "Altocumulus floccus"
+        ]
+      ],
+      "rationale": "Reworded so each option describes something visible in the sky rather than the weather over time, which cuts the recall-from-memory answering flagged in the leakage check; the fine trails of cirrocumulus and stratocumulus floccus are moved to 'nothing', matching the 73-80% of experts who saw none.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "nothing"
+        ],
+        "Altocumulus floccus": [
+          "trails_in_air"
+        ],
+        "Altocumulus lenticularis": [
+          "nothing"
+        ],
+        "Altocumulus stratiformis": [
+          "nothing"
+        ],
+        "Altocumulus volutus": [
+          "nothing"
+        ],
+        "Altostratus opacus": [
+          "nothing"
+        ],
+        "Altostratus translucidus": [
+          "nothing"
+        ],
+        "Cirrocumulus castellanus": [
+          "nothing"
+        ],
+        "Cirrocumulus floccus": [
+          "nothing"
+        ],
+        "Cirrocumulus lenticularis": [
+          "nothing"
+        ],
+        "Cirrocumulus stratiformis": [
+          "nothing"
+        ],
+        "Cirrostratus fibratus": [
+          "nothing"
+        ],
+        "Cirrostratus nebulosus": [
+          "nothing"
+        ],
+        "Cirrus castellanus": [
+          "nothing"
+        ],
+        "Cirrus fibratus": [
+          "nothing"
+        ],
+        "Cirrus floccus": [
+          "trails_in_air"
+        ],
+        "Cirrus spissatus": [
+          "nothing"
+        ],
+        "Cirrus uncinus": [
+          "trails_in_air"
+        ],
+        "Cumulonimbus calvus": [
+          "shafts_to_ground"
+        ],
+        "Cumulonimbus capillatus": [
+          "storm"
+        ],
+        "Cumulus congestus": [
+          "shafts_to_ground"
+        ],
+        "Cumulus fractus": [
+          "nothing"
+        ],
+        "Cumulus humilis": [
+          "nothing"
+        ],
+        "Cumulus mediocris": [
+          "nothing"
+        ],
+        "Nimbostratus": [
+          "everywhere_steady"
+        ],
+        "Stratocumulus castellanus": [
+          "nothing"
+        ],
+        "Stratocumulus floccus": [
+          "nothing"
+        ],
+        "Stratocumulus lenticularis": [
+          "nothing"
+        ],
+        "Stratocumulus stratiformis": [
+          "nothing"
+        ],
+        "Stratocumulus volutus": [
+          "nothing"
+        ],
+        "Stratus fractus": [
+          "nothing"
+        ],
+        "Stratus nebulosus": [
+          "nothing"
+        ]
+      }
+    },
+    {
+      "id": "p10",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "trailing_tails",
+      "replaces": "mamma",
+      "kind": "boolean",
+      "question": "Did it trail fibres or tails, as if its edges were being combed out sideways?",
+      "values": [
+        {
+          "value": "yes",
+          "label": "yes - hairy, streaky, drawn-out edges"
+        },
+        {
+          "value": "no",
+          "label": "no - its edges were rounded or sharply cut"
+        }
+      ],
+      "confusable": [
+        [
+          "yes",
+          "no"
+        ]
+      ],
+      "targets": [
+        [
+          "Cirrostratus fibratus",
+          "Cirrostratus nebulosus"
+        ],
+        [
+          "Altocumulus castellanus",
+          "Altocumulus floccus"
+        ],
+        [
+          "Cirrocumulus lenticularis",
+          "Cirrus fibratus"
+        ],
+        [
+          "Cirrocumulus stratiformis",
+          "Cirrus fibratus"
+        ],
+        [
+          "Cirrus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Cirrus castellanus",
+          "Stratus fractus"
+        ],
+        [
+          "Cirrus fibratus",
+          "Stratus nebulosus"
+        ]
+      ],
+      "rationale": "Mamma earned 0.01 bits and is true of only two entries, so its slot is better spent on the single most informative ice-cloud cue: fibrous drawn-out edges separate the whole cirrus family, cirrostratus fibratus and the thunderstorm anvil from every rounded water cloud.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "no"
+        ],
+        "Altocumulus floccus": [
+          "yes"
+        ],
+        "Altocumulus lenticularis": [
+          "no"
+        ],
+        "Altocumulus stratiformis": [
+          "no"
+        ],
+        "Altocumulus volutus": [
+          "no"
+        ],
+        "Altostratus opacus": [
+          "no"
+        ],
+        "Altostratus translucidus": [
+          "no"
+        ],
+        "Cirrocumulus castellanus": [
+          "no"
+        ],
+        "Cirrocumulus floccus": [
+          "no"
+        ],
+        "Cirrocumulus lenticularis": [
+          "no"
+        ],
+        "Cirrocumulus stratiformis": [
+          "no"
+        ],
+        "Cirrostratus fibratus": [
+          "yes"
+        ],
+        "Cirrostratus nebulosus": [
+          "no"
+        ],
+        "Cirrus castellanus": [
+          "yes"
+        ],
+        "Cirrus fibratus": [
+          "yes"
+        ],
+        "Cirrus floccus": [
+          "yes"
+        ],
+        "Cirrus spissatus": [
+          "yes"
+        ],
+        "Cirrus uncinus": [
+          "yes"
+        ],
+        "Cumulonimbus calvus": [
+          "no"
+        ],
+        "Cumulonimbus capillatus": [
+          "yes"
+        ],
+        "Cumulus congestus": [
+          "no"
+        ],
+        "Cumulus fractus": [
+          "no"
+        ],
+        "Cumulus humilis": [
+          "no"
+        ],
+        "Cumulus mediocris": [
+          "no"
+        ],
+        "Nimbostratus": [
+          "no"
+        ],
+        "Stratocumulus castellanus": [
+          "no"
+        ],
+        "Stratocumulus floccus": [
+          "no"
+        ],
+        "Stratocumulus lenticularis": [
+          "no"
+        ],
+        "Stratocumulus stratiformis": [
+          "no"
+        ],
+        "Stratocumulus volutus": [
+          "no"
+        ],
+        "Stratus fractus": [
+          "no"
+        ],
+        "Stratus nebulosus": [
+          "no"
+        ]
+      }
+    },
+    {
+      "id": "p11",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "sky_coverage",
+      "replaces": "sky_cover",
+      "kind": "categorical",
+      "question": "How much of the sky did it take up?",
+      "values": [
+        {
+          "value": "one_cloud",
+          "label": "one cloud on its own, clear sky all round it"
+        },
+        {
+          "value": "few_clouds",
+          "label": "several separate clouds, but more clear sky than cloud"
+        },
+        {
+          "value": "broken_layer",
+          "label": "more cloud than sky, but with gaps you could see through"
+        },
+        {
+          "value": "total",
+          "label": "cloud from horizon to horizon, not a gap anywhere"
+        }
+      ],
+      "confusable": [
+        [
+          "one_cloud",
+          "few_clouds"
+        ],
+        [
+          "few_clouds",
+          "broken_layer"
+        ],
+        [
+          "broken_layer",
+          "total"
+        ]
+      ],
+      "targets": [
+        [
+          "Stratocumulus lenticularis",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Stratocumulus stratiformis",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Altocumulus lenticularis",
+          "Altocumulus stratiformis"
+        ],
+        [
+          "Altocumulus castellanus",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Altocumulus lenticularis",
+          "Stratocumulus stratiformis"
+        ]
+      ],
+      "rationale": "Same four bands but defined by the cloud-to-blue ratio rather than vague words, which should stop the isolated/most-of-sky jump; cumulus species are re-assigned to 'several separate clouds' as 80-93% of experts answered.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "few_clouds"
+        ],
+        "Altocumulus floccus": [
+          "few_clouds"
+        ],
+        "Altocumulus lenticularis": [
+          "one_cloud"
+        ],
+        "Altocumulus stratiformis": [
+          "broken_layer"
+        ],
+        "Altocumulus volutus": [
+          "one_cloud"
+        ],
+        "Altostratus opacus": [
+          "total"
+        ],
+        "Altostratus translucidus": [
+          "total"
+        ],
+        "Cirrocumulus castellanus": [
+          "few_clouds"
+        ],
+        "Cirrocumulus floccus": [
+          "few_clouds"
+        ],
+        "Cirrocumulus lenticularis": [
+          "few_clouds"
+        ],
+        "Cirrocumulus stratiformis": [
+          "broken_layer"
+        ],
+        "Cirrostratus fibratus": [
+          "total"
+        ],
+        "Cirrostratus nebulosus": [
+          "total"
+        ],
+        "Cirrus castellanus": [
+          "few_clouds"
+        ],
+        "Cirrus fibratus": [
+          "few_clouds"
+        ],
+        "Cirrus floccus": [
+          "few_clouds"
+        ],
+        "Cirrus spissatus": [
+          "few_clouds"
+        ],
+        "Cirrus uncinus": [
+          "few_clouds"
+        ],
+        "Cumulonimbus calvus": [
+          "one_cloud"
+        ],
+        "Cumulonimbus capillatus": [
+          "broken_layer"
+        ],
+        "Cumulus congestus": [
+          "one_cloud"
+        ],
+        "Cumulus fractus": [
+          "few_clouds"
+        ],
+        "Cumulus humilis": [
+          "few_clouds"
+        ],
+        "Cumulus mediocris": [
+          "few_clouds"
+        ],
+        "Nimbostratus": [
+          "total"
+        ],
+        "Stratocumulus castellanus": [
+          "broken_layer"
+        ],
+        "Stratocumulus floccus": [
+          "few_clouds"
+        ],
+        "Stratocumulus lenticularis": [
+          "one_cloud"
+        ],
+        "Stratocumulus stratiformis": [
+          "broken_layer"
+        ],
+        "Stratocumulus volutus": [
+          "one_cloud"
+        ],
+        "Stratus fractus": [
+          "few_clouds"
+        ],
+        "Stratus nebulosus": [
+          "total"
+        ]
+      }
+    },
+    {
+      "id": "p12",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "single_cloud_outline",
+      "kind": "categorical",
+      "question": "If it was one separate cloud, what was its outline?",
+      "values": [
+        {
+          "value": "not_one_cloud",
+          "label": "it was not one separate cloud - a layer, a veil or many clouds"
+        },
+        {
+          "value": "almond_lens",
+          "label": "a smooth almond or saucer, tapering to a point at each end"
+        },
+        {
+          "value": "long_tube",
+          "label": "a long tube of even thickness, like a log lying across the sky"
+        },
+        {
+          "value": "rounded_heap",
+          "label": "a rounded heap or dome, highest in the middle"
+        },
+        {
+          "value": "torn_shred",
+          "label": "a torn shred with no definite outline"
+        }
+      ],
+      "confusable": [
+        [
+          "almond_lens",
+          "long_tube"
+        ],
+        [
+          "almond_lens",
+          "rounded_heap"
+        ],
+        [
+          "not_one_cloud",
+          "almond_lens"
+        ]
+      ],
+      "targets": [
+        [
+          "Altocumulus lenticularis",
+          "Altocumulus volutus"
+        ],
+        [
+          "Stratocumulus lenticularis",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Stratocumulus stratiformis",
+          "Stratocumulus volutus"
+        ],
+        [
+          "Stratocumulus lenticularis",
+          "Stratocumulus stratiformis"
+        ],
+        [
+          "Altocumulus volutus",
+          "Stratocumulus lenticularis"
+        ],
+        [
+          "Altocumulus lenticularis",
+          "Cirrus spissatus"
+        ]
+      ],
+      "rationale": "The lenticularis/volutus mix-ups are the second and eighth largest, and both look like one long cloud; tapered points versus even log thickness is a difference anyone can see at a glance, and the same question isolates every single-cloud entry at once.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "not_one_cloud"
+        ],
+        "Altocumulus floccus": [
+          "not_one_cloud"
+        ],
+        "Altocumulus lenticularis": [
+          "almond_lens"
+        ],
+        "Altocumulus stratiformis": [
+          "not_one_cloud"
+        ],
+        "Altocumulus volutus": [
+          "long_tube"
+        ],
+        "Altostratus opacus": [
+          "not_one_cloud"
+        ],
+        "Altostratus translucidus": [
+          "not_one_cloud"
+        ],
+        "Cirrocumulus castellanus": [
+          "not_one_cloud"
+        ],
+        "Cirrocumulus floccus": [
+          "not_one_cloud"
+        ],
+        "Cirrocumulus lenticularis": [
+          "almond_lens"
+        ],
+        "Cirrocumulus stratiformis": [
+          "not_one_cloud"
+        ],
+        "Cirrostratus fibratus": [
+          "not_one_cloud"
+        ],
+        "Cirrostratus nebulosus": [
+          "not_one_cloud"
+        ],
+        "Cirrus castellanus": [
+          "not_one_cloud"
+        ],
+        "Cirrus fibratus": [
+          "not_one_cloud"
+        ],
+        "Cirrus floccus": [
+          "not_one_cloud"
+        ],
+        "Cirrus spissatus": [
+          "not_one_cloud"
+        ],
+        "Cirrus uncinus": [
+          "not_one_cloud"
+        ],
+        "Cumulonimbus calvus": [
+          "rounded_heap"
+        ],
+        "Cumulonimbus capillatus": [
+          "rounded_heap"
+        ],
+        "Cumulus congestus": [
+          "rounded_heap"
+        ],
+        "Cumulus fractus": [
+          "torn_shred"
+        ],
+        "Cumulus humilis": [
+          "rounded_heap"
+        ],
+        "Cumulus mediocris": [
+          "rounded_heap"
+        ],
+        "Nimbostratus": [
+          "not_one_cloud"
+        ],
+        "Stratocumulus castellanus": [
+          "not_one_cloud"
+        ],
+        "Stratocumulus floccus": [
+          "not_one_cloud"
+        ],
+        "Stratocumulus lenticularis": [
+          "almond_lens"
+        ],
+        "Stratocumulus stratiformis": [
+          "not_one_cloud"
+        ],
+        "Stratocumulus volutus": [
+          "long_tube"
+        ],
+        "Stratus fractus": [
+          "torn_shred"
+        ],
+        "Stratus nebulosus": [
+          "not_one_cloud"
+        ]
+      }
+    },
+    {
+      "id": "p13",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "veil_texture",
+      "kind": "categorical",
+      "question": "Was the sky covered by a thin whitish veil - one you could still see blue through - and if so, did it have any texture?",
+      "values": [
+        {
+          "value": "fibrous_veil",
+          "label": "yes, a pale veil with streaks or fibres running through it"
+        },
+        {
+          "value": "smooth_veil",
+          "label": "yes, a pale veil, completely smooth and featureless"
+        },
+        {
+          "value": "not_a_veil",
+          "label": "no pale veil - either no layer at all, or a grey sheet that hid the blue"
+        }
+      ],
+      "confusable": [
+        [
+          "fibrous_veil",
+          "smooth_veil"
+        ],
+        [
+          "smooth_veil",
+          "not_a_veil"
+        ]
+      ],
+      "targets": [
+        [
+          "Cirrostratus fibratus",
+          "Cirrostratus nebulosus"
+        ],
+        [
+          "Altostratus opacus",
+          "Cirrostratus nebulosus"
+        ],
+        [
+          "Altostratus translucidus",
+          "Cirrocumulus stratiformis"
+        ]
+      ],
+      "rationale": "Cirrostratus fibratus versus nebulosus is the single biggest mix-up and turns entirely on whether the veil is streaked; asking about it directly, with 'grey sheet that hid the blue' as the third option, also splits cirrostratus from altostratus without needing the sun.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "not_a_veil"
+        ],
+        "Altocumulus floccus": [
+          "not_a_veil"
+        ],
+        "Altocumulus lenticularis": [
+          "not_a_veil"
+        ],
+        "Altocumulus stratiformis": [
+          "not_a_veil"
+        ],
+        "Altocumulus volutus": [
+          "not_a_veil"
+        ],
+        "Altostratus opacus": [
+          "not_a_veil"
+        ],
+        "Altostratus translucidus": [
+          "not_a_veil"
+        ],
+        "Cirrocumulus castellanus": [
+          "not_a_veil"
+        ],
+        "Cirrocumulus floccus": [
+          "not_a_veil"
+        ],
+        "Cirrocumulus lenticularis": [
+          "not_a_veil"
+        ],
+        "Cirrocumulus stratiformis": [
+          "not_a_veil"
+        ],
+        "Cirrostratus fibratus": [
+          "fibrous_veil"
+        ],
+        "Cirrostratus nebulosus": [
+          "smooth_veil"
+        ],
+        "Cirrus castellanus": [
+          "not_a_veil"
+        ],
+        "Cirrus fibratus": [
+          "not_a_veil"
+        ],
+        "Cirrus floccus": [
+          "not_a_veil"
+        ],
+        "Cirrus spissatus": [
+          "not_a_veil"
+        ],
+        "Cirrus uncinus": [
+          "not_a_veil"
+        ],
+        "Cumulonimbus calvus": [
+          "not_a_veil"
+        ],
+        "Cumulonimbus capillatus": [
+          "not_a_veil"
+        ],
+        "Cumulus congestus": [
+          "not_a_veil"
+        ],
+        "Cumulus fractus": [
+          "not_a_veil"
+        ],
+        "Cumulus humilis": [
+          "not_a_veil"
+        ],
+        "Cumulus mediocris": [
+          "not_a_veil"
+        ],
+        "Nimbostratus": [
+          "not_a_veil"
+        ],
+        "Stratocumulus castellanus": [
+          "not_a_veil"
+        ],
+        "Stratocumulus floccus": [
+          "not_a_veil"
+        ],
+        "Stratocumulus lenticularis": [
+          "not_a_veil"
+        ],
+        "Stratocumulus stratiformis": [
+          "not_a_veil"
+        ],
+        "Stratocumulus volutus": [
+          "not_a_veil"
+        ],
+        "Stratus fractus": [
+          "not_a_veil"
+        ],
+        "Stratus nebulosus": [
+          "not_a_veil"
+        ]
+      }
+    },
+    {
+      "id": "p14",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "low_enough_to_touch",
+      "kind": "categorical",
+      "question": "Was it low enough to be brushing hilltops, masts or the tops of tall buildings?",
+      "values": [
+        {
+          "value": "yes",
+          "label": "yes - it was down among them, or hiding their tops"
+        },
+        {
+          "value": "no",
+          "label": "no - it was well clear above everything"
+        },
+        {
+          "value": "nothing_tall",
+          "label": "nothing tall enough in view to judge by"
+        }
+      ],
+      "confusable": [
+        [
+          "yes",
+          "nothing_tall"
+        ],
+        [
+          "no",
+          "nothing_tall"
+        ]
+      ],
+      "targets": [
+        [
+          "Altostratus translucidus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Altostratus opacus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Cirrus fibratus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Cirrus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Cirrocumulus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Cumulus fractus",
+          "Stratus fractus"
+        ],
+        [
+          "Cirrus castellanus",
+          "Stratus fractus"
+        ]
+      ],
+      "rationale": "Stratus is fog that has not landed, and that is the only thing that reliably separates it from the other featureless grey layers, which between them account for over twenty mix-ups; it needs no instruments, only something tall in sight.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "no"
+        ],
+        "Altocumulus floccus": [
+          "no"
+        ],
+        "Altocumulus lenticularis": [
+          "no"
+        ],
+        "Altocumulus stratiformis": [
+          "no"
+        ],
+        "Altocumulus volutus": [
+          "no"
+        ],
+        "Altostratus opacus": [
+          "no"
+        ],
+        "Altostratus translucidus": [
+          "no"
+        ],
+        "Cirrocumulus castellanus": [
+          "no"
+        ],
+        "Cirrocumulus floccus": [
+          "no"
+        ],
+        "Cirrocumulus lenticularis": [
+          "no"
+        ],
+        "Cirrocumulus stratiformis": [
+          "no"
+        ],
+        "Cirrostratus fibratus": [
+          "no"
+        ],
+        "Cirrostratus nebulosus": [
+          "no"
+        ],
+        "Cirrus castellanus": [
+          "no"
+        ],
+        "Cirrus fibratus": [
+          "no"
+        ],
+        "Cirrus floccus": [
+          "no"
+        ],
+        "Cirrus spissatus": [
+          "no"
+        ],
+        "Cirrus uncinus": [
+          "no"
+        ],
+        "Cumulonimbus calvus": [
+          "no"
+        ],
+        "Cumulonimbus capillatus": [
+          "no"
+        ],
+        "Cumulus congestus": [
+          "no"
+        ],
+        "Cumulus fractus": [
+          "no"
+        ],
+        "Cumulus humilis": [
+          "no"
+        ],
+        "Cumulus mediocris": [
+          "no"
+        ],
+        "Nimbostratus": [
+          "yes",
+          "no"
+        ],
+        "Stratocumulus castellanus": [
+          "no"
+        ],
+        "Stratocumulus floccus": [
+          "no"
+        ],
+        "Stratocumulus lenticularis": [
+          "no"
+        ],
+        "Stratocumulus stratiformis": [
+          "no"
+        ],
+        "Stratocumulus volutus": [
+          "yes"
+        ],
+        "Stratus fractus": [
+          "yes"
+        ],
+        "Stratus nebulosus": [
+          "yes"
+        ]
+      }
+    },
+    {
+      "id": "p15",
+      "proposer": "claude:claude-opus-5@propose-v1",
+      "name": "see_through",
+      "kind": "boolean",
+      "question": "Could you see blue sky (or stars) through the body of the cloud itself, rather than through gaps between its parts?",
+      "values": [
+        {
+          "value": "yes",
+          "label": "yes - it was thin enough to see through"
+        },
+        {
+          "value": "no",
+          "label": "no - every part of it was solid to look at"
+        }
+      ],
+      "confusable": [
+        [
+          "yes",
+          "no"
+        ]
+      ],
+      "targets": [
+        [
+          "Cirrocumulus lenticularis",
+          "Cirrus fibratus"
+        ],
+        [
+          "Cirrocumulus stratiformis",
+          "Cirrus fibratus"
+        ],
+        [
+          "Cirrus fibratus",
+          "Stratus nebulosus"
+        ],
+        [
+          "Cirrus floccus",
+          "Stratus fractus"
+        ],
+        [
+          "Cirrus castellanus",
+          "Stratus fractus"
+        ],
+        [
+          "Altocumulus volutus",
+          "Cirrus fibratus"
+        ]
+      ],
+      "rationale": "Gives the transparency information that the sun question could not supply in three quarters of photos, because it only needs the cloud and the sky behind it; it cleanly lifts the gauzy cirrus and cirrostratus out of every look-alike pairing with solid low cloud.",
+      "assign": {
+        "Altocumulus castellanus": [
+          "no"
+        ],
+        "Altocumulus floccus": [
+          "no"
+        ],
+        "Altocumulus lenticularis": [
+          "no"
+        ],
+        "Altocumulus stratiformis": [
+          "no"
+        ],
+        "Altocumulus volutus": [
+          "no"
+        ],
+        "Altostratus opacus": [
+          "no"
+        ],
+        "Altostratus translucidus": [
+          "no"
+        ],
+        "Cirrocumulus castellanus": [
+          "no"
+        ],
+        "Cirrocumulus floccus": [
+          "no"
+        ],
+        "Cirrocumulus lenticularis": [
+          "no"
+        ],
+        "Cirrocumulus stratiformis": [
+          "no"
+        ],
+        "Cirrostratus fibratus": [
+          "yes"
+        ],
+        "Cirrostratus nebulosus": [
+          "yes"
+        ],
+        "Cirrus castellanus": [
+          "yes"
+        ],
+        "Cirrus fibratus": [
+          "yes"
+        ],
+        "Cirrus floccus": [
+          "yes"
+        ],
+        "Cirrus spissatus": [
+          "no"
+        ],
+        "Cirrus uncinus": [
+          "yes"
+        ],
+        "Cumulonimbus calvus": [
+          "no"
+        ],
+        "Cumulonimbus capillatus": [
+          "no"
+        ],
+        "Cumulus congestus": [
+          "no"
+        ],
+        "Cumulus fractus": [
+          "no"
+        ],
+        "Cumulus humilis": [
+          "no"
+        ],
+        "Cumulus mediocris": [
+          "no"
+        ],
+        "Nimbostratus": [
+          "no"
+        ],
+        "Stratocumulus castellanus": [
+          "no"
+        ],
+        "Stratocumulus floccus": [
+          "no"
+        ],
+        "Stratocumulus lenticularis": [
+          "no"
+        ],
+        "Stratocumulus stratiformis": [
+          "no"
+        ],
+        "Stratocumulus volutus": [
+          "no"
+        ],
+        "Stratus fractus": [
+          "no"
+        ],
+        "Stratus nebulosus": [
+          "no"
+        ]
+      }
+    }
+  ]
+}

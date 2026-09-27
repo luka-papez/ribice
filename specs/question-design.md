@@ -1,7 +1,9 @@
 # Question design
 
-Status: step 0 (`-simulate -sim-model`, `answer_rate`) and step 1 (the
-`design` package, the Claude and human experts) done; the rest is plan. Replaces the aim of [calibration-loop.md](calibration-loop.md); its
+Status: steps 0 to 3 built: `-simulate -sim-model`, the `design` package
+with the Claude and human experts, `aggregate` for the answer key, `analyse`
+and `propose`. Consulting on proposals, their error rates and Select are
+next. Replaces the aim of [calibration-loop.md](calibration-loop.md); its
 photo harness stays, as one kind of expert (see [Where the photo work
 fits](#where-the-photo-work-fits)). Clouds first.
 
@@ -240,8 +242,9 @@ are combined by averaging `p` and `abstain` across experts, one vote per
 expert however many prompt variants it has:
 
 - **Value.** Kept when the proposer's value is the combined `p`'s top option
-  and holds at least half its mass (for a two-valued entity, both values
-  together). Otherwise the value is *disputed*: its `assign` task goes to
+  and holds more than half its mass (for a two-valued entity, both values
+  together); an even split backs nothing. Where the proposer gave no value,
+  the experts' top option is taken if it holds more than half on its own. Otherwise the value is *disputed*: its `assign` task goes to
   `disputes.json`, and the attribute is held out of selection until the
   dispute is settled. Settling it is one more consultation: the `human`
   expert answers the disputed tasks, blind like any other, and a person's
@@ -412,6 +415,16 @@ The reply schemas:
 A live call on one cloud's 15 `assign` tasks took one call and about $0.04
 at API prices.
 
+**The current answer key, vetted first** (2026-09-27,
+`tools/design/runs/2026-09-27-assign-current/`). The 15 current questions
+for all 32 clouds, in all three wordings: 96 calls, about $3.09 at API
+prices. The experts back 385 of 480 values and dispute 95. Most disputes are
+the questions' fault: `depth` offers "flat or layered, not a heap" beside
+"much wider than it was tall", `element_size` calls a whole cumulus "no
+separate lumps", and `base` offers "no clear bottom, it faded out" beside
+"you could not make one out". Some look like wrong values, such as virga on
+Cirrus uncinus. Its `settled.md` is evidence for the proposer.
+
 The API and Batch paths of `backends.py` are not ported. They pay off on
 photo-heavy runs, and the first pass has none.
 
@@ -458,9 +471,9 @@ moves; until gate 4 its numbers are Claude checking Claude, not truth.
 | --- | --- | --- | --- |
 | 0. Engine | `-simulate -sim-model`, `answer_rate` | — | done |
 | 1. Backends | `design`, `design/claude`, `design/human`, `ribice-design tasks` and `consult`, with tests | — | done |
-| 2. Analyse | `ribice-design analyse -kb data/clouds.json` | none | seconds |
-| 3. Propose | `ribice-design propose` | 1–2 at effort `high` | 20–30 candidate attributes, each with 32 values |
-| 4. Consult: assign | `ribice-design consult -tasks assign.jsonl -expert claude -variant all -domain clouds` | 32 (one per entity) × 3 variants | ~100 text calls |
+| 2. Analyse | `ribice-design analyse -kb data/clouds.json -out targets.json` | none | done: 48% identified in 11.1 questions, score −7.3; 111 pairs mixed up |
+| 3. Propose | `ribice-design propose -targets targets.json -evidence settled.md,report.md -domain clouds -out proposals.json` | 1 at effort `high` | up to 25 candidate attributes, each with 32 values |
+| 4. Consult: assign | `ribice-design tasks -proposals proposals.json -kind assign`, then `consult -tasks … -expert claude -variant all -domain clouds` | 32 (one per entity) × 3 variants | ~100 text calls |
 | 5. Consult: perceive | `ribice-design consult -tasks perceive.jsonl -expert claude -variant all -domain clouds` | 1 per candidate × 3 variants | ~90 short calls |
 | 6. Aggregate | `ribice-design aggregate` | none | `pool.json`, `disputes.json` |
 | 7. Settle disputes | `ribice-design consult -tasks disputes.json -expert human -as luka` | none | you, one sitting |

@@ -58,23 +58,37 @@ type Request struct {
 	Content []Block
 }
 
-// Runner runs the CLI with args and stdin in dir, returning its stdout.
-// Tests swap in a fake.
-type Runner func(ctx context.Context, dir string, args []string, stdin []byte) (stdout []byte, err error)
+// Runner runs the CLI with args and stdin in dir, handing each line of its
+// standard output to line as soon as it is written. Tests swap in a fake.
+type Runner func(ctx context.Context, dir string, args []string, stdin []byte, line func([]byte)) error
 
 // ExecRunner runs the real `claude` binary.
-func ExecRunner(ctx context.Context, dir string, args []string, stdin []byte) ([]byte, error) {
+func ExecRunner(ctx context.Context, dir string, args []string, stdin []byte, line func([]byte)) error {
 	cmd := exec.CommandContext(ctx, "claude", args...)
 	cmd.Dir = dir
 	cmd.Stdin = bytes.NewReader(stdin)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	out, err := cmd.Output()
-	if err != nil && len(out) == 0 {
-		lines := strings.Split(strings.TrimSpace(stderr.String()), "\n")
-		return nil, fmt.Errorf("claude: %w: %s", err, lines[len(lines)-1])
+	out, err := cmd.StdoutPipe()
+	if err != nil {
+		return err
 	}
-	return out, nil // a failed call still prints its result event, which says why
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	sc := bufio.NewScanner(out)
+	sc.Buffer(make([]byte, 0, 64*1024), 64<<20) // the result line carries the whole answer
+	lines := 0
+	for sc.Scan() {
+		lines++
+		line(sc.Bytes())
+	}
+	scanErr := sc.Err()
+	if err := cmd.Wait(); err != nil && lines == 0 {
+		msg := strings.Split(strings.TrimSpace(stderr.String()), "\n")
+		return fmt.Errorf("claude: %w: %s", err, msg[len(msg)-1])
+	}
+	return scanErr // a failed call still prints its result event, which says why
 }
 
 // ErrPaused is returned instead of starting a call once the five-hour window
@@ -87,6 +101,11 @@ type Client struct {
 	Run       Runner        // nil means ExecRunner
 	MaxWindow float64       // stop starting calls once the window is this full; 0 means 0.8
 	Timeout   time.Duration // per call; 0 means ten minutes
+
+	// Progress, when set, is told how each call is getting on as its reply
+	// streams in, at most about once a second per call. Calls then ask the
+	// CLI for partial messages, which it otherwise leaves out.
+	Progress func(Progress)
 
 	mu     sync.Mutex
 	cost   float64
@@ -162,12 +181,17 @@ func (c *Client) Call(ctx context.Context, req Request) (json.RawMessage, error)
 	if run == nil {
 		run = ExecRunner
 	}
-	out, err := run(ctx, empty, args, append(msg, '\n'))
-	if err != nil {
-		return nil, err
+	ev := &events{structured: req.Schema != nil, start: time.Now()}
+	if c.Progress != nil {
+		args = append(args, "--include-partial-messages")
+		ev.progress = c.Progress
+	}
+	runErr := run(ctx, empty, args, append(msg, '\n'), ev.feed)
+	res, err := ev.finish()
+	if runErr != nil && res.answer == nil {
+		return nil, runErr
 	}
 
-	res, err := parseEvents(out, req.Schema != nil)
 	c.mu.Lock()
 	c.cost += res.cost
 	if res.windowKnown {
@@ -175,6 +199,13 @@ func (c *Client) Call(ctx context.Context, req Request) (json.RawMessage, error)
 	}
 	c.mu.Unlock()
 	return res.answer, err
+}
+
+// Progress is how far one call has got.
+type Progress struct {
+	Thinking int           // characters of thinking received so far
+	Writing  int           // characters of the answer received so far
+	Elapsed  time.Duration // since the call started
 }
 
 type callResult struct {
@@ -185,67 +216,119 @@ type callResult struct {
 	resets      time.Time
 }
 
-// parseEvents reads the CLI's stream-json output: the rate-limit events for
-// the window, and the result event for the answer and cost.
-func parseEvents(out []byte, structured bool) (callResult, error) {
-	var res callResult
-	var failure string
-	gotResult := false
-	sc := bufio.NewScanner(bytes.NewReader(out))
-	sc.Buffer(make([]byte, 0, 64*1024), 16<<20)
-	for sc.Scan() {
-		var ev struct {
-			Type          string `json:"type"`
-			RateLimitInfo struct {
-				UnifiedWindows struct {
-					FiveHour struct {
-						Utilization *float64 `json:"utilization"`
-						ResetsAt    int64    `json:"resetsAt"`
-					} `json:"five_hour"`
-				} `json:"unifiedWindows"`
-			} `json:"rate_limit_info"`
-			Subtype          string          `json:"subtype"`
-			IsError          bool            `json:"is_error"`
-			TotalCostUSD     float64         `json:"total_cost_usd"`
-			Result           string          `json:"result"`
-			StructuredOutput json.RawMessage `json:"structured_output"`
-		}
-		if json.Unmarshal(sc.Bytes(), &ev) != nil {
-			continue // not every line is an event we know
-		}
-		switch ev.Type {
-		case "rate_limit_event":
-			if w := ev.RateLimitInfo.UnifiedWindows.FiveHour; w.Utilization != nil {
-				res.window, res.windowKnown = *w.Utilization, true
-				if w.ResetsAt > 0 {
-					res.resets = time.Unix(w.ResetsAt, 0)
-				}
+// events reads the CLI's stream-json output line by line: rate-limit events
+// for the window, partial messages for progress, and the result event for the
+// answer and cost.
+type events struct {
+	structured bool
+	start      time.Time
+	progress   func(Progress)
+
+	res       callResult
+	failure   string
+	gotResult bool
+	now       Progress
+	reported  time.Time
+}
+
+// event is the part of any stream-json line that events reads.
+type event struct {
+	Type          string `json:"type"`
+	RateLimitInfo struct {
+		UnifiedWindows struct {
+			FiveHour struct {
+				Utilization *float64 `json:"utilization"`
+				ResetsAt    int64    `json:"resetsAt"`
+			} `json:"five_hour"`
+		} `json:"unifiedWindows"`
+	} `json:"rate_limit_info"`
+	Subtype          string          `json:"subtype"`
+	IsError          bool            `json:"is_error"`
+	TotalCostUSD     float64         `json:"total_cost_usd"`
+	Result           string          `json:"result"`
+	StructuredOutput json.RawMessage `json:"structured_output"`
+	Event            struct {
+		Type  string `json:"type"`
+		Delta struct {
+			Type        string `json:"type"`
+			Thinking    string `json:"thinking"`
+			Text        string `json:"text"`
+			PartialJSON string `json:"partial_json"`
+		} `json:"delta"`
+	} `json:"event"`
+}
+
+func (e *events) feed(line []byte) {
+	var ev event
+	if json.Unmarshal(line, &ev) != nil {
+		return // not every line is an event we know
+	}
+	switch ev.Type {
+	case "rate_limit_event":
+		if w := ev.RateLimitInfo.UnifiedWindows.FiveHour; w.Utilization != nil {
+			e.res.window, e.res.windowKnown = *w.Utilization, true
+			if w.ResetsAt > 0 {
+				e.res.resets = time.Unix(w.ResetsAt, 0)
 			}
-		case "result":
-			gotResult = true
-			res.cost = ev.TotalCostUSD
-			switch {
-			case ev.IsError || ev.Subtype != "success":
-				failure = ev.Subtype
-				if failure == "" || failure == "success" {
-					failure = "error: " + ev.Result
-				}
-			case structured:
-				if len(ev.StructuredOutput) == 0 || string(ev.StructuredOutput) == "null" {
-					failure = "no structured output"
-				} else {
-					res.answer = ev.StructuredOutput
-				}
-			default:
-				res.answer, _ = json.Marshal(ev.Result)
+		}
+	case "stream_event":
+		e.stream(ev)
+	case "result":
+		e.gotResult = true
+		e.res.cost = ev.TotalCostUSD
+		switch {
+		case ev.IsError || ev.Subtype != "success":
+			e.failure = ev.Subtype
+			if e.failure == "" || e.failure == "success" {
+				e.failure = "error: " + ev.Result
 			}
+		case e.structured:
+			if len(ev.StructuredOutput) == 0 || string(ev.StructuredOutput) == "null" {
+				e.failure = "no structured output"
+			} else {
+				e.res.answer = append(json.RawMessage(nil), ev.StructuredOutput...)
+			}
+		default:
+			e.res.answer, _ = json.Marshal(ev.Result)
 		}
 	}
+}
+
+// stream counts what a partial message adds, and reports it now and then.
+func (e *events) stream(ev event) {
+	if ev.Event.Type != "content_block_delta" {
+		return
+	}
+	switch d := ev.Event.Delta; d.Type {
+	case "thinking_delta":
+		e.now.Thinking += len(d.Thinking)
+	case "text_delta":
+		e.now.Writing += len(d.Text)
+	case "input_json_delta": // the structured answer arrives as a tool call
+		e.now.Writing += len(d.PartialJSON)
+	}
+	if e.progress != nil && time.Since(e.reported) >= time.Second {
+		e.reported = time.Now()
+		e.now.Elapsed = time.Since(e.start)
+		e.progress(e.now)
+	}
+}
+
+func (e *events) finish() (callResult, error) {
 	switch {
-	case failure != "":
-		return res, fmt.Errorf("claude: %s", failure)
-	case !gotResult:
-		return res, errors.New("claude: no result in the output")
+	case e.failure != "":
+		return e.res, fmt.Errorf("claude: %s", e.failure)
+	case !e.gotResult:
+		return e.res, errors.New("claude: no result in the output")
 	}
-	return res, nil
+	return e.res, nil
+}
+
+// parseEvents reads a whole stream-json output at once.
+func parseEvents(out []byte, structured bool) (callResult, error) {
+	e := &events{structured: structured}
+	for _, line := range bytes.Split(out, []byte("\n")) {
+		e.feed(line)
+	}
+	return e.finish()
 }

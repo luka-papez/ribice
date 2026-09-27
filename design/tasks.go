@@ -40,6 +40,49 @@ func FromKB(k *kb.KB, kind Kind) ([]Task, error) {
 	return out, nil
 }
 
+// ProposalSet is what proposals.json holds.
+type ProposalSet struct {
+	Proposer   string     `json:"proposer"`
+	KB         string     `json:"kb"`
+	Attributes []Proposal `json:"attributes"`
+}
+
+// FromProposals makes tasks of one kind for proposed attributes, the same way
+// FromKB does for current ones. Each task's Attribute is the proposal's name.
+// Assign tasks never carry the proposer's values: the expert answers blind.
+func FromProposals(k *kb.KB, props []Proposal, kind Kind) ([]Task, error) {
+	var out []Task
+	switch kind {
+	case Assign:
+		for _, e := range k.Entities {
+			for _, p := range props {
+				s := Subject{Entity: e.Name, Text: e.Note}
+				out = append(out, NewTask(Assign, p.Name, s, p.Question, p.Values, 2))
+			}
+		}
+	case Perceive:
+		for _, p := range props {
+			for _, o := range p.Values {
+				s := Subject{Value: o.Value, Text: o.Label}
+				out = append(out, NewTask(Perceive, p.Name, s, p.Question, p.Values, 2))
+			}
+		}
+	default:
+		return nil, fmt.Errorf("cannot make %q tasks from proposals alone", kind)
+	}
+	return out, nil
+}
+
+// ProposedValues gives, for assign tasks made by FromProposals, the values
+// the proposer gave, for Settle to compare the experts' answers with.
+func ProposedValues(props []Proposal) func(Task) []kb.Value {
+	byName := map[string]Proposal{}
+	for _, p := range props {
+		byName[p.Name] = p
+	}
+	return func(t Task) []kb.Value { return byName[t.Attribute].Assign[t.Subject.Entity] }
+}
+
 // options lists every value of a in the knowledge base's order, with the
 // labels the quiz shows.
 func options(a *kb.Attribute) []Option {

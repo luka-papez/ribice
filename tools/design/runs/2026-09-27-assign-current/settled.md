@@ -11,13 +11,13 @@ Agreed: the experts' combined answer backs the knowledge base's value. Disputed:
 | element_size | 20 | 12 | 0 | 0 |
 | halo | 28 | 4 | 0 | 0 |
 | hooks | 32 | 0 | 0 | 0 |
-| mamma | 31 | 1 | 0 | 0 |
+| mamma | 30 | 2 | 0 | 0 |
 | opacity | 22 | 10 | 0 | 0 |
 | precipitation | 27 | 5 | 0 | 0 |
-| shading | 29 | 3 | 0 | 0 |
+| shading | 26 | 6 | 0 | 0 |
 | shape | 28 | 4 | 0 | 0 |
 | sky_cover | 23 | 9 | 0 | 0 |
-| top | 24 | 8 | 0 | 0 |
+| top | 23 | 9 | 0 | 0 |
 | turrets | 31 | 1 | 0 | 0 |
 
 ## Not agreed
@@ -61,10 +61,13 @@ Agreed: the experts' combined answer backs the knowledge base's value. Disputed:
 | Altocumulus castellanus | top | none | cauliflower 60% | 0% |
 | Altocumulus floccus | depth | none | flat 60% | 0% |
 | Altocumulus floccus | opacity | translucent | transparent 80% | 0% |
+| Altocumulus floccus | shading | yes | yes 50% | 0% |
 | Altocumulus floccus | top | none | smooth 50% | 0% |
 | Altocumulus volutus | base | undefined | flat 39% | 0% |
 | Altocumulus volutus | depth | none | flat 100% | 0% |
 | Altocumulus volutus | element_size | small | none 80% | 0% |
+| Altocumulus volutus | shading | yes | yes 50% | 0% |
+| Altocumulus volutus | top | none | none 50% | 0% |
 | Altostratus translucidus | base | not_visible | undefined 56% | 0% |
 | Altostratus opacus | base | not_visible | undefined 56% | 0% |
 | Altostratus opacus | colour | dark_grey | grey 100% | 0% |
@@ -87,6 +90,7 @@ Agreed: the experts' combined answer backs the knowledge base's value. Disputed:
 | Stratocumulus volutus | base | flat | not_visible 38% | 0% |
 | Stratocumulus volutus | depth | none | flat 100% | 0% |
 | Stratocumulus volutus | element_size | large | none 80% | 0% |
+| Stratocumulus volutus | shading | yes | yes 50% | 0% |
 | Stratus nebulosus | base | not_visible | undefined 56% | 0% |
 | Stratus nebulosus | opacity | opaque | translucent 80% | 0% |
 | Stratus fractus | depth | none | flat 70% | 0% |
@@ -112,5 +116,6 @@ Agreed: the experts' combined answer backs the knowledge base's value. Disputed:
 | Cumulonimbus calvus | element_size | none | large 70% | 0% |
 | Cumulonimbus capillatus | base | flat | ragged 48% | 0% |
 | Cumulonimbus capillatus | element_size | none | large 80% | 0% |
+| Cumulonimbus capillatus | mamma | yes | yes 50% | 0% |
 | Cumulonimbus capillatus | sky_cover | isolated | most_of_sky 47% | 0% |
 | Nimbostratus | colour | dark_grey | dark_grey 40% | 0% |
