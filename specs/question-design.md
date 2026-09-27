@@ -4,9 +4,11 @@ Status: every step is built, and two rounds on clouds are merged
 (2026-09-27). Round one replaced three questions and dropped one. Round two
 changed no question: it settled round one's disputes by hand and replaced
 every question's guessed error rates with measured ones, which put the quiz
-at 60% of clouds named in 8.5 questions. The photo check has not run yet;
-see [First pass](#first-pass-claude-as-the-expert). Replaces the aim of [calibration-loop.md](calibration-loop.md); its
-photo harness stays, as one kind of expert (see [Where the photo work
+at 60% of clouds named in 8.5 questions. Round three's proposals are being
+made; the photo check has not run yet. See [Rounds so far](#rounds-so-far).
+
+Replaces the aim of [calibration-loop.md](calibration-loop.md); its photo
+harness stays, as one kind of expert (see [Where the photo work
 fits](#where-the-photo-work-fits)). Clouds first.
 
 - [Why the reframe](#why-the-reframe)
@@ -16,7 +18,9 @@ fits](#where-the-photo-work-fits)). Clouds first.
 - [Interfaces](#interfaces)
 - [The score](#the-score)
 - [Implementation](#implementation)
-- [First pass: Claude as the expert](#first-pass-claude-as-the-expert)
+- [Running a round](#running-a-round)
+- [Rounds so far](#rounds-so-far)
+- [How the Claude experts are asked](#how-the-claude-experts-are-asked)
 - [Where the photo work fits](#where-the-photo-work-fits)
 - [Risks](#risks)
 - [Later](#later)
@@ -89,10 +93,11 @@ result:
   next `propose` call.
 - **People are spent where it matters.** A person settles only the disputed
   values on questions that won, and reviews one diff per round.
-- **It never gets worse by its own measure.** Select keeps nothing that
-  lowers the score, lowers accuracy, or loses an entity the current questions
-  can name with perfect answers. Because that measure is partly Claude's
-  opinion, the photo check (gate 4) and people are what keep it honest; as
+- **It never gets worse by its own measure.** Select keeps nothing that does
+  not raise the score by 2 points on 100 seeds, lowers accuracy, loses an
+  entity the current questions can name with perfect answers, or leaves
+  more entities answering every question alike. Because that measure is partly Claude's
+  opinion, the photo check and people are what keep it honest; as
   more expert kinds join, less of the measure rests on any one of them.
 
 A round is a few hundred CLI calls, most of one five-hour window, and one
@@ -121,8 +126,8 @@ flowchart LR
 | Proposer | invents attributes aimed at the targets, and rewrites weak ones | Claude | KB, targets, prior evidence | `proposals.json` |
 | Consult | turns proposals into expert tasks, sends them to each expert, caches verdicts | via experts | proposals | the verdict store |
 | Expert | picks among a task's options, or abstains; knows nothing of the proposer's values or reasons | any, or none | a task | a verdict |
-| Aggregate | settles each value and each question's error rates from the verdicts | no | proposals, verdicts | `pool.json`, `disputes.json` |
-| Select | chooses the question set that scores best | no (Go engine) | KB, pool | `candidate.json`, `report.md` |
+| Aggregate | settles each value and each question's error rates from the verdicts | no | proposals, verdicts | `settled.md`, `disputes.jsonl`, `pool.json`, `pool.md` |
+| Select | brings the current questions up to date, then chooses the question set that scores best | no (Go engine) | KB, pool, perceive verdicts | `candidate.json`, `select.md`, `select.json`, `settle.jsonl` |
 
 Each box is a subcommand of one Go binary that reads and writes files, so
 any one can be rerun or replaced alone, and a person can edit any file in
@@ -154,25 +159,30 @@ The knowledge base format does not change.
 ### targets.json
 
 ```json
-{"kb": "data/clouds.json", "sim_model": true, "seeds": 20,
- "pairs": [{"a": "Cirrus fibratus", "b": "Cirrus uncinus", "mixups": 14,
-            "separated_by": ["hooks"]}]}
+{"kb": "data/clouds.json", "seeds": 40,
+ "score": {"games": 1280, "accuracy": 0.60, "questions": 8.5, "gave_up": 0, "score": 17.5},
+ "pairs": [{"a": "Cirrus fibratus", "b": "Cirrus uncinus", "mixups": 18,
+            "separated_by": ["hooks"]}],
+ "missed": [{"entity": "Stratocumulus castellanus", "rate": 0.8}]}
 ```
 
-`mixups` counts simulated games of `a` that ended on `b` or the reverse.
-`separated_by` lists the current attributes on which the two differ; a pair
-separated only by noisy questions is a target as much as an inseparable one.
+Games are played with each question's error model (`-sim-model`), one per
+entity per seed. `mixups` counts games of `a` that ended on `b` or the
+reverse. `separated_by` lists the attributes on which the two never give the
+same answer; a pair separated only by noisy questions is a target as much as
+an inseparable one. `missed` is how often each entity was not named.
 
 ### proposals.json
 
 ```json
-{"proposer": "claude-opus-5@propose-v1",
+{"proposer": "claude:claude-opus-5@propose-v1", "kb": "data/clouds.json",
  "attributes": [
-  {"id": "p07", "name": "hooks", "replaces": "hooks",
-   "kind": "categorical",
+  {"id": "p07", "proposer": "claude:claude-opus-5@propose-v1",
+   "name": "streak_ends", "replaces": "hooks", "kind": "categorical",
    "question": "Did the ends of the streaks curl up, like a tick mark?",
-   "values": {"none": "no streaks", "straight": "straight or gently curved",
-              "curled": "curled up at one end"},
+   "values": [{"value": "none", "label": "no streaks"},
+              {"value": "straight", "label": "straight or gently curved"},
+              {"value": "curled", "label": "curled up at one end"}],
    "confusable": [["straight", "curled"]],
    "targets": [["Cirrus fibratus", "Cirrus uncinus"]],
    "rationale": "…",
@@ -180,13 +190,18 @@ separated only by noisy questions is a target as much as an inseparable one.
               "Cumulus humilis": ["none"]}}]}
 ```
 
-- `assign` covers every entity. A list holds several values when the entity
-  genuinely shows either (the engine already supports that); `"unknown"`
-  marks one the proposer can't say.
-- `replaces` names an existing attribute this one would stand in for, or is
-  absent for a new one. The scorer never keeps both.
-- Existing attributes enter the pool unchanged as proposals with
-  `"proposer": "kb"`, so they are vetted and selected on the same terms.
+- `assign` covers every entity. A list holds two values when the entity
+  genuinely shows either (the engine already supports that); an empty list
+  marks one the proposer can't say, which the experts then fill in.
+- `replaces` names a current question this one would stand in for, or is
+  absent for a new one. Select never keeps both. Reusing a current
+  question's name means replacing it.
+- `propose` checks every question against the knowledge base and drops just
+  the ones that miss an entity, assign one twice or use a value they did not
+  declare.
+- Current questions are not proposals. Select brings them up to date itself
+  (see [The score](#the-score)): re-fitting their error rates from
+  `perceive`, and rewriting a merged question from its newer pool entry.
 
 ### Tasks and verdicts
 
@@ -199,10 +214,9 @@ clicking a form, or an image classifier whose output layer is those options.
 **Task**
 
 ```json
-{"id": "9f2c…", "kind": "assign", "attribute": "p07",
+{"id": "9f2c…", "kind": "assign", "attribute": "streak_ends",
  "subject": {"entity": "Cirrus uncinus",
-             "text": "Cirrus uncinus: cirrus in the form of commas, …",
-             "photos": ["corpus/clouds/…/a1b2.jpg"]},
+             "text": "Filaments drawn out into a hook or comma at one end."},
  "question": "Did the ends of the streaks curl up, like a tick mark?",
  "options": [{"value": "none", "label": "no streaks"},
              {"value": "straight", "label": "straight or gently curved"},
@@ -212,12 +226,15 @@ clicking a form, or an image classifier whose output layer is those options.
 
 `subject` carries every form of the subject the harness has; each expert
 reads the forms it understands and ignores the rest. A text model reads
-`text`, an image classifier `photos`.
+`text`, an image classifier `photos`. `attribute` is the question's name.
+Photos an expert is shown only for context, such as a person's reference
+photos of the entity, are added by that expert and never put in the task,
+so its id stays the same for every expert asked it.
 
 **Verdict**
 
 ```json
-{"task": "9f2c…", "expert": "claude:claude-opus-5@v1a",
+{"task": "9f2c…", "expert": "claude:claude-opus-5@v2a",
  "p": {"none": 0.0, "straight": 0.1, "curled": 0.9},
  "abstain": 0.0, "reason": null}
 ```
@@ -251,7 +268,7 @@ take it.
 | Backend | `assign` | `perceive` | `observe` |
 | --- | --- | --- | --- |
 | `claude` (the CLI, called as `claude_cli.py` calls it) — **built first** | text | text | photo |
-| `human` (a terminal prompt, like the `ribice` quiz) — **built first** | text | text | photo path |
+| `human` (a terminal prompt, like the `ribice` quiz) — **built first** | text, with the entity's photos | text | photo |
 | other LLM | text | text | photo, if it has vision |
 | zero-shot image model (CLIP-style: photo scored against each option label) | via the entity's photos | — | photo |
 | trained classifier (fixed option set) | via the entity's photos | — | photo, only for tasks whose options it was trained on |
@@ -268,9 +285,11 @@ entity's photos and averaging; the backend does that, not Consult.
   longer matches its content, so a hand-edited task is never matched with
   verdicts on its old wording.
 - **Expert id** is `backend:model@version`, or `human:<name>`. The version
-  names the expert's instructions (`v1a`: prompt set 1, wording a), so
+  names the expert's instructions (`v2a`: prompt set 2, wording a), so
   changing a prompt makes a new expert rather than mixing old and new
-  answers. Two experts never share a cache row.
+  answers. Two experts never share a cache row. Where one expert answered a
+  task under several versions, only the latest counts (`Latest`): a revised
+  prompt corrects the old one rather than adding a second opinion.
 - A backend implements the `Expert` interface (see
   [Implementation](#implementation)). It may batch: the Claude backend puts
   all of one entity's `assign` tasks, or all of one attribute's `perceive`
@@ -279,18 +298,26 @@ entity's photos and averaging; the backend does that, not Consult.
 ### pool.json
 
 The proposals with every value settled, and error rates filled in. Verdicts
-are combined by averaging `p` and `abstain` across experts, one vote per
-expert however many prompt variants it has:
+are combined by averaging `p` and `abstain`, one vote per expert id (each
+prompt wording counts as an expert). Each value ends in one status:
 
-- **Value.** Kept when the proposer's value is the combined `p`'s top option
-  and holds more than half its mass (for a two-valued entity, both values
+- **agreed**: the proposer's value is the combined `p`'s top option and
+  holds more than half its mass (for a two-valued entity, both values
   together); an even split backs nothing. Where the proposer gave no value,
-  the experts' top option is taken if it holds more than half on its own. Otherwise the value is *disputed*: its `assign` task goes to
-  `disputes.json`, and the attribute is held out of selection until the
-  dispute is settled. Settling it is one more consultation: the `human`
-  expert answers the disputed tasks, blind like any other, and a person's
-  verdict outweighs the rest (see [First pass](#first-pass-claude-as-the-expert)). An `assign` abstention of `not_observable` on more than a
-  quarter of entities drops the attribute.
+  the experts' top option is taken if it holds more than half on its own.
+- **corrected**: a person answered, with another value. Once a person has
+  answered a task, only people's verdicts count, and what they answered is
+  the value. Settling a dispute is one more consultation: the `human` expert
+  answers the disputed tasks, blind like any other.
+- **disputed**: the models lean elsewhere. The task goes to
+  `disputes.jsonl`; the proposer's value stands until a person settles it.
+- **abstained**: at least half the answer is abstention.
+
+A question with values still disputed or abstained is not ready. Select
+uses it only with `-allow-disputed`, and then lists those values in
+`settle.jsonl`, so a person settles only the disputes on questions that
+won. A question most experts call not observable for more than a quarter of
+entities, or that under half the people could answer, is never used.
 - **Mix-up table.** The combined `perceive` rows, true value against
   answered value; `observe` rows replace them where photos measured them.
 - **`confusable`**: pairs where either direction gets at least 20% of
@@ -304,20 +331,41 @@ expert however many prompt variants it has:
 
 Select plays `-simulate` with the simulated user making mistakes the way each
 attribute's own error model says (`Attribute.Report`), rather than one flat
-`-sim-noise`, and skipping at the attribute's `1 − answer_rate`. Over 20 seeds:
+`-sim-noise`, and skipping at the attribute's `1 − answer_rate`:
 
 - **score = accuracy in percent − 5 × mean questions**, as in the calibration
-  loop, so one question saved is worth 5 points of accuracy;
-- plus a floor: no subset whose accuracy drops below the current KB's.
+  loop, so one question saved is worth 5 points of accuracy.
 
-Selection is greedy: start from the current attributes, then repeatedly apply
-the single add, drop or replace that raises the score most, until none does.
-A full simulation of 32 entities takes milliseconds, so trying every move in
-a pool of 50 for 20 seeds is seconds.
+**Before searching**, Select brings the current knowledge base up to date, so
+the score it starts from is measured the same way as the candidates':
+
+- `-refresh` (on by default) rewrites each question the knowledge base
+  shares with the pool from its pool entry: settled values, including a
+  person's corrections, and fitted error rates.
+- `-refit perceive.jsonl,…` re-fits the error rates of the other current
+  questions from `perceive` verdicts on them. A question lacking answers for
+  any value keeps its rates, and the report says so.
+
+**The search** is greedy: start from the current questions, then take the
+single add, drop or replace that raises the score most, until none does.
+Every move is screened on 10 games per entity (`-seeds`); the three most
+promising are confirmed on 100 (`-confirm-seeds`), and one is taken only if
+it gains at least 2 points there (`-min-gain`). At 10 seeds the score
+wanders by about 3 points on chance alone: unconfirmed, round two took a
+"gain" of 4.3 that was a loss of 1.5 on 40 seeds. Reported scores are the
+confirmed ones. A move is never taken if the candidate would
+
+- fail to load or `-lint` with an error;
+- identify fewer entities than the starting point does (accuracy floor);
+- identify fewer with perfect answers (`-simulate`): an error model can hide
+  a question set that cannot separate two entities at all;
+- leave more entities answering every question alike (`kb.Inseparable`).
+
+A search over 15 proposals and 14 current questions takes under a minute.
 
 This makes the error model the lever that decides what gets selected, so the
-`perceive` estimates must be honest. The photo answerer is the
-check on that (below).
+`perceive` estimates must be honest. People, and the photo answerer, are the
+check on that.
 
 **Engine change (done).** `SimOptions.ErrorModel`, `-simulate -sim-model` on
 the command line: each simulated answer is drawn from
@@ -333,17 +381,17 @@ Go, in this module, with no new dependencies. The engine and `kb` are used
 in-process: Select plays thousands of simulated games per run, and building
 candidate knowledge bases, fitting error rates and linting all reuse `kb`
 directly. The Python photo tools in `tools/calib/` stay as they are; the
-first pass needs them only for gate 4.
+loop needs them only for the photo check.
 
 **Packages**
 
 | Package | Holds | Imports a model? |
 | --- | --- | --- |
-| `design` | the types and interfaces below; building tasks from proposals; the verdict store; Analyse, Aggregate, Select | no |
+| `design` | the types and interfaces below; building tasks; the verdict store; Analyse, Settle, FitErrors, BuildPool, Refit, Select; KBFile, which edits a knowledge base's JSON in place so a diff shows only what changed | no |
 | `design/claude` | the CLI call (a port of `claude_cli.py`), the Claude `Expert` and the Claude `Proposer`, prompts embedded with `embed` | Claude, through `claude -p` |
-| `design/human` | the terminal `Expert` | no |
+| `design/human` | the terminal `Expert`, with photos of the entity on request | no |
 | `internal/prompt` | reading "2", "1,3" into picks, moved out of `cmd/ribice` so the quiz and the human expert share it | no |
-| `cmd/ribice-design` | subcommands `tasks`, `consult` (built), `analyse`, `propose`, `aggregate`, `select` | via the packages |
+| `cmd/ribice-design` | subcommands `analyse`, `propose`, `tasks`, `consult`, `aggregate`, `select` | via the packages |
 
 `cmd/wasm` never imports `design`, so the widget does not grow.
 
@@ -371,7 +419,7 @@ type Subject struct {
 type Task struct {
 	ID         string // hash of kind, attribute, subject, question and options
 	Kind       Kind
-	Attribute  string // proposal id
+	Attribute  string // the question's name
 	Subject    Subject
 	Question   string
 	Options    []Option
@@ -394,7 +442,7 @@ func (v Verdict) Check(t Task) error
 // ready, so an interrupted run keeps everything answered so far. A task it
 // did not get to is simply left out and asked on the next run.
 type Expert interface {
-	ID() string // "claude:claude-opus-5@v1a", "human:luka"
+	ID() string // "claude:claude-opus-5@v2a", "human:luka"
 	Accepts(Task) bool
 	Answer(ctx context.Context, tasks []Task, emit func(Verdict) error) error
 }
@@ -411,7 +459,9 @@ type Store interface {
 }
 ```
 
-`Brief` is the knowledge base, `targets.json` and the photo evidence;
+`Brief` is the knowledge base, the mixed-up pairs from `targets.json` and
+evidence files in prose (`settled.md`, `pool.md`, `select.md`, a person's
+notes);
 `Proposal` is one entry of `proposals.json`. The verdict store is an
 append-only JSON Lines file, `tools/design/verdicts.jsonl`, committed:
 a person's answers are too costly to lose to a cleaned cache.
@@ -438,11 +488,24 @@ answering the same way give the same verdict.
 - a reply that fails the schema or `Verdict.Check` is retried once, then left
   out.
 
-One `Expert` value per prompt variant (`v1a`, `v1b`, `v1c`), each its own
-expert id; `observe` has one wording so far. It batches: one call per entity
-for `assign`, one per attribute for `perceive`, one per photo for `observe`,
-with a shared rules text per kind and only the framing worded differently.
-The Proposer is the same caller with the proposer prompt at effort `high`.
+One `Expert` value per prompt variant (`v2a`, `v2b`, `v2c`; `-variant all`
+runs all three), each its own expert id; `observe` has one wording so far.
+It batches: one call per entity for `assign`, one per attribute for
+`perceive`, one per photo for `observe`, with a shared rules text per kind
+and only the framing worded differently. The Proposer is the same caller
+with the proposer prompt at effort `high`. With a `Progress` callback, a
+call streams its output and reports thinking and answer characters about
+once a second; `propose` shows it.
+
+**Models and cost.** Experts run on `claude-opus-5` at effort `low`, the
+proposer on `claude-opus-5` at effort `high`; `-model` and `-effort` change
+either. Measured at API prices, though the subscription pays: an `assign`
+pass over 15 questions and 32 entities in three wordings, 96 calls, about
+$3.10; `perceive` on 15 questions in three wordings about $1.70; a proposer
+call about $1.40. A round is about $6 to $8 of expert calls, which is
+usually less than the interactive session steering it. On one comparison,
+`claude-haiku-4-5` answered the same 15 `assign` tasks for half the cost;
+whether a cheaper model answers as well is untested.
 
 The reply schemas:
 
@@ -451,7 +514,19 @@ The reply schemas:
 - `perceive`: per case, how many of ten untrained people pick each option,
   how many cannot answer, and the main reason if any; `p` is the counts over
   ten. A mix-up row is a distribution, so it is asked for as one, rather
-  than as a single pick with a confidence.
+  than as a single pick with a confidence. The schema pins the counts to
+  exactly one per option: left free, the model sometimes listed those who
+  cannot answer as one more count.
+
+**`perceive` v2.** The ten people know only everyday words, and anyone who
+would need a word of the field explained counts as unable to answer, with
+`unclear_question`. Under v1, Claude rated "Did little turrets rise from its
+top?" answerable by nearly everyone; a person who knows the audience says
+most would not know what cloud turrets are. v2 moved it from 5% to 13%
+unable to answer and left plain questions as they were. Both versions agree
+those who answer it are near a coin toss (noise 0.25): Claude, knowing the
+field, underrates jargon, and a person's `perceive` answers are the better
+check on it.
 
 A live call on one cloud's 15 `assign` tasks took one call and about $0.04
 at API prices.
@@ -493,6 +568,12 @@ keys: a number, or two (1,3); add ? if unsure (3?)
   An abstention is all-or-nothing: `Abstain` 1 with the key's reason.
 - `observe` tasks print the photo's path, and with `-open` hand it to the
   desktop's image viewer.
+- `-corpus clouds` shows, beside each `assign` task, the entity's reference
+  photo from the knowledge base and up to `-photos` photos of it from the
+  calibration corpus, those the label check confirmed first. `-open` opens
+  the first; the rest are listed.
+- It needs a terminal: run without one, it says how many were answered and
+  stops.
 - Each answer is emitted, and so stored, as it is given; `q` stops, and the
   next run starts at the first unanswered task. `b` re-asks the previous task
   and replaces its verdict.
@@ -501,37 +582,48 @@ keys: a number, or two (1,3); add ? if unsure (3?)
 - It never shows another expert's verdict or the proposer's value; `assign`
   tasks for a dispute look exactly like any other.
 
-## First pass: Claude as the expert
+## Running a round
 
-One pass on clouds, every expert role played by Claude, run through the CLI on
-the subscription, with you as the `human` expert only for the disputes. The
-point is to exercise every interface end to end and see whether the score
-moves; until gate 4 its numbers are Claude checking Claude, not truth.
+Every expert role but the disputes is played by Claude, through the CLI on
+the subscription. Until the photo check runs, the numbers are Claude
+checking Claude, not truth. A run directory `R` is
+`tools/design/runs/<date>-<label>/`.
 
-| Step | Command | Claude calls | Rough size |
-| --- | --- | --- | --- |
-| 0. Engine | `-simulate -sim-model`, `answer_rate` | — | done |
-| 1. Backends | `design`, `design/claude`, `design/human`, `ribice-design tasks` and `consult`, with tests | — | done |
-| 2. Analyse | `ribice-design analyse -kb data/clouds.json -out targets.json` | none | done: 48% identified in 11.1 questions, score −7.3; 111 pairs mixed up |
-| 3. Propose | `ribice-design propose -targets targets.json -evidence settled.md,report.md -domain clouds -out proposals.json` | 1 at effort `high` | up to 25 candidate attributes, each with 32 values |
-| 4. Consult: assign | `ribice-design tasks -proposals proposals.json -kind assign`, then `consult -tasks … -expert claude -variant all -domain clouds` | 32 (one per entity) × 3 variants | paused at the 80% window limit: 885 of 1,440 verdicts |
-| 5. Consult: perceive | `ribice-design consult -tasks perceive.jsonl -expert claude -variant all -domain clouds` | 1 per candidate × 3 variants | paused: 17 of 171 verdicts |
-| 6. Aggregate | `ribice-design aggregate -tasks assign.jsonl -proposals proposals.json -perceive perceive.jsonl` | none | done: `pool.json`, `pool.md`; 399 of 480 values agreed |
-| 7. Select | `ribice-design select -pool pool.json -out … -allow-disputed -allow-guessed` | none | done: see below |
-| 8. Settle disputes | `ribice-design consult -tasks settle.jsonl -expert human -as luka` | none | to do: 24 values on the questions chosen |
-| 9. Photo check | `tools/calib/run.py` on `candidate.json`, then `compare.py` | ~1 per photo, new questions only | to do: gate 4 |
-| 10. Review | you | — | done: merged as the first round |
+| Step | Command | Claude calls |
+| --- | --- | --- |
+| 1. Analyse | `ribice-design analyse -kb data/clouds.json -seeds 40 -out R/targets.json` | none |
+| 2. Propose | `ribice-design propose -targets R/targets.json -evidence <files> -domain clouds -out R/proposals.json` | 1 at effort `high` |
+| 3. Tasks | `ribice-design tasks -proposals R/proposals.json -kind assign > R/assign.jsonl`, and the same with `-kind perceive` | none |
+| 4. Consult | `ribice-design consult -tasks R/assign.jsonl -expert claude -variant all -domain clouds`, and the same for `perceive.jsonl` | about 96 and 45; paused at 80% of the window, resumed by running again |
+| 5. Aggregate | `ribice-design aggregate -tasks R/assign.jsonl -proposals R/proposals.json -perceive R/perceive.jsonl` | none |
+| 6. Select | `ribice-design select -pool R/pool.json -out S -allow-disputed -refit <perceive tasks on current questions>` | none |
+| 7. Settle | `ribice-design consult -tasks S/settle.jsonl -expert human -as <name> -corpus clouds -open`, in a terminal; then steps 5 and 6 again | none |
+| 8. Photo check | `tools/calib/run.py` on `S/candidate.json`, then `compare.py` | about 1 per photo, new questions only |
+| 9. Merge | a person reads the diff, then `S/candidate.json` becomes `data/clouds.json` | none |
 
-Disputes were settled after Select rather than before, and only on the
-questions it chose: 24 values instead of 81.
+Disputes are settled after Select, and only on the questions it chose:
+round one's 24 values instead of 81.
 
-**The first round's result** (`tools/design/runs/2026-09-27-select-1/`).
+## Rounds so far
+
+**Round zero: the answer key** (`tools/design/runs/2026-09-27-assign-current/`).
+Before any proposal, `assign` on the 15 original questions: the experts
+backed 385 of 480 values. Most disputes were the questions' fault (`depth`,
+`element_size` and `base` offered options that overlap), some were wrong
+values (virga on Cirrus uncinus). Its `settled.md` was the first proposer's
+evidence.
+
+**Round one** (`tools/design/runs/2026-09-27-propose-1/`, `…-select-1/`).
+`analyse`: 48% named in 11.1 questions (score −7.3). The proposer made 15
+questions, 11 rewriting current ones; consultation paused at the window
+limit. (`tools/design/runs/2026-09-27-select-1/`).
 Select replaced `opacity` with `sun_view`, `shape` with `cloud_form` and
 `precipitation` with `falling_visible`, and dropped `anvil`. Over 40 seeds
-under the error model, the quiz names 60% of clouds in 10.1 questions,
-against 49% in 11.0 (score −5.9 to 9.6); with perfect answers it names all
-32 in 6.7 questions instead of 8.2. `sun_view` runs on default error rates
-until its `perceive` answers are in, and holds 17 of the 24 disputed values.
+under the error model, the quiz named 60% of clouds in 10.1 questions,
+against 49% in 11.0 (score −5.9 to 9.6); with perfect answers all 32 in 6.7
+questions instead of 8.2. `sun_view` went in on default error rates and with
+17 of the 24 disputed values.
+
 **Round two** (`tools/design/runs/2026-09-27-select-2/`) finished the
 consultation, ran `perceive` on the questions that predate the loop, and had
 a person settle the 24 disputed values (12 corrected). Select refreshed the
@@ -555,10 +647,25 @@ person who knows the audience agree people answer nearly at random. The
 field explained as unable to answer; v1 had rated `turrets` answerable by
 almost everyone.
 
+**Round three** (`tools/design/runs/2026-09-27-propose-2/`) starts from the
+measured knowledge base: 60% named in 8.5 questions (score 17.5 on 40
+seeds), 145 pairs mixed up, Stratocumulus castellanus / stratiformis most
+(31, separated only by `turrets`) and Cirrus fibratus / uncinus next (18,
+only by `hooks`). The proposer's evidence is `evidence.md` (a person's note
+on "turrets" and what round two measured), round one's `pool.md` and round
+two's `select.md`.
+
+**Gate.** A round's candidate is merged when every component ran, its
+disputes take one sitting, Select's confirmed score is no worse, and, once it
+runs, the photo check does not do worse on the baseline photos than the
+current knowledge base. The photo check is the only gate not built on
+Claude's own opinion, so it is the one that decides.
+
+## How the Claude experts are asked
+
 The three prompt variants of each task stand in for three experts: each is
 its own call and its own expert id, so they are at least not one sample
-repeated. Steps 3 to 5 need no photo, so they are far cheaper than the
-baseline's answer matrix: estimated well under one five-hour window.
+repeated.
 
 **Proposer prompt, in outline.** You design questions for a quiz that
 identifies clouds for people with no training. Here are the 32 clouds with
@@ -583,42 +690,34 @@ no free-text field. The existing `ask.py` reply already has this shape once its
 `looked_at` sentence is dropped, so the photo answerer can later become an
 `observe` expert with only a converter.
 
-**Gate.** The pass is a success if:
-
-1. every component ran and its files read as intended;
-2. the disputes take one sitting (under ~40 tasks);
-3. the candidate beats the current KB on the score by at least 5 points in
-   simulation, with the per-attribute error rates the experts gave;
-4. on the photo baseline, replayed with fresh answers for the new questions
-   only, the candidate does not do worse than the current KB.
-
-Check 4 is the only one not built on Claude's own opinion, so it decides
-whether the candidate is merged.
-
 ## Where the photo work fits
 
 Nothing built for the calibration loop is thrown away; it moves down a level.
 
-- **The photo answerer is the `observe` expert.** It turns a question into
-  measured mix-up rows and skip rates on real photos, the empirical check on
-  the `perceive` estimates. Its measured rates can replace the estimated
-  ones in `pool.json` for any question it has answered.
+- **The photo answerer is to become the `observe` expert.** Its replies
+  already have the closed shape; a converter from its answer cache to
+  verdicts is still to write. Then it turns a question into measured mix-up
+  rows and skip rates on real photos, the empirical check on the `perceive`
+  estimates, and its rows can replace estimated ones in the fit.
 - **The baseline report is input to the proposer.** Which questions went
   unanswered and which carried no gain is exactly the evidence it needs.
-- **`-replay` and `compare.py`** stay the final test of a candidate (gate 4).
-- **Calibration of error rates** (phase 1c) is folded into Aggregate: rates
-  come from `perceive` verdicts, or from `observe` where measured.
+- **`-replay` and `compare.py`** stay the final test of a candidate, the
+  photo check. It has not run on a candidate yet.
+- **Calibration of error rates** (phase 1c) is folded into the fit: rates
+  come from `perceive` verdicts, and later from `observe` where measured.
 - Finishing the baseline (87 photos unanswered) is no longer on the critical
-  path; 148 photos are enough to act as gate 4 for the first pass.
+  path; 148 photos are enough for the photo check.
 
 ## Risks
 
 | Risk | Mitigation |
 | --- | --- |
 | Claude checking Claude shares its blind spots | blind tasks, varied prompts; the photo gate; people, other models and image classifiers plug in through the same interface in later passes |
+| Claude, knowing the field, underrates jargon when it imagines untrained people | `perceive` v2 counts those who would need a word explained as unable to answer; a person's `perceive` answers outweigh Claude's; words people cannot know go to the proposer as evidence |
+| The score is noisy, and a lucky draw looks like a gain | moves screened on 10 seeds and confirmed on 100, with a 2-point minimum |
 | The scorer rewards what the error model rewards; optimistic `perceive` estimates select unanswerable questions | photo `observe` rates override estimates; gate 4 |
 | Values that are true of the textbook cloud but not visible to a layperson | `assign` asks about what an observer sees, not the definition, and may abstain `not_observable`; `perceive` covers the question itself |
-| Greedy selection overfits the 32 entities | the accuracy floor, `-lint`, and a person reading each accepted question |
+| Greedy selection overfits the 32 entities | the accuracy floor, the perfect-answer and indistinguishable-entity guards, `-lint`, and a person reading each accepted question |
 | Many new questions each with a small gain | score charges 5 points a question; greedy drops as well as adds |
 
 ## Later
@@ -628,6 +727,12 @@ Nothing built for the calibration loop is thrown away; it moves down a level.
   others answer: `assign` for someone who knows clouds, `perceive` and
   `observe` for someone who doesn't.
 - **Other models** as `assign` experts, to break Claude's shared biases.
+- **Cheaper Claude models** as experts (`-model claude-sonnet-5` or
+  `claude-haiku-4-5`), once a comparison on tasks Opus has answered shows
+  they agree; a model that knows less of the field may even be the better
+  layperson for `perceive`.
+- **A person's `perceive` pass** on every current question, about 50 tasks,
+  to check Claude's estimates of what people understand.
 - **Image classifiers** as `observe` experts: a zero-shot model scoring each
   photo against the option labels needs no training and handles any
   proposal; a model trained per attribute is stronger but only for option
