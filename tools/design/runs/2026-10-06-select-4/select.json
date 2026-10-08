@@ -1,0 +1,155 @@
+{
+  "before": {
+    "games": 3200,
+    "accuracy": 0.59625,
+    "questions": 8.5640625,
+    "words": 300.7684375,
+    "gave_up": 0.003125,
+    "score": -65.69518229166667
+  },
+  "after": {
+    "games": 3200,
+    "accuracy": 0.5975,
+    "questions": 8.46125,
+    "words": 276.06375,
+    "gave_up": 0.0103125,
+    "score": -55.27656250000001
+  },
+  "steps": [
+    {
+      "move": {
+        "add": "shadows_cast"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.615625,
+        "questions": 9.014375,
+        "words": 296.6290625,
+        "gave_up": 0.0034375,
+        "score": -62.03294270833332
+      }
+    },
+    {
+      "move": {
+        "drop": "base"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.60625,
+        "questions": 8.7325,
+        "words": 286.5103125,
+        "gave_up": 0.0071875,
+        "score": -58.754296875000016
+      }
+    },
+    {
+      "move": {
+        "drop": "depth"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.5975,
+        "questions": 8.46125,
+        "words": 276.06375,
+        "gave_up": 0.0103125,
+        "score": -55.27656250000001
+      }
+    }
+  ],
+  "tried": [
+    {
+      "move": {
+        "add": "see_through"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.6290625,
+        "questions": 9.026875,
+        "words": 306.533125,
+        "gave_up": 0.001875,
+        "score": -64.81588541666666
+      }
+    },
+    {
+      "move": {
+        "drop": "mamma"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.57875,
+        "questions": 8.3625,
+        "words": 301.7525,
+        "gave_up": 0.0028125,
+        "score": -67.85520833333334
+      }
+    },
+    {
+      "move": {
+        "add": "shadows_cast"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.615625,
+        "questions": 9.014375,
+        "words": 296.6290625,
+        "gave_up": 0.0034375,
+        "score": -62.03294270833332
+      }
+    },
+    {
+      "move": {
+        "drop": "base"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.60625,
+        "questions": 8.7325,
+        "words": 286.5103125,
+        "gave_up": 0.0071875,
+        "score": -58.754296875000016
+      }
+    },
+    {
+      "move": {
+        "drop": "depth"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.5975,
+        "questions": 8.46125,
+        "words": 276.06375,
+        "gave_up": 0.0103125,
+        "score": -55.27656250000001
+      }
+    },
+    {
+      "move": {
+        "drop": "element_size"
+      },
+      "score": {
+        "games": 3200,
+        "accuracy": 0.5828125,
+        "questions": 7.8196875,
+        "words": 256.30875,
+        "gave_up": 0.0090625,
+        "score": -48.5140625
+      }
+    }
+  ],
+  "added": [
+    "shadows_cast"
+  ],
+  "dropped": [
+    "base",
+    "depth"
+  ],
+  "pending": {
+    "shadows_cast": 3
+  },
+  "skipped": {
+    "cloud_shape": "8 options, more than 5"
+  },
+  "too_many": {
+    "cloud_form": 8
+  }
+}
