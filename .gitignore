@@ -32,3 +32,7 @@ tools/__pycache__/
 tools/calib/cache/
 tools/calib/.venv/
 tools/calib/__pycache__/
+
+# Question design (see tools/design). Each run folder is committed; the log a
+# select run writes beside it is only its progress output.
+tools/design/runs/*.log
